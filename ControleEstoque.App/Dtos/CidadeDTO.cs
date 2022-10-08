@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ControleEstoque.Domain.Entidades;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,6 +10,19 @@ namespace ControleEstoque.App.Dtos
 {
     public  class CidadeDTO
     {
+        public CidadeDTO()
+        {
+
+        }
+        public CidadeDTO(CidadeEntity cidadeEntity)
+        {
+            this.Id = cidadeEntity.Id;
+            this.IdEstado = cidadeEntity.IdEstado;
+            this.Nome = cidadeEntity.Nome;
+            this.Estado = cidadeEntity.Estado;
+            this.Ativo = cidadeEntity.Ativo;
+
+        }
     
         public int Id { get; set; }
 
@@ -19,13 +33,23 @@ namespace ControleEstoque.App.Dtos
 
         public bool Ativo { get; set; }
 
-        [Required(ErrorMessage = "Selecione o país.")]
-        public int IdPais { get; set; }
-
+        
         [Required(ErrorMessage = "Selecione o estado.")]
         public int IdEstado { get; set; }
 
 
-        public EstadoDTO Estado { get; set; }
+        public EstadoEntity Estado { get; set; }
+
+        public CidadeEntity retornoCidadeEntity()
+        {
+            return new CidadeEntity()
+            {
+                Id = this.Id,
+                Nome = this.Nome,
+                IdEstado = this.IdEstado,
+                Estado = this.Estado,
+                Ativo = this.Ativo != null ? (bool)this.Ativo : false//ja joga valor false
+            };
+        }
     }
 }

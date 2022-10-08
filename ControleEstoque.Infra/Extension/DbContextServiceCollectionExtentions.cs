@@ -21,6 +21,7 @@ namespace ControleEstoque.Infra.Extension
             services.AddScoped<ICidadeRepository, CidadeRepository>();
             services.AddScoped<IEstadoRepository, EstadoRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
+            services.AddScoped<IFornecedorRepository, FornecedorRepository>();
 
 
             return services;
