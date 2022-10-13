@@ -15,13 +15,14 @@ namespace ControleEstoque.Infra.Mapping
         {
             builder.ToTable("Cidade");//nome da tabela
 
-            builder.HasKey(p => p.Id);
-            builder.Property(p => p.Id)                
+            builder.HasKey(p => p.Id);//chave primaria
+            builder.Property(p => p.Id)    
+                .HasColumnName("id")
                 .ValueGeneratedOnAdd();//auto incremento
 
 
             builder.Property(p => p.Nome)
-               .HasColumnType("varchar(30)")//define o tamanho da string
+               .HasMaxLength(30)//define o tamanho da string
                .IsRequired()//obrigatorio
                .HasColumnName("nome");
 
@@ -30,13 +31,14 @@ namespace ControleEstoque.Infra.Mapping
                .HasColumnName("ativo")
                .IsRequired();//obrigatorio
 
+            //chave estrangeira
             builder.Property(p => p.IdEstado)
                .IsRequired()//obrigatorio
                .HasColumnName("id_estado"); //nome da coluna
 
 
-            builder.HasOne(p => p.Estado)
-                .WithMany()//lado muitos
+            builder.HasOne(p => p.Estado)//um estado
+                .WithMany()//tem muitos cidades
                 .HasForeignKey(p => p.IdEstado)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
         }

@@ -9,12 +9,11 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Mapping
 {
-    public class PaisMap : IEntityTypeConfiguration<PaisEntity>
+    class PerfilMap : IEntityTypeConfiguration<PerfilEntity>
     {
-        public void Configure(EntityTypeBuilder<PaisEntity> builder)
+        public void Configure(EntityTypeBuilder<PerfilEntity> builder)
         {
-
-            builder.ToTable("pais");//nome da tabela
+            builder.ToTable("perfil");//nome da tabela
 
             builder.HasKey(p => p.Id);//chave primaria
             builder.Property(p => p.Id)
@@ -23,19 +22,18 @@ namespace ControleEstoque.Infra.Mapping
 
 
             builder.Property(p => p.Nome)
-                .HasMaxLength(50)//define o tamanho do campo
+               .HasMaxLength(30)//define o tamanho da string
                .IsRequired()//obrigatorio
-               .HasColumnName("nome");//nome da tabela
-
-            builder.Property(p => p.Codigo)
-               .HasMaxLength(3)//define o tamanho do campo
-               .IsRequired()//obrigatorio
-               .HasColumnName("codigo");//nome da tabela
+               .HasColumnName("nome");
 
 
             builder.Property(p => p.Ativo)
-               .HasColumnName("ativo")//nome da tabela
+               .HasColumnName("ativo")
                .IsRequired();//obrigatorio
+
+            //chave estrangeira
+            builder.Entity<PerfilEntity>()
+            .HasKey(bc => new { bc., bc.CategoryId });
 
         }
     }

@@ -22,6 +22,16 @@ namespace ControleEstoque.Infra.Extension
             services.AddScoped<IEstadoRepository, EstadoRepository>();
             services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
+            services.AddScoped<IGrupoProdutoRepository, GrupoProdutoRepository>();
+            services.AddScoped<IEntradaProdutoRepository, EntradaProdutoRepository>();
+            services.AddScoped<IinventarioEstoqueRepository, InventarioEstoqueRepository>();
+            services.AddScoped<ILocalArmazenamentoRepository, LocalArmazenamentoRepository>();
+            services.AddScoped<IMarcaProdutoRepository, MarcaProdutoRepository>();
+            services.AddScoped<IPerfilRepository, PerfilRepository>();
+            services.AddScoped<IProdutoRepository, ProdutoRepository>();
+            services.AddScoped<ISaidaProdutoRepository, SaidaProdutoRepository>();
+            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            services.AddScoped<IUnidadeMedidaRepository, UnidadeMedidaRepository>();
 
 
             return services;

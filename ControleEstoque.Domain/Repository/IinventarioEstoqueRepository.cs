@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Domain.Repository
 {
-    interface IinventarioEstoqueRepository : IGlobalRepository<InventarioEstoqueEntity>
+   public interface IinventarioEstoqueRepository : IGlobalRepository<InventarioEstoqueEntity>
     {
     }
 }

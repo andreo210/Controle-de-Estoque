@@ -77,29 +77,29 @@ namespace ControleEstoque.Infra.Mapping
                 .HasColumnName("id_pais")
                 .IsRequired();
 
-            builder.HasOne(p => p.Pais)
-               .WithMany()//lado muitos
+            builder.HasOne(p => p.Pais)//um pais
+               .WithMany()//tem muitos fornecedore
                .HasForeignKey(p => p.IdPais)//chave estrangeira
-               .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluído
+               .OnDelete(DeleteBehavior.NoAction);//dependentes devem ser excluído
 
 
             builder.Property(x => x.IdEstado)
                .HasColumnName("id_estado")
                .IsRequired();
 
-            builder.HasOne(x => x.Estado)
-                .WithMany()
-                .HasForeignKey(x => x.IdEstado)
-                .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
+            builder.HasOne(x => x.Estado)//um estado
+                .WithMany()//tem varios fornecedores
+                .HasForeignKey(x => x.IdEstado)               
+                .OnDelete(DeleteBehavior.NoAction);//dependentes devem ser excluídos
 
             builder.Property(x => x.IdCidade)
                .HasColumnName("id_cidade")
                .IsRequired();
 
-            builder.HasOne(x => x.Cidade)
-                .WithMany()
+            builder.HasOne(x => x.Cidade)//uma cidade
+                .WithMany()//tem muitos fornecedores
                 .HasForeignKey(x => x.IdCidade)
-                .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
+                .OnDelete(DeleteBehavior.NoAction);//dependentes devem ser excluídos
 
         }
     }

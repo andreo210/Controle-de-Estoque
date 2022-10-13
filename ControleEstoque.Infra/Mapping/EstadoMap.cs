@@ -18,16 +18,17 @@ namespace ControleEstoque.Infra.Mapping
 
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id)
+                .HasColumnName("id")
                 .ValueGeneratedOnAdd();//auto incremento
 
 
             builder.Property(p => p.Nome)
-               .HasColumnType("varchar(30)")//define o tamanho da string
+               .HasMaxLength(30)//define o tamanho da string
                .IsRequired()//obrigatorio
                .HasColumnName("nome");
 
             builder.Property(p => p.UF)
-               .HasColumnType("varchar(2)")//define o tamanho da string
+               .HasMaxLength(2)//define o tamanho da string
                .IsRequired()//obrigatorio
                .HasColumnName("uf");
 
@@ -36,13 +37,14 @@ namespace ControleEstoque.Infra.Mapping
                .HasColumnName("ativo")
                .IsRequired();//obrigatorio
 
+            //chave estrangeira
             builder.Property(p => p.IdPais)
                .IsRequired()//obrigatorio
                .HasColumnName("id_pais"); //nome da coluna
 
 
-            builder.HasOne(p => p.Pais)
-                .WithMany()//lado muitos
+            builder.HasOne(p => p.Pais)//um pais
+                .WithMany()//tem muitos estados
                 .HasForeignKey(p => p.IdPais)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
         }
