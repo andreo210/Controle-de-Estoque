@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(ControleEstoqueContext))]
-    [Migration("20221012235025_primeira")]
+    [Migration("20221014000637_primeira")]
     partial class primeira
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -549,7 +549,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasIndex("UsuariosId");
 
-                    b.ToTable("PerfilEntityUsuarioEntity");
+                    b.ToTable("perfil_usuario");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.CidadeEntity", b =>

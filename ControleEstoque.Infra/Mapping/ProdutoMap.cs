@@ -63,7 +63,17 @@ namespace ControleEstoque.Infra.Mapping
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
 
 
-            
+            builder.Property(p => p.IdMarca)//chave
+              .HasColumnName("id_marca")//nome
+              .IsRequired();//obrigatorio
+
+            builder.HasOne(p => p.Marca)//uma unidade de medida 
+                .WithMany()//tem muitos produtos
+                .HasForeignKey(p => p.IdMarca)//chave estrangeira
+                .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
+
+
+
             builder.Property(p => p.IdGrupo)
                .IsRequired()//obrigatorio
                .HasColumnName("id_grupo"); //nome da coluna
@@ -74,15 +84,7 @@ namespace ControleEstoque.Infra.Mapping
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
 
 
-
-            builder.Property(p => p.IdMarca)
-             .IsRequired()//obrigatorio
-             .HasColumnName("id_marca"); //nome da coluna
-
-            builder.HasOne(p => p.Marca)//uma marca
-                .WithMany()//tem muitos produtos
-                .HasForeignKey(p => p.IdGrupo)//chave estrangeira
-                .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
+                       
 
 
             builder.Property(p => p.IdFornecedor)

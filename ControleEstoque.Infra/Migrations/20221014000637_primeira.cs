@@ -132,7 +132,7 @@ namespace ControleEstoque.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PerfilEntityUsuarioEntity",
+                name: "perfil_usuario",
                 columns: table => new
                 {
                     PerfisId = table.Column<int>(type: "int", nullable: false),
@@ -140,15 +140,15 @@ namespace ControleEstoque.Infra.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_PerfilEntityUsuarioEntity", x => new { x.PerfisId, x.UsuariosId });
+                    table.PrimaryKey("PK_perfil_usuario", x => new { x.PerfisId, x.UsuariosId });
                     table.ForeignKey(
-                        name: "FK_PerfilEntityUsuarioEntity_perfil_PerfisId",
+                        name: "FK_perfil_usuario_perfil_PerfisId",
                         column: x => x.PerfisId,
                         principalTable: "perfil",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_PerfilEntityUsuarioEntity_usuario_UsuariosId",
+                        name: "FK_perfil_usuario_usuario_UsuariosId",
                         column: x => x.UsuariosId,
                         principalTable: "usuario",
                         principalColumn: "id",
@@ -373,8 +373,8 @@ namespace ControleEstoque.Infra.Migrations
                 column: "id_produto");
 
             migrationBuilder.CreateIndex(
-                name: "IX_PerfilEntityUsuarioEntity_UsuariosId",
-                table: "PerfilEntityUsuarioEntity",
+                name: "IX_perfil_usuario_UsuariosId",
+                table: "perfil_usuario",
                 column: "UsuariosId");
 
             migrationBuilder.CreateIndex(
@@ -412,7 +412,7 @@ namespace ControleEstoque.Infra.Migrations
                 name: "inventario_estoque");
 
             migrationBuilder.DropTable(
-                name: "PerfilEntityUsuarioEntity");
+                name: "perfil_usuario");
 
             migrationBuilder.DropTable(
                 name: "saida_produto");

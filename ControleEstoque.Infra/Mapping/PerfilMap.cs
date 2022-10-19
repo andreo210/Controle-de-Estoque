@@ -32,8 +32,7 @@ namespace ControleEstoque.Infra.Mapping
                .IsRequired();//obrigatorio
 
             //chave estrangeira
-            builder.Entity<PerfilEntity>()
-            .HasKey(bc => new { bc., bc.CategoryId });
+           
 
         }
     }

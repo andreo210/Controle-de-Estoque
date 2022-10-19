@@ -547,7 +547,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasIndex("UsuariosId");
 
-                    b.ToTable("PerfilEntityUsuarioEntity");
+                    b.ToTable("perfil_usuario");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.CidadeEntity", b =>

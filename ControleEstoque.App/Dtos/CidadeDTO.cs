@@ -10,10 +10,12 @@ namespace ControleEstoque.App.Dtos
 {
     public  class CidadeDTO
     {
+        //costrutor vazio
         public CidadeDTO()
         {
 
         }
+        //contrutor que preenche a entidade
         public CidadeDTO(CidadeEntity cidadeEntity)
         {
             this.Id = cidadeEntity.Id;
@@ -23,7 +25,8 @@ namespace ControleEstoque.App.Dtos
             this.Ativo = cidadeEntity.Ativo;
 
         }
-    
+        
+        //atributos
         public int Id { get; set; }
 
         [Required(ErrorMessage = "Preencha o nome.")]
@@ -40,6 +43,8 @@ namespace ControleEstoque.App.Dtos
 
         public EstadoEntity Estado { get; set; }
 
+
+        //retorna os valores da entidade
         public CidadeEntity retornoCidadeEntity()
         {
             return new CidadeEntity()

@@ -9,11 +9,14 @@ namespace ControleEstoque.App.Dtos
 {
     public  class PaisDTO
     {
+        //costrutor vazio
         public PaisDTO()
         {
 
         }
 
+
+        //contrutor que preenche a entidade
         public PaisDTO(PaisEntity paisEntity)
         {
             this.Id = paisEntity.Id;
@@ -23,12 +26,13 @@ namespace ControleEstoque.App.Dtos
 
         }
 
-        //validacoes
+        //atributos
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Codigo { get; set; }
         public bool Ativo { get; set; }
 
+        //retorna os valores da entidade
         public PaisEntity retornoPaisEntity()
         {
             return new PaisEntity()

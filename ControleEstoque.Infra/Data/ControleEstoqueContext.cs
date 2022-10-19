@@ -37,9 +37,10 @@ namespace ControleEstoque.Infra.Data
         public DbSet<UsuarioEntity> Usuario { get; set; }
 
 
-        //chamar as modelagen das classe nas Mapping
+       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            //chamar as modelagen das classe nas Mapping
             modelBuilder.ApplyConfiguration(new CidadeMap());//modela as classes
             modelBuilder.ApplyConfiguration(new EstadoMap());
             modelBuilder.ApplyConfiguration(new PaisMap());
@@ -55,9 +56,18 @@ namespace ControleEstoque.Infra.Data
             modelBuilder.ApplyConfiguration(new UnidadeMedidaMap());
             modelBuilder.ApplyConfiguration(new UsuarioMap());
 
-
-
+            
+            // tabela de relacionamento
+            modelBuilder.Entity<PerfilEntity>()
+                        .HasMany<UsuarioEntity>(s => s.Usuarios)//um usuario tem muitos perfis
+                        .WithMany(c => c.Perfis)//um perfil tem muitos usuarios
+                       .UsingEntity(j => j.ToTable("perfil_usuario"));//nome da tabela
         }
+
+
+
     }
-}
+    }
+
+
 

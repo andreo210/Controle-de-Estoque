@@ -1,0 +1,54 @@
+﻿using ControleEstoque.Domain.Entidades;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ControleEstoque.App.Dtos
+{
+    public class ProdutoDTO
+    {
+        public ProdutoDTO()
+        {
+
+        }
+
+        //método DTO para entidade
+        public ProdutoDTO(ProdutoEntity entity)
+        {
+                
+        }
+
+        //atributos 
+        public int Id { get; set; }
+        public string Codigo { get; set; }
+        public string Nome { get; set; }
+
+        public decimal PrecoCusto { get; set; }
+        public decimal PrecoVenda { get; set; }
+        public int QuantEstoque { get; set; }
+        public int IdUnidadeMedida { get; set; }
+        public virtual UnidadeMedidaEntity UnidadeMedida { get; set; }
+        public int IdGrupo { get; set; }
+        public virtual GrupoProdutoEntity Grupo { get; set; }
+        public int IdMarca { get; set; }
+        public MarcaProdutoEntity Marca { get; set; }
+        public int IdFornecedor { get; set; }
+        public virtual FornecedorEntity Fornecedor { get; set; }
+        public int IdLocalArmazenamento { get; set; }
+        public virtual LocalArmazenamentoEntity LocalArmazenamento { get; set; }
+        public bool Ativo { get; set; }
+        public string Imagem { get; set; }
+
+        //metodo de retorno da entidade para DTO
+        public PerfilEntity retornoProduto()
+        {
+            return new PerfilEntity()
+            {
+
+            };
+        }
+
+    }
+}
