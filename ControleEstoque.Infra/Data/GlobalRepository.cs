@@ -52,10 +52,7 @@ namespace ControleEstoque.Infra.Data
             {
                 return query.ToList();
             }
-            if()
-            {
-
-            }
+            
         }
 
 
