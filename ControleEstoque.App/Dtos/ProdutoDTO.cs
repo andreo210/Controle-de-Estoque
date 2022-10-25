@@ -17,14 +17,31 @@ namespace ControleEstoque.App.Dtos
         //método DTO para entidade
         public ProdutoDTO(ProdutoEntity entity)
         {
-                
+            this.Id = entity.Id;
+            this.Codigo = entity.Codigo;
+            this.Nome = entity.Nome;
+            this.PrecoCusto = entity.PrecoCusto;
+            this.PrecoVenda = entity.PrecoVenda;
+            this.QuantEstoque = entity.QuantEstoque;
+            this.IdUnidadeMedida = entity.IdUnidadeMedida;
+            this.UnidadeMedida = entity.UnidadeMedida;
+            this.IdGrupo = entity.IdGrupo;
+            this.Grupo = entity.Grupo;
+            this.IdMarca = entity.IdMarca;
+            this.Marca = entity.Marca;
+            this.IdFornecedor = entity.IdFornecedor;
+            this.Fornecedor = entity.Fornecedor;
+            this.IdLocalArmazenamento = entity.IdLocalArmazenamento;
+            this.LocalArmazenamento = entity.LocalArmazenamento;
+            this.Ativo = entity.Ativo;
+            this.Imagem = entity.Imagem;
+
         }
 
         //atributos 
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Nome { get; set; }
-
         public decimal PrecoCusto { get; set; }
         public decimal PrecoVenda { get; set; }
         public int QuantEstoque { get; set; }
@@ -42,10 +59,22 @@ namespace ControleEstoque.App.Dtos
         public string Imagem { get; set; }
 
         //metodo de retorno da entidade para DTO
-        public PerfilEntity retornoProduto()
+        public ProdutoEntity retornoProduto()
         {
-            return new PerfilEntity()
+            return new ProdutoEntity()
             {
+                Id = this.Id,
+                Codigo = this.Codigo,
+                Nome = this.Nome,
+                PrecoCusto = this.PrecoCusto,
+                PrecoVenda = this.PrecoVenda,
+                QuantEstoque = this.QuantEstoque,
+                IdUnidadeMedida = this.IdUnidadeMedida,
+                IdGrupo = this.IdGrupo,
+                IdFornecedor = this.IdFornecedor,
+                IdLocalArmazenamento = this.IdLocalArmazenamento,
+                Ativo = this.Ativo,
+                Imagem = this.Imagem              
 
             };
         }
