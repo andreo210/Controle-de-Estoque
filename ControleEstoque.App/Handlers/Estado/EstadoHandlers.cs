@@ -1,4 +1,6 @@
-﻿using ControleEstoque.Domain.Entidades;
+﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.Domain.Entidades;
+using ControleEstoque.Domain.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +11,43 @@ namespace ControleEstoque.App.Handlers.Estado
 {
     class EstadoHandlers : IEstadoHandlers
     {
-        public bool ExcluirPeloId(int i)
+        IEstadoRepository estadoRepesository;
+
+        public EstadoHandlers(IEstadoRepository _estadoRpesository)
         {
-            throw new NotImplementedException();
+            estadoRepesository = _estadoRpesository;
         }
 
-        public List<EstadoEntity> RecuperarLista()
+        public string ExcluirPeloId(int i)
         {
-            throw new NotImplementedException();
+            estadoRepesository.Delete(i);
+            estadoRepesository.Save();
+            return "Ok";
         }
 
-        public EstadoEntity RecuperarPeloId(int id)
+        public List<EstadoDTO> RecuperarLista()
         {
-            throw new NotImplementedException();
+            return estadoRepesository.Get().Select(x => new EstadoDTO(x)).ToList();
+        }
+
+        public EstadoDTO RecuperarPeloId(int id)
+        {
+            var retorno = estadoRepesository.GetByID(id);
+            return retorno != null ? new EstadoDTO(retorno) : null;
         }
 
         public int RecuperarQuantidade()
         {
-            throw new NotImplementedException();
+            return estadoRepesository.Get().Count();
         }
 
-        public int Salvar()
+        public string Salvar(EstadoDTO estadoDTO)
         {
-            throw new NotImplementedException();
+            estadoRepesository.Insert(estadoDTO.retornoEstadoEntity());
+            estadoRepesository.Save();
+            return "Ok";
         }
+
+       
     }
 }

@@ -32,7 +32,7 @@ namespace ControleEstoque.App.Dtos
         public string UF { get; set; }
         public bool Ativo { get; set; }
         public int IdPais { get; set; }
-        public  PaisDTO Pais { get; set; }
+        //public  PaisDTO Pais { get; set; }
 
 
 

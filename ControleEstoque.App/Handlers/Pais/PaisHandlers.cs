@@ -1,4 +1,7 @@
-﻿using ControleEstoque.Domain.Entidades;
+﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.Domain.Entidades;
+using ControleEstoque.Domain.Repository;
+using ControleEstoque.Infra.Data.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +12,46 @@ namespace ControleEstoque.App.Handlers.Pais
 {
     public class PaisHandlers : IPaisHandlers
     {
-        public bool ExcluirPeloId(int id)
+        IPaisRepository paisRepository;
+
+        public PaisHandlers(IPaisRepository _paisRepository)
         {
-            throw new NotImplementedException();
+            paisRepository = _paisRepository;
         }
 
-        public List<PaisEntity> RecuperarLista()
+
+        public string ExcluirPeloId(int id)
         {
-            throw new NotImplementedException();
+            paisRepository.Delete(id);
+            paisRepository.Save();
+            
+            return "Ok"; 
         }
 
-        public PaisEntity RecuperarPeloId(int id)
+        public List<PaisDTO> RecuperarLista()
         {
-            throw new NotImplementedException();
+            return paisRepository.Get().Select(x => new PaisDTO(x)).ToList();
+        }
+
+        public PaisDTO RecuperarPeloId(int id)
+        {
+            var retorno = paisRepository.GetByID(id);
+            return retorno != null ? new PaisDTO(retorno) : null;
         }
 
         public int RecuperarQuantidade()
         {
-            throw new NotImplementedException();
+            var retorno = paisRepository.Get().Count();
+            return retorno;
         }
 
-        public int Salvar()
+        public string Salvar(PaisDTO paisDTO)
         {
-            throw new NotImplementedException();
+            paisRepository.Insert(paisDTO.retornoPaisEntity());
+            paisRepository.Save();
+            return "Ok";
         }
+
+        
     }
 }

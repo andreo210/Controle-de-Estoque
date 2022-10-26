@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.Domain.Repository;
 using ControleEstoque.Infra.Data;
 using System;
 using System.Collections.Generic;
@@ -10,6 +11,13 @@ namespace ControleEstoque.App.Handlers.Cidade
 {
     public class CidadeHandlers : ICidadeHandlers
     {
+        ICidadeRepository cidadeRepository;
+
+        public CidadeHandlers(ICidadeRepository _cidadeRepository)
+        {
+            cidadeRepository = _cidadeRepository;
+
+        }
         public int ExcluirPeloId(int id)
         {
             throw new NotImplementedException();

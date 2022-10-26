@@ -17,6 +17,10 @@ namespace ControleEstoque.App.Dtos
         //método DTO para entidade
         public UnidadeMedidaDTO(UnidadeMedidaEntity entity)
         {
+            this.Id = entity.Id;
+            this.Nome = entity.Nome;
+            this.Sigla = entity.Sigla;
+            this.Ativo = entity.Ativo;
 
         }
 
@@ -31,7 +35,10 @@ namespace ControleEstoque.App.Dtos
         {
             return new UnidadeMedidaEntity()
             {
-
+                Id = this.Id,
+                Nome = this.Nome,
+                Sigla = this.Sigla,
+                Ativo = this.Ativo
             };
         }
     }

@@ -1,4 +1,5 @@
 using ControleEstoque.App.Extentions;
+using ControleEstoque.App.Handlers.Pais;
 using ControleEstoque.Infra.Data;
 using ControleEstoque.Infra.Extension;
 using Microsoft.AspNetCore.Builder;
@@ -33,21 +34,23 @@ namespace ControleEstoque.API
             //services.AddDbContext<ControleEstoqueContext>(options =>
             //  options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings:CadastroSocialUnicoContext"))
             // );
-
+            services.AddControllers();
             //serviço que injeta o servico de conexão com o banco
             services.AddSqlServerDbContext<ControleEstoqueContext>(Configuration["ConnectionStrings:CadastroSocialUnicoContext"] ?? "");
 
             //injetando o serviço do extension do APP
+            
             services.AddApplicationServices();
 
             //serviço que injeta o servico de repositorios de DBContext
             services.AddSqlServerRepositories();
 
-            services.AddControllers();
+            //services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ControleEstoque.API", Version = "v1" });
             });
+            services.AddMemoryCache();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

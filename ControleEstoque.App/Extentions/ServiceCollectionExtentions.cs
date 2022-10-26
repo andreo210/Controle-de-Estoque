@@ -17,7 +17,8 @@ namespace ControleEstoque.App.Extentions
         {
             service.AddScoped<ICidadeHandlers, CidadeHandlers>();
             service.AddScoped<IEstadoHandlers, EstadoHandlers>();
-            service.AddScoped<IPaisHandlers, PaisHandlers>();          
+            service.AddScoped<IPaisHandlers, PaisHandlers>();
+
 
             return service;
         }

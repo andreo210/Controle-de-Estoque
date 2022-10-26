@@ -1,4 +1,5 @@
-﻿using ControleEstoque.Domain.Entidades;
+﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.Domain.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,9 +11,9 @@ namespace ControleEstoque.App.Handlers.Pais
     public interface IPaisHandlers
     {
         public int RecuperarQuantidade();
-        public List<PaisEntity> RecuperarLista();
-        public PaisEntity RecuperarPeloId(int id);
-        public bool ExcluirPeloId(int id);
-        public int Salvar();
+        public List<PaisDTO> RecuperarLista();
+        public PaisDTO RecuperarPeloId(int id);
+        public string ExcluirPeloId(int id);
+        public string Salvar(PaisDTO paisDTO);
     }
 }

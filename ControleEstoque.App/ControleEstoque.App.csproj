@@ -8,18 +8,4 @@
     <ProjectReference Include="..\ControleEstoque.Infra\ControleEstoque.Infra.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Handlers\EntradaProduto\" />
-    <Folder Include="Handlers\Fornecedor\" />
-    <Folder Include="Handlers\GrupoProduto\" />
-    <Folder Include="Handlers\InventarioEstoque\" />
-    <Folder Include="Handlers\LocalArmazenamento\" />
-    <Folder Include="Handlers\MarcaProduto\" />
-    <Folder Include="Handlers\Usuario\" />
-    <Folder Include="Handlers\UnidadeMedida\" />
-    <Folder Include="Handlers\SaidaProduto\" />
-    <Folder Include="Handlers\Produto\" />
-    <Folder Include="Handlers\Pefil\" />
-  </ItemGroup>
-
 </Project>
