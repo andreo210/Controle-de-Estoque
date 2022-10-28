@@ -113,8 +113,7 @@ namespace ControleEstoque.Infra.Migrations
                 name: "estado",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     nome = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     uf = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
                     ativo = table.Column<bool>(type: "bit", nullable: false),
@@ -159,8 +158,7 @@ namespace ControleEstoque.Infra.Migrations
                 name: "Cidade",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    id = table.Column<int>(type: "int", nullable: false),
                     nome = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
                     ativo = table.Column<bool>(type: "bit", nullable: false),
                     id_estado = table.Column<int>(type: "int", nullable: false)
@@ -258,8 +256,8 @@ namespace ControleEstoque.Infra.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_produto_tb_MarcasProdutos_id_grupo",
-                        column: x => x.id_grupo,
+                        name: "FK_produto_tb_MarcasProdutos_id_marca",
+                        column: x => x.id_marca,
                         principalTable: "tb_MarcasProdutos",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
@@ -343,6 +341,12 @@ namespace ControleEstoque.Infra.Migrations
                 column: "id_estado");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cidade_nome",
+                table: "Cidade",
+                column: "nome",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_entrada_produto_id_produto",
                 table: "entrada_produto",
                 column: "id_produto");
@@ -391,6 +395,11 @@ namespace ControleEstoque.Infra.Migrations
                 name: "IX_produto_id_local_aramazenamento",
                 table: "produto",
                 column: "id_local_aramazenamento");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_produto_id_marca",
+                table: "produto",
+                column: "id_marca");
 
             migrationBuilder.CreateIndex(
                 name: "IX_produto_id_unidade_medida",

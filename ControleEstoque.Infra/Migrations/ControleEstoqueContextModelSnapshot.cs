@@ -22,10 +22,8 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.CidadeEntity", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit")
@@ -87,10 +85,8 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.EstadoEntity", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit")

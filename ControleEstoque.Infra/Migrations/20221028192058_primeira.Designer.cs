@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(ControleEstoqueContext))]
-    [Migration("20221028112229_restricao")]
-    partial class restricao
+    [Migration("20221028192058_primeira")]
+    partial class primeira
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -24,10 +24,8 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.CidadeEntity", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit")
@@ -46,6 +44,9 @@ namespace ControleEstoque.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdEstado");
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
 
                     b.ToTable("Cidade");
                 });
@@ -86,10 +87,8 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.EstadoEntity", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                        .HasColumnName("id");
 
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit")

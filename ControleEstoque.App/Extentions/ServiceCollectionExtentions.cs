@@ -1,6 +1,7 @@
 ﻿
 using ControleEstoque.App.Handlers.Cidade;
 using ControleEstoque.App.Handlers.Estado;
+using ControleEstoque.App.Handlers.Fornecedor;
 using ControleEstoque.App.Handlers.Pais;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -18,6 +19,7 @@ namespace ControleEstoque.App.Extentions
             service.AddScoped<ICidadeHandlers, CidadeHandlers>();
             service.AddScoped<IEstadoHandlers, EstadoHandlers>();
             service.AddScoped<IPaisHandlers, PaisHandlers>();
+            service.AddScoped<IFornecedorHandlers, FornecedorHandlers>();
 
 
             return service;

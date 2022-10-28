@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Dtos
 {
-    public class FornecedorDTO
+    public class FornecedorCompletoDTO
     {
         //construtor vazio
-        public FornecedorDTO()
+        public FornecedorCompletoDTO()
         {
 
         }
 
 
         //mapeamaento dto para entidade
-        public FornecedorDTO(FornecedorEntity entidade)
+        public FornecedorCompletoDTO(FornecedorEntity entidade)
         {
             this.Id = entidade.Id;
             this.Nome = entidade.Nome;
@@ -31,11 +31,11 @@ namespace ControleEstoque.App.Dtos
             this.Numero = entidade.Numero;
             this.Complemento = entidade.Complemento;
             this.Cep = entidade.Cep;
-            this.IdPais = entidade.IdPais;
+            //this.IdPais = entidade.IdPais;
             //this.Pais = entidade.Pais;
-            this.IdEstado = entidade.IdEstado;
+           // this.IdEstado = entidade.IdEstado;
             // this.Estado = entidade.Estado;
-            this.IdCidade = entidade.IdCidade;
+            //this.IdCidade = entidade.IdCidade;
             //this.Cidade = entidade.Cidade;
             this.Ativo = entidade.Ativo;
         }
@@ -52,12 +52,12 @@ namespace ControleEstoque.App.Dtos
         public string Numero { get; set; }
         public string Complemento { get; set; }
         public string Cep { get; set; }
-        public int IdPais { get; set; }
-       // public PaisEntity Pais { get; set; }
-        public int IdEstado { get; set; }
-       // public EstadoEntity Estado { get; set; }
-        public int IdCidade { get; set; }
-       // public virtual CidadeEntity Cidade { get; set; }
+        //public int IdPais { get; set; }
+         public PaisEntity Pais { get; set; }
+        //public int IdEstado { get; set; }
+        //public EstadoEntity Estado { get; set; }
+        //public int IdCidade { get; set; }
+        //public virtual CidadeEntity Cidade { get; set; }
         public bool Ativo { get; set; }
 
         public FornecedorEntity retornoFornecedorEntity()
@@ -75,9 +75,9 @@ namespace ControleEstoque.App.Dtos
                 Numero = this.Numero,
                 Complemento = this.Complemento,
                 Cep = this.Cep,
-                IdCidade = this.IdCidade,
-                IdEstado = this.IdEstado,
-                IdPais = this.IdPais,
+               // Cidade = this.Cidade,
+                //Estado = this.Estado,
+                Pais = this.Pais,
                 Ativo = this.Ativo ? (bool)this.Ativo : false//ja joga valor false
 
             };

@@ -19,7 +19,8 @@ namespace ControleEstoque.Infra.Mapping
             builder.HasKey(p => p.Id);
             builder.Property(p => p.Id)
                 .HasColumnName("id")
-                .ValueGeneratedOnAdd();//auto incremento
+                .ValueGeneratedNever();
+            //.ValueGeneratedOnAdd();//auto incremento
 
 
             builder.Property(p => p.Nome)
