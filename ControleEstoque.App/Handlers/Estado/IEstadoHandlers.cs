@@ -15,5 +15,6 @@ namespace ControleEstoque.App.Handlers.Estado
         public EstadoDTO RecuperarPeloId(int id);
         public string ExcluirPeloId(int i);
         public string Salvar(EstadoDTO estadoDTO);
+        public List<EstadoDTO> GetTodos(int Id);
     }
 }

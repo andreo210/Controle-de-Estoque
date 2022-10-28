@@ -48,5 +48,12 @@ namespace ControleEstoque.Infra.Mapping
                 .HasForeignKey(p => p.IdPais)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
         }
+        protected void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            //restrições
+            modelBuilder.Entity<EstadoEntity>()
+                        .HasIndex(u => u.Nome)
+                        .IsUnique();
+        }
     }
 }

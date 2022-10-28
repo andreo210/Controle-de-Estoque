@@ -21,7 +21,7 @@ namespace ControleEstoque.App.Dtos
             this.Id = cidadeEntity.Id;
             this.IdEstado = cidadeEntity.IdEstado;
             this.Nome = cidadeEntity.Nome;
-            this.Estado = cidadeEntity.Estado;
+           // this.Estado = cidadeEntity.Estado;
             this.Ativo = cidadeEntity.Ativo;
 
         }
@@ -41,7 +41,7 @@ namespace ControleEstoque.App.Dtos
         public int IdEstado { get; set; }
 
 
-        public EstadoEntity Estado { get; set; }
+        
 
 
         //retorna os valores da entidade
@@ -52,7 +52,7 @@ namespace ControleEstoque.App.Dtos
                 Id = this.Id,
                 Nome = this.Nome,
                 IdEstado = this.IdEstado,
-                Estado = this.Estado,
+                //Estado = this.Estado,
                 Ativo = this.Ativo != null ? (bool)this.Ativo : false//ja joga valor false
             };
         }

@@ -42,5 +42,9 @@ namespace ControleEstoque.Infra.Mapping
                .HasMaxLength(150)
                .HasColumnName("email"); //nome da coluna
         }
+
+        protected void OnModelCreating(ModelBuilder modelBuilder)
+        {
+        }
     }
 }

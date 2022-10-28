@@ -18,35 +18,36 @@ namespace ControleEstoque.App.Handlers.Cidade
             cidadeRepository = _cidadeRepository;
 
         }
-        public int ExcluirPeloId(int id)
+        public string ExcluirPeloId(int id)
         {
-            throw new NotImplementedException();
+            cidadeRepository.Delete(id);
+            cidadeRepository.Save();
+            return "Ok";
         }
 
 
-        public List<CidadeDTO> RecuperarLista(int pagina, int tamPagina, string filtro, string ordem, int idEstado = 0)
+        public List<CidadeDTO> RecuperarLista()
         {
-            throw new NotImplementedException();
+            return cidadeRepository.Get().Select(x => new CidadeDTO(x)).ToList();
         }
 
         public CidadeDTO RecuperarPeloId(int id)
         {
-            throw new NotImplementedException();
+            var retorno = cidadeRepository.GetByID(id);
+            return retorno != null ? new CidadeDTO(retorno) : null;
         }
 
         public int RecuperarQuantidade()
         {
-            throw new NotImplementedException();
+            return cidadeRepository.Get().Count();
         }
+                
 
-        public int RecuperarQuantidade(int cont)
+        public string Salvar(CidadeDTO cidadeDTO)
         {
-            throw new NotImplementedException();
-        }
-
-        public int Salvar()
-        {
-            throw new NotImplementedException();
+            cidadeRepository.Insert(cidadeDTO.retornoCidadeEntity());
+            cidadeRepository.Save();
+            return "Ok";
         }
 
        

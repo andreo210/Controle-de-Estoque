@@ -21,6 +21,8 @@ namespace ControleEstoque.Domain.Entidades
         public string Numero { get; set; }
         public string Complemento { get; set; }
         public string Cep { get; set; }
+
+        //um fornecedor pertence a um pais, um estado e a uma cidade
         public int IdPais { get; set; }
         public virtual PaisEntity Pais { get; set; }
         public int IdEstado { get; set; }

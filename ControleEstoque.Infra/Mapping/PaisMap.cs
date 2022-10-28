@@ -38,5 +38,12 @@ namespace ControleEstoque.Infra.Mapping
                .IsRequired();//obrigatorio
 
         }
+        protected void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<PaisEntity>()
+                        .HasIndex(u => u.Nome)
+                        .IsUnique();
+        }
     }
 }

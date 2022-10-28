@@ -12,13 +12,19 @@ namespace ControleEstoque.Infra.Data
 {
     public class ControleEstoqueContext : DbContext
     {//classe que criar as tabelas no banco
-      
 
-        public ControleEstoqueContext(DbContextOptions options) : base(options)
+        public ControleEstoqueContext()
+        {
+
+        }
+        //public ControleEstoqueContext(DbContextOptions options) : base(options)
+        //{
+        //}
+
+        public ControleEstoqueContext(DbContextOptions<ControleEstoqueContext> options)
+        : base(options)
         {
         }
-       
-
         //DBSET CRIA AS TABELAS
         //as classes são adicionadas como propriedades ao DbContexte são mapeadas por padrão para tabelas de banco de dados
         public DbSet<CidadeEntity> Cidade { get; set; }
@@ -36,8 +42,10 @@ namespace ControleEstoque.Infra.Data
         public DbSet<UnidadeMedidaEntity> UnidadeMedida { get; set; }
         public DbSet<UsuarioEntity> Usuario { get; set; }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+        }
 
-       
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //chamar as modelagen das classe nas Mapping
@@ -61,7 +69,12 @@ namespace ControleEstoque.Infra.Data
             modelBuilder.Entity<PerfilEntity>()
                         .HasMany<UsuarioEntity>(s => s.Usuarios)//um usuario tem muitos perfis
                         .WithMany(c => c.Perfis)//um perfil tem muitos usuarios
-                       .UsingEntity(j => j.ToTable("perfil_usuario"));//nome da tabela
+                        .UsingEntity(j => j.ToTable("perfil_usuario"));//nome da tabela
+            modelBuilder.Entity<CidadeEntity>()
+                       .HasIndex(u => u.Nome)
+                       .IsUnique();
+
+
         }
 
 

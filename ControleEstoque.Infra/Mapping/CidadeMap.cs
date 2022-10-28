@@ -43,6 +43,14 @@ namespace ControleEstoque.Infra.Mapping
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
         }
 
+        protected void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+            modelBuilder.Entity<CidadeEntity>()
+                        .HasIndex(u => u.Nome)
+                        .IsUnique();
+        }
+
 
     }
 }

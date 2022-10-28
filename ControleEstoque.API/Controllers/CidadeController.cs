@@ -1,6 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
-using ControleEstoque.App.Handlers.Estado;
-using ControleEstoque.Infra.Data;
+using ControleEstoque.App.Handlers.Cidade;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -11,50 +10,48 @@ namespace ControleEstoque.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class EstadoController : ControllerBase
+    public class CidadeController : ControllerBase
     {
 
-        IEstadoHandlers estadoHandler;
-        public EstadoController(IEstadoHandlers _estadoHandler)
+        ICidadeHandlers cidadeHandler;
+        public CidadeController(ICidadeHandlers _cidadeHandler)
         {
-            this.estadoHandler = _estadoHandler;
+            this.cidadeHandler = _cidadeHandler;
         }
 
         // POST api/<PessoaFisicaController>
         [HttpPost]
-        public IActionResult Post([FromBody] EstadoDTO estadoDTO)
+        public IActionResult Post([FromBody] CidadeDTO cidadeDTO)
         {
-            estadoHandler.Salvar(estadoDTO);
+            cidadeHandler.Salvar(cidadeDTO);
             return Ok();
         }
 
         [HttpGet]
-        public IEnumerable<EstadoDTO> Get()
+        public IEnumerable<CidadeDTO> Get()
         {
-            return estadoHandler.RecuperarLista();
+            return cidadeHandler.RecuperarLista();
         }
 
         // GET api/<PessoaFisicaController>/5
         [HttpGet("{id}")]
-        public EstadoDTO Get(int id)
+        public CidadeDTO Get(int id)
         {
-            return estadoHandler.RecuperarPeloId(id);
+            return cidadeHandler.RecuperarPeloId(id);
         }
 
         [HttpGet("Cont")]
         public int GetQuantidade()
         {
-            return estadoHandler.RecuperarQuantidade();
+            return cidadeHandler.RecuperarQuantidade();
         }
 
         // DELETE api/<PessoaFisicaController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            estadoHandler.ExcluirPeloId(id);
+            cidadeHandler.ExcluirPeloId(id);
             return Ok();
         }
-
-
     }
 }

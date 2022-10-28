@@ -1,6 +1,9 @@
 ﻿using ControleEstoque.App.Dtos;
 using ControleEstoque.Domain.Entidades;
 using ControleEstoque.Domain.Repository;
+using ControleEstoque.Infra.Data;
+using ControleEstoque.Infra.Data.Repositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,11 +14,14 @@ namespace ControleEstoque.App.Handlers.Estado
 {
     class EstadoHandlers : IEstadoHandlers
     {
+        private readonly ControleEstoqueContext context;
+
         IEstadoRepository estadoRepesository;
 
-        public EstadoHandlers(IEstadoRepository _estadoRpesository)
+        public EstadoHandlers(IEstadoRepository _estadoRpesository, ControleEstoqueContext _context)
         {
             estadoRepesository = _estadoRpesository;
+            context = _context;
         }
 
         public string ExcluirPeloId(int i)
@@ -36,10 +42,10 @@ namespace ControleEstoque.App.Handlers.Estado
             return retorno != null ? new EstadoDTO(retorno) : null;
         }
 
-        public int RecuperarQuantidade()
-        {
-            return estadoRepesository.Get().Count();
-        }
+        //public int RecuperarQuantidade()
+        //{
+        //    return estadoRepesository.Get().Count();
+        //}
 
         public string Salvar(EstadoDTO estadoDTO)
         {
@@ -48,6 +54,20 @@ namespace ControleEstoque.App.Handlers.Estado
             return "Ok";
         }
 
-       
+       public List <EstadoDTO> GetTodos(int Id)
+        {
+            PaisEntity paisEntity = new PaisEntity();
+            return estadoRepesository.Get(x => x.Id == paisEntity.Id).Select(x => new EstadoDTO(x)).ToList();
+
+        }
+
+        //usando context
+        public int RecuperarQuantidade()
+        {
+            var ret = 0;            
+            ret = context.Estado.Count();            
+            return ret;
+        }
     }
 }
+
