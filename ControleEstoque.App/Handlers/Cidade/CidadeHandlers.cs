@@ -1,6 +1,8 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.Domain.Entidades;
 using ControleEstoque.Domain.Repository;
 using ControleEstoque.Infra.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +14,11 @@ namespace ControleEstoque.App.Handlers.Cidade
     public class CidadeHandlers : ICidadeHandlers
     {
         ICidadeRepository cidadeRepository;
-
-        public CidadeHandlers(ICidadeRepository _cidadeRepository)
+        private readonly ControleEstoqueContext context;
+        public CidadeHandlers(ICidadeRepository _cidadeRepository, ControleEstoqueContext _context)
         {
             cidadeRepository = _cidadeRepository;
+            context = _context;
 
         }
         public string ExcluirPeloId(int id)
@@ -45,9 +48,20 @@ namespace ControleEstoque.App.Handlers.Cidade
 
         public string Salvar(CidadeDTO cidadeDTO)
         {
-            cidadeRepository.Insert(cidadeDTO.retornoCidadeEntity());
-            cidadeRepository.Save();
-            return "Ok";
+             var model = context.Set<CidadeEntity>().AsNoTracking().Where(e => e.Id == cidadeDTO.Id).FirstOrDefault();
+
+            if (model == null)
+            {
+                cidadeRepository.Insert(cidadeDTO.retornoCidadeEntity());
+                cidadeRepository.Save();
+                return "Ok";
+            }
+            else
+            {
+                cidadeRepository.Update(cidadeDTO.retornoCidadeEntity());
+                cidadeRepository.Save();
+                return "No Content";
+            }
         }
 
        

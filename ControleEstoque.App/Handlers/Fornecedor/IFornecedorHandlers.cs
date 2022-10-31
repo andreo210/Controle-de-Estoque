@@ -18,7 +18,8 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         public string Salvar(FornecedorDTO cidadeDTO);
 
         public string ExcluirPeloId(int id);
+        public FornecedorCompletoDTO RecuperarPeloIdCompleto(int id);
+        public List<FornecedorCompletoDTO> ListarCompleto(int id);
         public string SalvarCompleto(FornecedorCompletoDTO fornecedorDTO);
-
     }
 }

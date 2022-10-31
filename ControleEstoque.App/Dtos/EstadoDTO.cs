@@ -22,7 +22,7 @@ namespace ControleEstoque.App.Dtos
             this.Nome = estadoEntity.Nome;
             this.UF = estadoEntity.UF;
             this.IdPais = estadoEntity.IdPais;
-            this.Ativo = estadoEntity.Ativo;
+            //this.Ativo = estadoEntity.Ativo;
 
         }
 
@@ -30,7 +30,7 @@ namespace ControleEstoque.App.Dtos
         public int Id { get; set; }
         public string Nome { get; set; }
         public string UF { get; set; }
-        public bool Ativo { get; set; }
+        //public bool Ativo { get; set; }
         public int IdPais { get; set; }
         //public  PaisDTO Pais { get; set; }
 
@@ -45,7 +45,7 @@ namespace ControleEstoque.App.Dtos
                 Nome = this.Nome,
                 UF = this.UF,
                 IdPais = this.IdPais,
-                Ativo = this.Ativo != null ? (bool)this.Ativo : false//ja joga valor false
+               // Ativo = this.Ativo != null ? (bool)this.Ativo : false//ja joga valor false
             };
         }
     }

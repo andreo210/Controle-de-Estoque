@@ -70,9 +70,7 @@ namespace ControleEstoque.Infra.Data
                         .HasMany<UsuarioEntity>(s => s.Usuarios)//um usuario tem muitos perfis
                         .WithMany(c => c.Perfis)//um perfil tem muitos usuarios
                         .UsingEntity(j => j.ToTable("perfil_usuario"));//nome da tabela
-            modelBuilder.Entity<CidadeEntity>()
-                       .HasIndex(u => u.Nome)
-                       .IsUnique();
+           
 
 
         }

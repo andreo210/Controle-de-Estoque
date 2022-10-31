@@ -19,17 +19,22 @@ namespace ControleEstoque.API.Controllers
         }
 
         // POST api/<PessoaFisicaController>
+        [HttpPost("/completo/")]
+        public IActionResult PostCompleto([FromBody] FornecedorCompletoDTO fornecedorCompletoDTO)
+        {
+            fornecedorHandlers.SalvarCompleto(fornecedorCompletoDTO);
+            return Ok();
+        }
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO fornecedorDTO)
         {
             fornecedorHandlers.Salvar(fornecedorDTO);
             return Ok();
         }
-        [HttpPost("Completo")]
-        public IActionResult Post([FromBody] FornecedorCompletoDTO fornecedorDTO)
+        [HttpGet("/completo/{id}")]
+        public List<FornecedorCompletoDTO> GetCompleto(int id)
         {
-            fornecedorHandlers.SalvarCompleto(fornecedorDTO);
-            return Ok();
+            return fornecedorHandlers.ListarCompleto(id);
         }
 
         [HttpGet]
