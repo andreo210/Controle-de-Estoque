@@ -47,20 +47,9 @@ namespace ControleEstoque.App.Handlers.Pais
 
         public string Salvar(PaisDTO paisDTO)
         {
-            var model = RecuperarPeloId(paisDTO.Id);
-
-            if (model == null)
-            {
-                paisRepository.Insert(paisDTO.retornoPaisEntity());
-                paisRepository.Save();
-                return "Ok";
-            }
-            else
-            {
-                paisRepository.Update(paisDTO.retornoPaisEntity());
-                paisRepository.Save();
-                return "No Content";
-            }
+            paisRepository.Insert(paisDTO.retornoPaisEntity());
+            paisRepository.Save();
+            return "Ok";
         }
 
         

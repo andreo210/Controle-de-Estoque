@@ -25,6 +25,10 @@ namespace ControleEstoque.Infra.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id");
 
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("ativo");
+
                     b.Property<int>("IdEstado")
                         .HasColumnType("int")
                         .HasColumnName("id_estado");
@@ -38,6 +42,9 @@ namespace ControleEstoque.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdEstado");
+
+                    b.HasIndex("Nome")
+                        .IsUnique();
 
                     b.ToTable("Cidade");
                 });
@@ -80,6 +87,10 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<int>("Id")
                         .HasColumnType("int")
                         .HasColumnName("id");
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("ativo");
 
                     b.Property<int>("IdPais")
                         .HasColumnType("int")
@@ -303,6 +314,10 @@ namespace ControleEstoque.Infra.Migrations
                         .HasColumnType("int")
                         .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit")
+                        .HasColumnName("ativo");
 
                     b.Property<string>("Codigo")
                         .IsRequired()

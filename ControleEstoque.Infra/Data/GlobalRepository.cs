@@ -59,9 +59,7 @@ namespace ControleEstoque.Infra.Data
         //pega por Id
         public virtual TEntity GetByID(object id)
         {
-           var entity= dbSet.Find(id);
-            //context.Entry(entity).State = EntityState.Detached;
-            return entity;
+            return dbSet.Find(id);
         }
 
 

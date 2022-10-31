@@ -1,7 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
 using ControleEstoque.Domain.Repository;
-using ControleEstoque.Infra.Data;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,15 +10,11 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 {
     public class FornecedorHandlers : IFornecedorHandlers
     {
-        
-        private readonly ControleEstoqueContext context;
-
         IFornecedorRepository fornecedorRepository;
 
-        public FornecedorHandlers(IFornecedorRepository _fornecedorRepository, ControleEstoqueContext _context)
+        public FornecedorHandlers(IFornecedorRepository _fornecedorRepository)
         {
             fornecedorRepository = _fornecedorRepository;
-            context = _context;
 
         }
         public string ExcluirPeloId(int id)
@@ -28,7 +22,6 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             fornecedorRepository.Delete(id);
             fornecedorRepository.Save();
             return "Ok";
-           
         }
 
 
@@ -51,50 +44,16 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
         public string Salvar(FornecedorDTO fornecedorDTO)
         {
-            var model = RecuperarPeloId(fornecedorDTO.Id);
-
-            if (model == null)
-            {
-                fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "Ok";
-            }
-            else
-            {
-                fornecedorRepository.Update(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "No Content";
-            }
+            fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
+            fornecedorRepository.Save();
+            return "Ok";
         }
 
         public string SalvarCompleto(FornecedorCompletoDTO fornecedorDTO)
         {
-            var model = RecuperarPeloId(fornecedorDTO.Id);
-
-            if (model == null)
-            {
-                fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "Ok";
-            }
-            else
-            {
-                fornecedorRepository.Update(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "No Content";
-            }
-        }
-
-
-        public List<FornecedorCompletoDTO> ListarCompleto(int id)
-        {
-
-            var ret =context.Fornecedor.Where(m => m.Id == id).Include(m => m.Cidade).ThenInclude(x=>x.Estado).ThenInclude(x => x.Pais).Select(x => new FornecedorCompletoDTO(x)).ToList(); 
-            return ret;
-        }
-        public FornecedorCompletoDTO RecuperarPeloIdCompleto(int id)
-        {
-            throw new NotImplementedException();
+            fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
+            fornecedorRepository.Save();
+            return "Ok";
         }
     }
 }

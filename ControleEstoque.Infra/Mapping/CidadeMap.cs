@@ -28,9 +28,9 @@ namespace ControleEstoque.Infra.Mapping
                .HasColumnName("nome");
 
 
-            //builder.Property(p => p.Ativo)
-            //   .HasColumnName("ativo")
-            //   .IsRequired();//obrigatorio
+            builder.Property(p => p.Ativo)
+               .HasColumnName("ativo")
+               .IsRequired();//obrigatorio
 
             //chave estrangeira
             builder.Property(p => p.IdEstado)

@@ -34,9 +34,9 @@ namespace ControleEstoque.Infra.Mapping
                .HasColumnName("uf");
 
 
-            //builder.Property(p => p.Ativo)
-            //   .HasColumnName("ativo")
-            //   .IsRequired();//obrigatorio
+            builder.Property(p => p.Ativo)
+               .HasColumnName("ativo")
+               .IsRequired();//obrigatorio
 
             //chave estrangeira
             builder.Property(p => p.IdPais)

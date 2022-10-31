@@ -49,20 +49,9 @@ namespace ControleEstoque.App.Handlers.Estado
 
         public string Salvar(EstadoDTO estadoDTO)
         {
-            var model = RecuperarPeloId(estadoDTO.Id);
-
-            if (model == null)
-            {
-                estadoRepesository.Insert(estadoDTO.retornoEstadoEntity());
-                estadoRepesository.Save();
-                return "Ok";
-            }
-            else
-            {
-                estadoRepesository.Update(estadoDTO.retornoEstadoEntity());
-                estadoRepesository.Save();
-                return "No Content";
-            }
+            estadoRepesository.Insert(estadoDTO.retornoEstadoEntity());
+            estadoRepesository.Save();
+            return "Ok";
         }
 
        public List <EstadoDTO> GetTodos(int Id)
@@ -72,11 +61,11 @@ namespace ControleEstoque.App.Handlers.Estado
 
         }
 
-        //usando context       
+        //usando context
         public int RecuperarQuantidade()
         {
-            var ret = 0;
-            ret = context.Estado.Count();
+            var ret = 0;            
+            ret = context.Estado.Count();            
             return ret;
         }
     }

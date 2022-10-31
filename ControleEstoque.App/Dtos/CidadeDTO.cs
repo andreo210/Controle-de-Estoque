@@ -22,7 +22,7 @@ namespace ControleEstoque.App.Dtos
             this.IdEstado = cidadeEntity.IdEstado;
             this.Nome = cidadeEntity.Nome;
            // this.Estado = cidadeEntity.Estado;
-            //this.Ativo = cidadeEntity.Ativo;
+            this.Ativo = cidadeEntity.Ativo;
 
         }
         
@@ -34,7 +34,7 @@ namespace ControleEstoque.App.Dtos
         public string Nome { get; set; }
 
 
-       // public bool Ativo { get; set; }
+        public bool Ativo { get; set; }
 
         
         [Required(ErrorMessage = "Selecione o estado.")]
@@ -53,7 +53,7 @@ namespace ControleEstoque.App.Dtos
                 Nome = this.Nome,
                 IdEstado = this.IdEstado,
                 //Estado = this.Estado,
-                //Ativo = this.Ativo != null ? (bool)this.Ativo : false//ja joga valor false
+                Ativo = this.Ativo != null ? (bool)this.Ativo : false//ja joga valor false
             };
         }
     }

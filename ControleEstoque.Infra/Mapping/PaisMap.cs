@@ -34,9 +34,9 @@ namespace ControleEstoque.Infra.Mapping
                .HasColumnName("codigo");//nome da tabela
 
 
-            //builder.Property(p => p.Ativo)
-            //   .HasColumnName("ativo")//nome da tabela
-            //   .IsRequired();//obrigatorio
+            builder.Property(p => p.Ativo)
+               .HasColumnName("ativo")//nome da tabela
+               .IsRequired();//obrigatorio
 
         }
         protected void OnModelCreating(ModelBuilder modelBuilder)
