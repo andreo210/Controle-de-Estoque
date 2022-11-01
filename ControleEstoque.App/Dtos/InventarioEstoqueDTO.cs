@@ -21,7 +21,7 @@ namespace ControleEstoque.App.Dtos
             this.QuantidadeInventario = entity.QuantidadeInventario;
             this.QuantidadeInventario = entity.QuantidadeEstoque;
             this.IdProduto = entity.IdProduto;
-            this.Produto = entity.Produto;
+           // this.Produto = entity.Produto;
                  
         }
 
@@ -31,7 +31,7 @@ namespace ControleEstoque.App.Dtos
         public int QuantidadeEstoque { get; set; }
         public int QuantidadeInventario { get; set; }
         public int IdProduto { get; set; }
-        public ProdutoEntity Produto { get; set; }
+        //public ProdutoEntity Produto { get; set; }
 
         public InventarioEstoqueEntity retornoInventarioEstoque()
         {
