@@ -7,6 +7,7 @@ using ControleEstoque.App.Handlers.InventarioEstoque;
 using ControleEstoque.App.Handlers.LocalArmazenamento;
 using ControleEstoque.App.Handlers.MarcaProduto;
 using ControleEstoque.App.Handlers.Pais;
+using ControleEstoque.App.Handlers.Produto;
 using ControleEstoque.App.Handlers.SaidaProduto;
 using ControleEstoque.App.Handlers.UnidadeMedida;
 using Microsoft.Extensions.DependencyInjection;
@@ -27,6 +28,7 @@ namespace ControleEstoque.App.Extentions
             service.AddScoped<IMarcaProdutoHandlers, MarcaProdutoHandlers>();
             service.AddScoped<IinventarioEstoqueHandlers, InventarioEstoqueHandlers>();
             service.AddScoped<ISaidaProdutoHandlers, SaidaProdutoHandlers>();
+            service.AddScoped<IProdutoHandlers, ProdutoHandlers>();
 
             return service;
         }

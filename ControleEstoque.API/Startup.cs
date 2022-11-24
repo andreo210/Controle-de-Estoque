@@ -1,7 +1,10 @@
+using ControleEstoque.API.Service;
 using ControleEstoque.App.Extentions;
 using ControleEstoque.App.Handlers.Pais;
 using ControleEstoque.Infra.Data;
 using ControleEstoque.Infra.Extension;
+using ElmahCore;
+using ElmahCore.Mvc;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -31,9 +34,7 @@ namespace ControleEstoque.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddDbContext<ControleEstoqueContext>(options =>
-            //  options.UseSqlServer(Configuration.GetConnectionString("ConnectionStrings:CadastroSocialUnicoContext"))
-            // );
+            
             services.AddControllers();
             //serviço que injeta o servico de conexão com o banco
             services.AddSqlServerDbContext<ControleEstoqueContext>(Configuration["ConnectionStrings:CadastroSocialUnicoContext"] ?? "");
@@ -41,6 +42,13 @@ namespace ControleEstoque.API
             //injetando o serviço do extension do APP
             
             services.AddApplicationServices();
+            services.AddElmah<XmlFileErrorLog>(options =>
+            {
+                options.LogPath = "~/log";
+                options.Notifiers.Add(new MyNotifier());
+                options.Notifiers.Add(new MyNotifierWithId());
+                options.Filters.Add(new CmsErrorLogFilter());
+            });
 
             //serviço que injeta o servico de repositorios de DBContext
             services.AddSqlServerRepositories();
@@ -59,8 +67,10 @@ namespace ControleEstoque.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseElmahExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControleEstoque.API v1"));
+                app.UseElmah();
             }
 
             app.UseHttpsRedirection();
@@ -68,7 +78,7 @@ namespace ControleEstoque.API
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseElmah();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

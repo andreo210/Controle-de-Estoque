@@ -1,4 +1,8 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.Domain.Entidades;
+using ControleEstoque.Domain.Repository;
+using ControleEstoque.Infra.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,29 +13,55 @@ namespace ControleEstoque.App.Handlers.Produto
 {
     class ProdutoHandlers : IProdutoHandlers
     {
+        private readonly ControleEstoqueContext context;
+
+        IProdutoRepository produtoRepository;
+
+        public ProdutoHandlers(IProdutoRepository _produtoRepository, ControleEstoqueContext _context)
+        {
+            produtoRepository = _produtoRepository;
+            context = _context;
+
+        }
         public string ExcluirPeloId(int id)
         {
-            throw new NotImplementedException();
+            produtoRepository.Delete(id);
+            produtoRepository.Save();
+            return "Ok";
         }
 
         public List<ProdutoDTO> RecuperarLista()
         {
-            throw new NotImplementedException();
+            return produtoRepository.Get().Select(x => new ProdutoDTO(x)).ToList(); ;
         }
 
         public ProdutoDTO RecuperarPeloId(int id)
         {
-            throw new NotImplementedException();
+            var retorno = produtoRepository.GetByID(id);
+            return retorno != null ? new ProdutoDTO(retorno) : null;
         }
 
         public int RecuperarQuantidade()
         {
-            throw new NotImplementedException();
+            return produtoRepository.Get().Count();
         }
 
         public string Salvar(ProdutoDTO cidadeDTO)
         {
-            throw new NotImplementedException();
+            var model = context.Set<ProdutoEntity>().AsNoTracking().Where(e => e.Id == cidadeDTO.Id).FirstOrDefault();
+
+            if (model == null)
+            {
+                produtoRepository.Insert(cidadeDTO.retornoProduto());
+                produtoRepository.Save();
+                return "Ok";
+            }
+            else
+            {
+                produtoRepository.Update(cidadeDTO.retornoProduto());
+                produtoRepository.Save();
+                return "No Content";
+            }
         }
     }
 }
