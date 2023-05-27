@@ -1,10 +1,11 @@
-using ControleEstoque.API.Service;
+
 using ControleEstoque.App.Extentions;
-using ControleEstoque.App.Handlers.Pais;
 using ControleEstoque.Infra.Data;
 using ControleEstoque.Infra.Extension;
 using ElmahCore;
 using ElmahCore.Mvc;
+using ElmahCore.Mvc.Notifiers;
+using ElmahCore.Sql;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -42,12 +43,12 @@ namespace ControleEstoque.API
             //injetando o serviço do extension do APP
             
             services.AddApplicationServices();
-            services.AddElmah<XmlFileErrorLog>(options =>
+            services.AddElmah<SqlErrorLog>(options =>
             {
-                options.LogPath = "~/log";
-                options.Notifiers.Add(new MyNotifier());
-                options.Notifiers.Add(new MyNotifierWithId());
-                options.Filters.Add(new CmsErrorLogFilter());
+                options.ConnectionString = "Data Source=DESKTOP-EBTAI3N\\SQLEXPRESS01; Initial Catalog=ElmaCore;Integrated Security=True";
+                //options.SqlServerDatabaseSchemaName = "Errors"; //Defaults to dbo if not set
+                options.SqlServerDatabaseTableName = "ElmahError"; //Defaults to ELMAH_Error if not set                
+
             });
 
             //serviço que injeta o servico de repositorios de DBContext
@@ -67,17 +68,21 @@ namespace ControleEstoque.API
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                app.UseElmahExceptionPage();
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControleEstoque.API v1"));
-                app.UseElmah();
+                // Get the exception that occurred          
             }
-
-            app.UseHttpsRedirection();
+            else
+            {
+                
+                app.UseExceptionHandler("/Home/Error");
+            }
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControleEstoque.API v1"));
+            // app.UseHttpsRedirection();
 
             app.UseRouting();
 
             app.UseAuthorization();
+
             app.UseElmah();
             app.UseEndpoints(endpoints =>
             {

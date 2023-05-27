@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Domain.Entidades.Tipo
 {
-    public enum  TipoPessoaEntity : int
+    public class  TipoPessoaEntity 
     {
-        Fisica = 1,
-        Juridica
+        public int Id { get; set; }
+        public string Tipo { get; set; }
+        public FornecedorEntity Fornecedor { get; set; }
     }
 }

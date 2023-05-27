@@ -8,21 +8,6 @@ namespace ControleEstoque.Infra.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "pais",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    codigo = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
-                    ativo = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_pais", x => x.id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "perfil",
                 columns: table => new
                 {
@@ -34,6 +19,19 @@ namespace ControleEstoque.Infra.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_perfil", x => x.id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PessoaEntities",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Tipo = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PessoaEntities", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -94,39 +92,56 @@ namespace ControleEstoque.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "usuario",
+                name: "TipoContatos",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    login = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
-                    senha = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    email = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false)
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_usuario", x => x.id);
+                    table.PrimaryKey("PK_TipoContatos", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "estado",
+                name: "Usuario",
                 columns: table => new
                 {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    nome = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    uf = table.Column<string>(type: "nvarchar(2)", maxLength: 2, nullable: false),
-                    ativo = table.Column<bool>(type: "bit", nullable: false),
-                    id_pais = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Login = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Senha = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_estado", x => x.id);
+                    table.PrimaryKey("PK_Usuario", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "fornecedor",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nome = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    razao_social = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    num_documento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
+                    ContatoId = table.Column<int>(type: "int", nullable: false),
+                    EnderecoId = table.Column<int>(type: "int", nullable: false),
+                    TipoPessoaId = table.Column<int>(type: "int", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_fornecedor", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_estado_pais_id_pais",
-                        column: x => x.id_pais,
-                        principalTable: "pais",
-                        principalColumn: "id",
+                        name: "FK_fornecedor_PessoaEntities_TipoPessoaId",
+                        column: x => x.TipoPessoaId,
+                        principalTable: "PessoaEntities",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -147,72 +162,11 @@ namespace ControleEstoque.Infra.Migrations
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_perfil_usuario_usuario_UsuariosId",
+                        name: "FK_perfil_usuario_Usuario_UsuariosId",
                         column: x => x.UsuariosId,
-                        principalTable: "usuario",
-                        principalColumn: "id",
+                        principalTable: "Usuario",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Cidade",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false),
-                    nome = table.Column<string>(type: "nvarchar(30)", maxLength: 30, nullable: false),
-                    ativo = table.Column<bool>(type: "bit", nullable: false),
-                    id_estado = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Cidade", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_Cidade_estado_id_estado",
-                        column: x => x.id_estado,
-                        principalTable: "estado",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "fornecedor",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    nome = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    razao_social = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    num_documento = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: true),
-                    tipo = table.Column<int>(type: "int", nullable: false),
-                    telefone = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    Contato = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
-                    logradouro = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    numero = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
-                    complemento = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    cep = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: true),
-                    id_pais = table.Column<int>(type: "int", nullable: false),
-                    id_estado = table.Column<int>(type: "int", nullable: false),
-                    id_cidade = table.Column<int>(type: "int", nullable: false),
-                    Ativo = table.Column<bool>(type: "bit", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_fornecedor", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_fornecedor_Cidade_id_cidade",
-                        column: x => x.id_cidade,
-                        principalTable: "Cidade",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_fornecedor_estado_id_estado",
-                        column: x => x.id_estado,
-                        principalTable: "estado",
-                        principalColumn: "id");
-                    table.ForeignKey(
-                        name: "FK_fornecedor_pais_id_pais",
-                        column: x => x.id_pais,
-                        principalTable: "pais",
-                        principalColumn: "id");
                 });
 
             migrationBuilder.CreateTable(
@@ -266,6 +220,64 @@ namespace ControleEstoque.Infra.Migrations
                         column: x => x.id_unidade_medida,
                         principalTable: "tb_unidade_medida",
                         principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tbContato",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Nome = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Numero = table.Column<string>(type: "nvarchar(9)", maxLength: 9, nullable: false),
+                    DDD = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    CodigoPais = table.Column<string>(type: "nvarchar(3)", maxLength: 3, nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    TipoContatoId = table.Column<int>(type: "int", nullable: false),
+                    IdFornecedor = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tbContato", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tbContato_fornecedor_IdFornecedor",
+                        column: x => x.IdFornecedor,
+                        principalTable: "fornecedor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_tbContato_TipoContatos_TipoContatoId",
+                        column: x => x.TipoContatoId,
+                        principalTable: "TipoContatos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "tbEndereco",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Logradouro = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    CEP = table.Column<string>(type: "nvarchar(14)", maxLength: 14, nullable: false),
+                    Numero = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    Bairro = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Cidade = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Estado = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Pais = table.Column<string>(type: "nvarchar(60)", maxLength: 60, nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    IdFornecedor = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_tbEndereco", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_tbEndereco_fornecedor_IdFornecedor",
+                        column: x => x.IdFornecedor,
+                        principalTable: "fornecedor",
+                        principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -335,16 +347,23 @@ namespace ControleEstoque.Infra.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Cidade_id_estado",
-                table: "Cidade",
-                column: "id_estado");
+            migrationBuilder.InsertData(
+                table: "PessoaEntities",
+                columns: new[] { "Id", "Tipo" },
+                values: new object[,]
+                {
+                    { 1, "Fisica" },
+                    { 2, "Juridica" }
+                });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Cidade_nome",
-                table: "Cidade",
-                column: "nome",
-                unique: true);
+            migrationBuilder.InsertData(
+                table: "TipoContatos",
+                columns: new[] { "Id", "Nome" },
+                values: new object[,]
+                {
+                    { 1, "Celular" },
+                    { 2, null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_entrada_produto_id_produto",
@@ -352,24 +371,10 @@ namespace ControleEstoque.Infra.Migrations
                 column: "id_produto");
 
             migrationBuilder.CreateIndex(
-                name: "IX_estado_id_pais",
-                table: "estado",
-                column: "id_pais");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_fornecedor_id_cidade",
+                name: "IX_fornecedor_TipoPessoaId",
                 table: "fornecedor",
-                column: "id_cidade");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_fornecedor_id_estado",
-                table: "fornecedor",
-                column: "id_estado");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_fornecedor_id_pais",
-                table: "fornecedor",
-                column: "id_pais");
+                column: "TipoPessoaId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_inventario_estoque_id_produto",
@@ -410,6 +415,24 @@ namespace ControleEstoque.Infra.Migrations
                 name: "IX_saida_produto_id_produto",
                 table: "saida_produto",
                 column: "id_produto");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tbContato_IdFornecedor",
+                table: "tbContato",
+                column: "IdFornecedor",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tbContato_TipoContatoId",
+                table: "tbContato",
+                column: "TipoContatoId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_tbEndereco_IdFornecedor",
+                table: "tbEndereco",
+                column: "IdFornecedor",
+                unique: true);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -427,13 +450,22 @@ namespace ControleEstoque.Infra.Migrations
                 name: "saida_produto");
 
             migrationBuilder.DropTable(
+                name: "tbContato");
+
+            migrationBuilder.DropTable(
+                name: "tbEndereco");
+
+            migrationBuilder.DropTable(
                 name: "perfil");
 
             migrationBuilder.DropTable(
-                name: "usuario");
+                name: "Usuario");
 
             migrationBuilder.DropTable(
                 name: "produto");
+
+            migrationBuilder.DropTable(
+                name: "TipoContatos");
 
             migrationBuilder.DropTable(
                 name: "fornecedor");
@@ -451,13 +483,7 @@ namespace ControleEstoque.Infra.Migrations
                 name: "tb_unidade_medida");
 
             migrationBuilder.DropTable(
-                name: "Cidade");
-
-            migrationBuilder.DropTable(
-                name: "estado");
-
-            migrationBuilder.DropTable(
-                name: "pais");
+                name: "PessoaEntities");
         }
     }
 }

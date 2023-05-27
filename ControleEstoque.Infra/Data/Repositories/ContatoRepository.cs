@@ -8,8 +8,11 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Data.Repositories
 {
-	public class EstadoRepository : GlobalRepository<EstadoEntity>, IEstadoRepository
-	{
-		public EstadoRepository(ControleEstoqueContext dbContext) : base(dbContext) { }
-	}
+    class ContatoRepository : GlobalRepository<ContatoEntity>, IContatoRepository
+    {
+        public ContatoRepository(ControleEstoqueContext dbContext) : base(dbContext) 
+        {
+        
+        }
+    }
 }

@@ -4,15 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleEstoque.Domain.Entidades
+namespace ControleEstoque.Domain.Entidades.Tipo
 {
-    public class PaisEntity
+    public class TipoContatoEntity 
     {
-       
         public int Id { get; set; }
         public string Nome { get; set; }
-        public string Codigo { get; set; }
-        //public bool Ativo { get; set; }
-        
+
+        public ContatoEntity Contato { get; set; }
     }
 }
+
+ 
