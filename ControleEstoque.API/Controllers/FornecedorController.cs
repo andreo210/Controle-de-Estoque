@@ -19,22 +19,12 @@ namespace ControleEstoque.API.Controllers
         }
 
         // POST api/<PessoaFisicaController>
-        [HttpPost("/completo/")]
-        public IActionResult PostCompleto([FromBody] FornecedorCompletoDTO fornecedorCompletoDTO)
-        {
-            fornecedorHandlers.SalvarCompleto(fornecedorCompletoDTO);
-            return Ok();
-        }
+       
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO fornecedorDTO)
         {
             fornecedorHandlers.Salvar(fornecedorDTO);
             return Ok();
-        }
-        [HttpGet("/completo/{id}")]
-        public List<FornecedorCompletoDTO> GetCompleto(int id)
-        {
-            return fornecedorHandlers.ListarCompleto(id);
         }
 
         [HttpGet]
@@ -45,9 +35,17 @@ namespace ControleEstoque.API.Controllers
 
         // GET api/<PessoaFisicaController>/5
         [HttpGet("{id}")]
-        public FornecedorDTO Get(int id)
+        public  IActionResult Get(int id)
         {
-            return fornecedorHandlers.RecuperarPeloId(id);
+            var x = fornecedorHandlers.RecuperarPeloId(id);
+            if (x!=null)
+            {
+                return Ok(x);
+            }
+            else
+            {
+                return NotFound("objeto com id: " + id+ " não encontrado");
+            }
         }
 
         [HttpGet("Cont")]
@@ -55,12 +53,36 @@ namespace ControleEstoque.API.Controllers
         {
             return fornecedorHandlers.RecuperarQuantidade();
         }
+        [HttpPut]
+        public IActionResult Alterar(FornecedorDTO fornecedorDTO)
+        {
+            var x = fornecedorHandlers.Alterar(fornecedorDTO);
+            if (x=="OK")
+            {
+                return NoContent();
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
 
         // DELETE api/<PessoaFisicaController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            fornecedorHandlers.ExcluirPeloId(id);
+            var x = fornecedorHandlers.RecuperarPeloId(id);
+
+            if (x != null)
+            {
+                fornecedorHandlers.ExcluirPeloId(id);
+                return Ok(id +" excluido com sucesso");
+            }
+            else
+            {
+                return NotFound("objeto com id: " + id + " não encontrado");
+            }
+            
             return Ok();
         }
     }

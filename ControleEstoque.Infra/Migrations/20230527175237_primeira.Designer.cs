@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(ControleEstoqueContext))]
-    [Migration("20221028200157_cidasde")]
-    partial class cidasde
+    [Migration("20230527175237_primeira")]
+    partial class primeira
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,27 +21,107 @@ namespace ControleEstoque.Infra.Migrations
                 .HasAnnotation("ProductVersion", "5.0.17")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("ControleEstoque.Domain.Entidades.CidadeEntity", b =>
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.ContatoEntity", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id");
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int>("IdEstado")
-                        .HasColumnType("int")
-                        .HasColumnName("id_estado");
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("CodigoPais")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<string>("DDD")
+                        .IsRequired()
+                        .HasMaxLength(3)
+                        .HasColumnType("nvarchar(3)");
+
+                    b.Property<int>("IdFornecedor")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasColumnName("nome");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Numero")
+                        .IsRequired()
+                        .HasMaxLength(9)
+                        .HasColumnType("nvarchar(9)");
+
+                    b.Property<int>("TipoContatoId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdEstado");
+                    b.HasIndex("IdFornecedor")
+                        .IsUnique();
 
-                    b.ToTable("Cidade");
+                    b.HasIndex("TipoContatoId")
+                        .IsUnique();
+
+                    b.ToTable("tbContato");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.EnderecoEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Ativo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Bairro")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("CEP")
+                        .IsRequired()
+                        .HasMaxLength(14)
+                        .HasColumnType("nvarchar(14)");
+
+                    b.Property<string>("Cidade")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Estado")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<int>("IdFornecedor")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Logradouro")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.Property<string>("Numero")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("Pais")
+                        .IsRequired()
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("IdFornecedor")
+                        .IsUnique();
+
+                    b.ToTable("tbEndereco");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.EntradaProdutoEntity", b =>
@@ -77,35 +157,6 @@ namespace ControleEstoque.Infra.Migrations
                     b.ToTable("entrada_produto");
                 });
 
-            modelBuilder.Entity("ControleEstoque.Domain.Entidades.EstadoEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<int>("IdPais")
-                        .HasColumnType("int")
-                        .HasColumnName("id_pais");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)")
-                        .HasColumnName("nome");
-
-                    b.Property<string>("UF")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("nvarchar(2)")
-                        .HasColumnName("uf");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("IdPais");
-
-                    b.ToTable("estado");
-                });
-
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.FornecedorEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -116,39 +167,11 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Cep")
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)")
-                        .HasColumnName("cep");
+                    b.Property<int>("ContatoId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Complemento")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("complemento");
-
-                    b.Property<string>("Contato")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)")
-                        .HasColumnName("Contato");
-
-                    b.Property<int>("IdCidade")
-                        .HasColumnType("int")
-                        .HasColumnName("id_cidade");
-
-                    b.Property<int>("IdEstado")
-                        .HasColumnType("int")
-                        .HasColumnName("id_estado");
-
-                    b.Property<int>("IdPais")
-                        .HasColumnType("int")
-                        .HasColumnName("id_pais");
-
-                    b.Property<string>("Logradouro")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)")
-                        .HasColumnName("logradouro");
+                    b.Property<int>("EnderecoId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -161,34 +184,18 @@ namespace ControleEstoque.Infra.Migrations
                         .HasColumnType("nvarchar(20)")
                         .HasColumnName("num_documento");
 
-                    b.Property<string>("Numero")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("numero");
-
                     b.Property<string>("RazaoSocial")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
                         .HasColumnName("razao_social");
 
-                    b.Property<string>("Telefone")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("telefone");
-
-                    b.Property<int>("Tipo")
-                        .HasColumnType("int")
-                        .HasColumnName("tipo");
+                    b.Property<int>("TipoPessoaId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IdCidade");
-
-                    b.HasIndex("IdEstado");
-
-                    b.HasIndex("IdPais");
+                    b.HasIndex("TipoPessoaId")
+                        .IsUnique();
 
                     b.ToTable("fornecedor");
                 });
@@ -296,31 +303,6 @@ namespace ControleEstoque.Infra.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("tb_MarcasProdutos");
-                });
-
-            modelBuilder.Entity("ControleEstoque.Domain.Entidades.PaisEntity", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Codigo")
-                        .IsRequired()
-                        .HasMaxLength(3)
-                        .HasColumnType("nvarchar(3)")
-                        .HasColumnName("codigo");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("nome");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("pais");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.PerfilEntity", b =>
@@ -457,6 +439,59 @@ namespace ControleEstoque.Infra.Migrations
                     b.ToTable("saida_produto");
                 });
 
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoContatoEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Nome")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TipoContatos");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nome = "Celular"
+                        },
+                        new
+                        {
+                            Id = 2
+                        });
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoPessoaEntity", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Tipo")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PessoaEntities");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Tipo = "Fisica"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Tipo = "Juridica"
+                        });
+                });
+
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.UnidadeMedidaEntity", b =>
                 {
                     b.Property<int>("Id")
@@ -491,36 +526,23 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
-                        .HasColumnName("id")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(150)
-                        .HasColumnType("nvarchar(150)")
-                        .HasColumnName("email");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Login")
-                        .IsRequired()
-                        .HasMaxLength(15)
-                        .HasColumnType("nvarchar(15)")
-                        .HasColumnName("login");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("nome");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Senha")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)")
-                        .HasColumnName("senha");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("usuario");
+                    b.ToTable("Usuario");
                 });
 
             modelBuilder.Entity("PerfilEntityUsuarioEntity", b =>
@@ -538,15 +560,34 @@ namespace ControleEstoque.Infra.Migrations
                     b.ToTable("perfil_usuario");
                 });
 
-            modelBuilder.Entity("ControleEstoque.Domain.Entidades.CidadeEntity", b =>
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.ContatoEntity", b =>
                 {
-                    b.HasOne("ControleEstoque.Domain.Entidades.EstadoEntity", "Estado")
-                        .WithMany()
-                        .HasForeignKey("IdEstado")
+                    b.HasOne("ControleEstoque.Domain.Entidades.FornecedorEntity", "Fornecedor")
+                        .WithOne("Contato")
+                        .HasForeignKey("ControleEstoque.Domain.Entidades.ContatoEntity", "IdFornecedor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Estado");
+                    b.HasOne("ControleEstoque.Domain.Entidades.Tipo.TipoContatoEntity", "TipoContato")
+                        .WithOne("Contato")
+                        .HasForeignKey("ControleEstoque.Domain.Entidades.ContatoEntity", "TipoContatoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fornecedor");
+
+                    b.Navigation("TipoContato");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.EnderecoEntity", b =>
+                {
+                    b.HasOne("ControleEstoque.Domain.Entidades.FornecedorEntity", "Fornecedor")
+                        .WithOne("Endereco")
+                        .HasForeignKey("ControleEstoque.Domain.Entidades.EnderecoEntity", "IdFornecedor")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Fornecedor");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.EntradaProdutoEntity", b =>
@@ -560,42 +601,15 @@ namespace ControleEstoque.Infra.Migrations
                     b.Navigation("Produto");
                 });
 
-            modelBuilder.Entity("ControleEstoque.Domain.Entidades.EstadoEntity", b =>
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.FornecedorEntity", b =>
                 {
-                    b.HasOne("ControleEstoque.Domain.Entidades.PaisEntity", "Pais")
-                        .WithMany()
-                        .HasForeignKey("IdPais")
+                    b.HasOne("ControleEstoque.Domain.Entidades.Tipo.TipoPessoaEntity", "TipoPessoa")
+                        .WithOne("Fornecedor")
+                        .HasForeignKey("ControleEstoque.Domain.Entidades.FornecedorEntity", "TipoPessoaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Pais");
-                });
-
-            modelBuilder.Entity("ControleEstoque.Domain.Entidades.FornecedorEntity", b =>
-                {
-                    b.HasOne("ControleEstoque.Domain.Entidades.CidadeEntity", "Cidade")
-                        .WithMany()
-                        .HasForeignKey("IdCidade")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ControleEstoque.Domain.Entidades.EstadoEntity", "Estado")
-                        .WithMany()
-                        .HasForeignKey("IdEstado")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("ControleEstoque.Domain.Entidades.PaisEntity", "Pais")
-                        .WithMany()
-                        .HasForeignKey("IdPais")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Cidade");
-
-                    b.Navigation("Estado");
-
-                    b.Navigation("Pais");
+                    b.Navigation("TipoPessoa");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.InventarioEstoqueEntity", b =>
@@ -676,6 +690,23 @@ namespace ControleEstoque.Infra.Migrations
                         .HasForeignKey("UsuariosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.FornecedorEntity", b =>
+                {
+                    b.Navigation("Contato");
+
+                    b.Navigation("Endereco");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoContatoEntity", b =>
+                {
+                    b.Navigation("Contato");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoPessoaEntity", b =>
+                {
+                    b.Navigation("Fornecedor");
                 });
 #pragma warning restore 612, 618
         }

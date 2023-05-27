@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Domain.Repository
 {
-   public interface ICidadeRepository : IGlobalRepository<CidadeEntity>
+    public interface IContatoRepository : IGlobalRepository<ContatoEntity>
     {
     }
 }

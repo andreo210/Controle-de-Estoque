@@ -18,9 +18,6 @@ namespace ControleEstoque.Infra.Extension
         {
 
             //como to usuando o método addScoped eu obrigo a usar uma interface das entidades e uma classe repository que tem um construtor padrão de dbcontext
-            services.AddScoped<ICidadeRepository, CidadeRepository>();
-            services.AddScoped<IEstadoRepository, EstadoRepository>();
-            services.AddScoped<IPaisRepository, PaisRepository>();
             services.AddScoped<IFornecedorRepository, FornecedorRepository>();
             services.AddScoped<IGrupoProdutoRepository, GrupoProdutoRepository>();
             services.AddScoped<IEntradaProdutoRepository, EntradaProdutoRepository>();
@@ -32,7 +29,8 @@ namespace ControleEstoque.Infra.Extension
             services.AddScoped<ISaidaProdutoRepository, SaidaProdutoRepository>();
             services.AddScoped<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IUnidadeMedidaRepository, UnidadeMedidaRepository>();
-
+            services.AddScoped<IContatoRepository, ContatoRepository>();
+            services.AddScoped<IEnderecoRepository, EnderecoRepository>();
 
             return services;
         }

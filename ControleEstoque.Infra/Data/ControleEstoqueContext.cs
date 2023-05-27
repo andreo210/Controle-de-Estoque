@@ -27,9 +27,6 @@ namespace ControleEstoque.Infra.Data
         }
         //DBSET CRIA AS TABELAS
         //as classes são adicionadas como propriedades ao DbContexte são mapeadas por padrão para tabelas de banco de dados
-        public DbSet<CidadeEntity> Cidade { get; set; }
-        public DbSet<EstadoEntity> Estado { get; set; }
-        public DbSet<PaisEntity> Pais { get; set; }
         public DbSet<FornecedorEntity> Fornecedor { get; set; }
         public DbSet<GrupoProdutoEntity> GrupoProduto { get; set; }
         public DbSet<EntradaProdutoEntity> EntradaProduto { get; set; }
@@ -41,6 +38,10 @@ namespace ControleEstoque.Infra.Data
         public DbSet<SaidaProdutoEntity> SaidaProduto { get; set; }
         public DbSet<UnidadeMedidaEntity> UnidadeMedida { get; set; }
         public DbSet<UsuarioEntity> Usuario { get; set; }
+        public DbSet<ContatoEntity> Contato { get; set; }
+        public DbSet<EnderecoEntity> Endereco{ get; set; }
+        public DbSet<TipoContatoEntity> TipoContatos { get; set; }
+        public DbSet<TipoPessoaEntity> PessoaEntities { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -49,9 +50,6 @@ namespace ControleEstoque.Infra.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             //chamar as modelagen das classe nas Mapping
-            modelBuilder.ApplyConfiguration(new CidadeMap());//modela as classes
-            modelBuilder.ApplyConfiguration(new EstadoMap());
-            modelBuilder.ApplyConfiguration(new PaisMap());
             modelBuilder.ApplyConfiguration(new FornecedorMap());
             modelBuilder.ApplyConfiguration(new GrupoProdutoMap());
             modelBuilder.ApplyConfiguration(new EntradaProdutoMap());
@@ -62,9 +60,12 @@ namespace ControleEstoque.Infra.Data
             modelBuilder.ApplyConfiguration(new ProdutoMap());
             modelBuilder.ApplyConfiguration(new SaidaProdutoMap());
             modelBuilder.ApplyConfiguration(new UnidadeMedidaMap());
-            modelBuilder.ApplyConfiguration(new UsuarioMap());
+            modelBuilder.ApplyConfiguration(new EnderecoMap());
+            modelBuilder.ApplyConfiguration(new ContatoMap());
+            modelBuilder.ApplyConfiguration(new TipoContatoMap());
+            modelBuilder.ApplyConfiguration(new TipoPessoaMap());
 
-            
+
             // tabela de relacionamento
             modelBuilder.Entity<PerfilEntity>()
                         .HasMany<UsuarioEntity>(s => s.Usuarios)//um usuario tem muitos perfis

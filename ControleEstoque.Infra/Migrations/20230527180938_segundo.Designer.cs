@@ -4,14 +4,16 @@ using ControleEstoque.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(ControleEstoqueContext))]
-    partial class ControleEstoqueContextModelSnapshot : ModelSnapshot
+    [Migration("20230527180938_segundo")]
+    partial class segundo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -165,35 +167,31 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
-                    b.Property<string>("Email")
-                        .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)")
-                        .HasColumnName("Email");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)")
-                        .HasColumnName("Nome");
+                        .HasColumnName("nome");
 
                     b.Property<string>("NumDocumento")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
-                        .HasColumnName("Num_documento");
+                        .HasColumnName("num_documento");
 
                     b.Property<string>("RazaoSocial")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnName("Razao_social");
+                        .HasColumnName("razao_social");
 
-                    b.Property<int>("TipoFornecedorId")
+                    b.Property<int>("TipoPessoaId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TipoFornecedorId");
+                    b.HasIndex("TipoPessoaId")
+                        .IsUnique();
 
-                    b.ToTable("tbFornecedor");
+                    b.ToTable("fornecedor");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.GrupoProdutoEntity", b =>
@@ -601,7 +599,7 @@ namespace ControleEstoque.Infra.Migrations
                 {
                     b.HasOne("ControleEstoque.Domain.Entidades.Tipo.TipoPessoaEntity", "TipoPessoa")
                         .WithOne("Fornecedor")
-                        .HasForeignKey("ControleEstoque.Domain.Entidades.FornecedorEntity", "TipoFornecedorId")
+                        .HasForeignKey("ControleEstoque.Domain.Entidades.FornecedorEntity", "TipoPessoaId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

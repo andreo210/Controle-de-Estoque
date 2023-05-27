@@ -51,7 +51,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
         public string Salvar(FornecedorDTO fornecedorDTO)
         {
-            var model = RecuperarPeloId(fornecedorDTO.Id);
+            var model = context.Fornecedor.AsNoTracking().FirstOrDefault(x=>x.Id == fornecedorDTO.Id);
 
             if (model == null)
             {
@@ -67,34 +67,25 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             }
         }
 
-        public string SalvarCompleto(FornecedorCompletoDTO fornecedorDTO)
+        public string Alterar(FornecedorDTO fornecedorDTO)
         {
-            var model = RecuperarPeloId(fornecedorDTO.Id);
+            var model = context.Fornecedor.AsNoTracking().FirstOrDefault(x => x.Id == fornecedorDTO.Id);
 
-            if (model == null)
-            {
-                fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "Ok";
-            }
-            else
+            if (model !=null)
             {
                 fornecedorRepository.Update(fornecedorDTO.retornoFornecedorEntity());
                 fornecedorRepository.Save();
-                return "No Content";
+                return "OK";
+            }
+            else
+            {                
+                return "ERROR";
             }
         }
 
-
-        public List<FornecedorCompletoDTO> ListarCompleto(int id)
-        {
-
-            var ret =context.Fornecedor.Where(m => m.Id == id).Include(m => m.Cidade).ThenInclude(x=>x.Estado).ThenInclude(x => x.Pais).Select(x => new FornecedorCompletoDTO(x)).ToList(); 
-            return ret;
-        }
-        public FornecedorCompletoDTO RecuperarPeloIdCompleto(int id)
-        {
-            throw new NotImplementedException();
-        }
     }
+
+    
+
 }
+
