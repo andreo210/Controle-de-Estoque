@@ -11,7 +11,7 @@ namespace ControleEstoque.Domain.Entidades.Tipo
         public int Id { get; set; }
         public string Nome { get; set; }
 
-        public ContatoEntity Contato { get; set; }
+        public List<ContatoEntity> Contato { get; set; }
     }
 }
 

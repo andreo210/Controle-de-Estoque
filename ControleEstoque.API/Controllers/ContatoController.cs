@@ -1,4 +1,5 @@
-﻿using ControleEstoque.App.Handlers.Contato;
+﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Handlers.Contato;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet]
-        public IActionResult PegarTodos()
+        public IActionResult ListarTodos()
         {
             var x =_contatosHandler.RecuperarLista();
             return Ok(x);
@@ -29,6 +30,36 @@ namespace ControleEstoque.API.Controllers
         {
             var x = _contatosHandler.FindByID(id);
             return Ok(x);
+        }
+
+        [HttpPost]
+        public IActionResult Post([FromBody] ContatosDTO contatosDTO)
+        {
+            var x = _contatosHandler.Salvar(contatosDTO);
+            if (x != null)
+            {
+                return Ok(x);
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
+        {
+            var x = _contatosHandler.ExcluirPeloId(id);
+
+            if (x=="OK")
+            {
+                _contatosHandler.ExcluirPeloId(id);
+                return Ok(id + " excluido com sucesso");
+            }
+            else
+            {
+                return NotFound("objeto com id: " + id + " não encontrado");
+            }
         }
     }
 }

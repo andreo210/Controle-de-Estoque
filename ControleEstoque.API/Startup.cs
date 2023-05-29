@@ -6,6 +6,7 @@ using ElmahCore;
 using ElmahCore.Mvc;
 using ElmahCore.Mvc.Notifiers;
 using ElmahCore.Sql;
+using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -35,7 +36,7 @@ namespace ControleEstoque.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+            services.AddProblemDetails();
             services.AddControllers();
             //serviço que injeta o servico de conexão com o banco
             services.AddSqlServerDbContext<ControleEstoqueContext>(Configuration["ConnectionStrings:CadastroSocialUnicoContext"] ?? "");
@@ -75,6 +76,7 @@ namespace ControleEstoque.API
                 
                 app.UseExceptionHandler("/Home/Error");
             }
+            app.UseProblemDetails();
             app.UseSwagger();
             app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControleEstoque.API v1"));
             // app.UseHttpsRedirection();

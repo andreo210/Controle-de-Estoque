@@ -44,10 +44,11 @@ namespace ControleEstoque.Infra.Mapping
               .IsRequired();
 
 
-            builder.HasIndex(p => p.TipoFornecedorId).IsUnique( false);
+            //builder.HasIndex(p => p.TipoPessoa).IsUnique( false);
             builder.HasOne(p => p.TipoPessoa)
-               .WithOne(p => p.Fornecedor)
-               .HasForeignKey<FornecedorEntity>(p => p.TipoFornecedorId).OnDelete(DeleteBehavior.Cascade);
+               .WithMany(p => p.Fornecedor)
+               .HasForeignKey(p => p.TipoFornecedorId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         }
     }

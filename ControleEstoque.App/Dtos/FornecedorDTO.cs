@@ -10,7 +10,10 @@ namespace ControleEstoque.App.Dtos
 {
     public class FornecedorDTO
     {
-       
+        public FornecedorDTO()
+        {
+
+        }
         //mapeamaento dto para entidade
         public FornecedorDTO(FornecedorEntity entidade)
         {

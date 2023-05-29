@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Dtos
 {
-    public class ContatosDto
+    public class ContatosDTO
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -17,8 +17,9 @@ namespace ControleEstoque.App.Dtos
         public bool Ativo { get; set; }
 
         public int TipoContatoId { get; set; }
+        public int FornecedorID { get; set; }
 
-        public ContatosDto(ContatoEntity contatoEntity)
+        public ContatosDTO(ContatoEntity contatoEntity)
         {
             this.Id = contatoEntity.Id;
             this.Ativo = contatoEntity.Ativo;
@@ -27,7 +28,27 @@ namespace ControleEstoque.App.Dtos
             this.Numero = contatoEntity.Numero;
             this.Nome = contatoEntity.Nome;
             this.TipoContatoId = contatoEntity.TipoContatoId;
+            this.FornecedorID = contatoEntity.IdFornecedor;
         }
-      
+        public ContatosDTO()
+        {
+
+        }
+        public ContatoEntity retornoContatoEntity()
+        {
+            return new ContatoEntity()
+            {
+                Id = this.Id,
+                Nome = this.Nome,
+                Numero = this.Numero,
+                DDD = this.DDD,
+                CodigoPais = this.CodigoPais,
+                TipoContatoId = this.TipoContatoId,
+                IdFornecedor = FornecedorID,
+                Ativo = this.Ativo ? (bool)this.Ativo : false,//ja joga valor false               
+
+            };
+        }
+
     }
 }

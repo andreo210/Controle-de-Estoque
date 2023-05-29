@@ -15,7 +15,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
         public FornecedorDTO RecuperarPeloId(int id);
 
-        public string Salvar(FornecedorDTO cidadeDTO);
+        public FornecedorDTO Salvar(FornecedorDTO fornecedorDTO);
 
         public string ExcluirPeloId(int id);
         public string Alterar(FornecedorDTO fornecedorDTO);

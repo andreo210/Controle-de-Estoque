@@ -18,7 +18,7 @@ namespace ControleEstoque.Domain
 
         public TEntity GetByID(object id);
 
-        public void Insert(TEntity entity);
+        public TEntity Insert(TEntity entity);
 
         public void Delete(object id);
 
