@@ -18,16 +18,35 @@ namespace ControleEstoque.App.Handlers.Contato
 
         }
 
-        public List<ContatosDto> RecuperarLista()
+        public List<ContatosDTO> RecuperarLista()
         {
-            return _contato.Get().Select(x => new ContatosDto(x)).ToList();
+            return _contato.Get().Select(x => new ContatosDTO(x)).ToList();
         }
 
 
-        public ContatosDto FindByID(int id)
+        public ContatosDTO FindByID(int id)
         {
             var retorno = _contato.GetByID(id);
-            return retorno != null ? new ContatosDto(retorno) : null;
+            return retorno != null ? new ContatosDTO(retorno) : null;
+        }
+        public ContatosDTO Salvar(ContatosDTO contatoDTO)
+        {
+            var x = _contato.Insert(contatoDTO.retornoContatoEntity());
+            return new ContatosDTO(x);
+        }
+
+        public string ExcluirPeloId(int id)
+        {
+            try
+            {
+                _contato.Delete(id);
+                _contato.Save();
+                return "OK";
+            }catch(Exception e)
+            {
+                return "ERROR";
+            }
+
         }
 
 

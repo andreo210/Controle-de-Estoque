@@ -49,22 +49,10 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         }
 
 
-        public string Salvar(FornecedorDTO fornecedorDTO)
-        {
-            var model = context.Fornecedor.AsNoTracking().FirstOrDefault(x=>x.Id == fornecedorDTO.Id);
-
-            if (model == null)
-            {
-                fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "Ok";
-            }
-            else
-            {
-                fornecedorRepository.Update(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "No Content";
-            }
+        public FornecedorDTO Salvar(FornecedorDTO fornecedorDTO)        {
+            
+               var x = fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());               
+               return new FornecedorDTO(x);            
         }
 
         public string Alterar(FornecedorDTO fornecedorDTO)

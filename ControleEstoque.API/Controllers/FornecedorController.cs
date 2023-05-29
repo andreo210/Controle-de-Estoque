@@ -23,8 +23,15 @@ namespace ControleEstoque.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO fornecedorDTO)
         {
-            fornecedorHandlers.Salvar(fornecedorDTO);
-            return Ok();
+            var x = fornecedorHandlers.Salvar(fornecedorDTO);
+            if (x != null)
+            {
+                return Ok(x);
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
 
         [HttpGet]

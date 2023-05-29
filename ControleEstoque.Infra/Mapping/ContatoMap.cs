@@ -41,8 +41,8 @@ namespace ControleEstoque.Infra.Mapping
                 .HasMaxLength(9);
 
             builder.HasOne(p => p.TipoContato)
-               .WithOne(p => p.Contato)
-               .HasForeignKey<ContatoEntity>(p => p.TipoContatoId);
+               .WithMany(p => p.Contato)
+               .HasForeignKey(p => p.TipoContatoId);
 
             builder.HasOne(p => p.Fornecedor)
               .WithOne(p => p.Contato)

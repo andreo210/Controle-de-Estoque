@@ -10,6 +10,6 @@ namespace ControleEstoque.Domain.Entidades.Tipo
     {
         public int Id { get; set; }
         public string Tipo { get; set; }
-        public FornecedorEntity Fornecedor { get; set; }
+        public List<FornecedorEntity> Fornecedor { get; set; }
     }
 }

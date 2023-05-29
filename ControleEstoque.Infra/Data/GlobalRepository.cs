@@ -66,10 +66,11 @@ namespace ControleEstoque.Infra.Data
 
 
         //inserir
-        public virtual void Insert(TEntity entity)
+        public TEntity Insert(TEntity entity)
         {
             dbSet.Add(entity);
-            
+            Save();
+            return entity;            
         }
 
         //deletar

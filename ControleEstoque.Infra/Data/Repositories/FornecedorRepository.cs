@@ -10,6 +10,12 @@ namespace ControleEstoque.Infra.Data
 {
 	public class FornecedorRepository : GlobalRepository<FornecedorEntity>, IFornecedorRepository
 	{
-		public FornecedorRepository(ControleEstoqueContext dbContext) : base(dbContext) { }
+		
+		public FornecedorRepository(ControleEstoqueContext dbContext) : base(dbContext)
+		{
+			
+		}
+
+		
 	}
 }
