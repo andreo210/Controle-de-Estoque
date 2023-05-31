@@ -1,5 +1,6 @@
 ﻿using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.Fornecedor;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,8 +19,7 @@ namespace ControleEstoque.API.Controllers
             this.fornecedorHandlers = _fornecedorHandlers;
         }
 
-        // POST api/<PessoaFisicaController>
-       
+           
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO fornecedorDTO)
         {
@@ -40,7 +40,7 @@ namespace ControleEstoque.API.Controllers
             return fornecedorHandlers.RecuperarLista();
         }
 
-        // GET api/<PessoaFisicaController>/5
+   
         [HttpGet("{id}")]
         public  IActionResult Get(int id)
         {
@@ -51,7 +51,15 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound("objeto com id: " + id+ " não encontrado");
+                var problemDetails = new ProblemDetails
+                {
+                    Status = StatusCodes.Status404NotFound,
+                    Type = "https://example.com/probs/out-of-credit",
+                    Title = "Objeto não encontrado",
+                    Detail = "o fornecedor com id numero : "+id+ " não foi encontrado",
+                    Instance = HttpContext.Request.Path
+                };
+                return NotFound(problemDetails);
             }
         }
 
@@ -66,31 +74,30 @@ namespace ControleEstoque.API.Controllers
             var x = fornecedorHandlers.Alterar(fornecedorDTO);
             if (x=="OK")
             {
-                return NoContent();
+                return Ok(fornecedorDTO);
             }
-            else
+            else 
             {
-                return BadRequest();
+                return NotFound("objeto não encontrado");
             }
         }
 
-        // DELETE api/<PessoaFisicaController>/5
-        [HttpDelete("{id}")]
+          [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var x = fornecedorHandlers.RecuperarPeloId(id);
-
-            if (x != null)
-            {
-                fornecedorHandlers.ExcluirPeloId(id);
-                return Ok(id +" excluido com sucesso");
-            }
-            else
-            {
-                return NotFound("objeto com id: " + id + " não encontrado");
-            }
             
-            return Ok();
+                var x = fornecedorHandlers.ExcluirPeloId(id);
+
+                if (x == "OK")
+                {
+                    return Ok("excluido com sucesso");
+                }
+                else
+                {
+                    return NotFound("objeto não encontrado");
+                }
+           
+          
         }
     }
 }
