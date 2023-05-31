@@ -25,49 +25,96 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         }
         public string ExcluirPeloId(int id)
         {
-            fornecedorRepository.Delete(id);
-            fornecedorRepository.Save();
-            return "Ok";
+            try
+            {
+                var x = RecuperarPeloId(id);
+                if (x != null)
+                {
+                    fornecedorRepository.Delete(id);
+                    fornecedorRepository.Save();
+                    return "Ok";
+                }
+                else
+                {
+                    return "fornecedor não encontardo";
+                }
+            }catch(Exception e)
+            {
+                throw;
+            }
            
         }
 
 
         public List<FornecedorDTO> RecuperarLista()
         {
-            return fornecedorRepository.Get().Select(x => new FornecedorDTO(x)).ToList();
+            try
+            {
+                return fornecedorRepository.Get().Select(x => new FornecedorDTO(x)).ToList();
+            }catch(Exception e)
+            {
+                throw;
+            }
         }
 
         public FornecedorDTO RecuperarPeloId(int id)
         {
-            var retorno = fornecedorRepository.GetByID(id);
-            return retorno != null ? new FornecedorDTO(retorno) : null;
+            try
+            {
+                var retorno = fornecedorRepository.GetByID(id);
+                return retorno != null ? new FornecedorDTO(retorno) : null;
+            }catch(Exception e)
+            {
+                throw;
+            }
         }
 
         public int RecuperarQuantidade()
         {
-            return fornecedorRepository.Get().Count();
+            try
+            {
+                return fornecedorRepository.Get().Count();
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
+            
         }
 
 
-        public FornecedorDTO Salvar(FornecedorDTO fornecedorDTO)        {
-            
-               var x = fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());               
-               return new FornecedorDTO(x);            
+        public FornecedorDTO Salvar(FornecedorDTO fornecedorDTO)       
+        {
+            try
+            {
+                var x = fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
+                return new FornecedorDTO(x);
+            }catch(Exception e)
+            {
+                throw ;
+            }
         }
 
         public string Alterar(FornecedorDTO fornecedorDTO)
         {
-            var model = context.Fornecedor.AsNoTracking().FirstOrDefault(x => x.Id == fornecedorDTO.Id);
-
-            if (model !=null)
+            try
             {
-                fornecedorRepository.Update(fornecedorDTO.retornoFornecedorEntity());
-                fornecedorRepository.Save();
-                return "OK";
+                var model = context.Fornecedor.AsNoTracking().FirstOrDefault(x => x.Id == fornecedorDTO.Id);
+
+                if (model != null)
+                {
+                    fornecedorRepository.Update(fornecedorDTO.retornoFornecedorEntity());
+                    fornecedorRepository.Save();
+                    return "OK";
+                }
+                else
+                {
+                    return "Usuario nao encontrado";
+                }
             }
-            else
-            {                
-                return "ERROR";
+            catch(Exception e)
+            {
+                throw;
             }
         }
 
