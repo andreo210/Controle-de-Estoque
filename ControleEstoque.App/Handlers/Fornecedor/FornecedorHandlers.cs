@@ -110,21 +110,46 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         {
             try
             {
-                var model = context.Fornecedor.AsNoTracking().Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == fornecedor.Id);
-                var contato = context.Contato.AsNoTracking().FirstOrDefault(x => x.Id == model.Contato.Id);
-                var endereco = context.Endereco.AsNoTracking().FirstOrDefault(x => x.Id == model.Endereco.Id);
-                model = fornecedor;
-                contato = fornecedor.Contato.retornoContatoEntity();
-                endereco = fornecedor.Endereco.retornoEnderecoEntity();
+                return alterarfornecedor(fornecedor);
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
+        }
+
+        private string alterarfornecedor(FornecedorDTO fornecedor)
+        {
+            try
+            {
+                var model = context.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == fornecedor.Id);
+
                 if (model != null)
                 {
+                    //informação do fornecedor
+                    model.Nome = fornecedor.Nome;
+                    model.RazaoSocial = fornecedor.RazaoSocial;
+                    model.NumDocumento = fornecedor.NumDocumento;
+                    model.Ativo = fornecedor.Ativo;
+                    model.Email = fornecedor.Email;
 
-                    context.Entry(model).State = EntityState.Modified;
-                    context.Entry(contato).State = EntityState.Modified;
-                    context.Entry(endereco).State = EntityState.Modified;
+                    //contato do fornecedor
+                    model.Contato.CodigoPais = fornecedor.Contato.CodigoPais;
+                    model.Contato.DDD = fornecedor.Contato.DDD;
+                    model.Contato.Numero = fornecedor.Contato.Numero;
+                    model.Contato.TipoContatoId = fornecedor.Contato.TipoContatoId;
 
-                    context.Update(contato);
-                    context.Update(endereco);
+
+                    //endereco do fornecedor
+                    model.Endereco.Logradouro = fornecedor.Endereco.Logradouro;
+                    model.Endereco.CEP = fornecedor.Endereco.CEP;
+                    model.Endereco.Numero = fornecedor.Endereco.Numero;
+                    model.Endereco.Bairro = fornecedor.Endereco.Bairro;
+                    model.Endereco.Estado = fornecedor.Endereco.Estado;
+                    model.Endereco.Pais = fornecedor.Endereco.Pais;
+
+
+
                     context.SaveChanges();
                     return "OK";
                 }
@@ -133,7 +158,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
                     return "Usuario nao encontrado";
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw;
             }

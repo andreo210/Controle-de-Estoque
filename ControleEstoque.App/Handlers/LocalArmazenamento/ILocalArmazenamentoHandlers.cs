@@ -15,7 +15,8 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
 
         public LocalArmazenamentoDTO RecuperarPeloId(int id);
 
-        public string Salvar(LocalArmazenamentoDTO localDTO);
+        public LocalArmazenamentoDTO Salvar(LocalArmazenamentoDTO localDTO);
+        public LocalArmazenamentoDTO Alterar(LocalArmazenamentoDTO localDTO);
 
         public string ExcluirPeloId(int id);
     }

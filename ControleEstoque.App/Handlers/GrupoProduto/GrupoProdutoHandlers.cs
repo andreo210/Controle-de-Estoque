@@ -25,12 +25,17 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
         }
         public string ExcluirPeloId(int id)
         {
-            grupoRepository.Delete(id);
-            grupoRepository.Save();
-            return "Ok";
+            try
+            {
+                grupoRepository.Delete(id);
+                grupoRepository.Save();
+                return "Ok";
+            }catch(Exception e)
+            {
+                throw;
+            }
 
         }
-
 
         public List<GrupoProdutoDTO> RecuperarLista()
         {
@@ -40,7 +45,14 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
         public GrupoProdutoDTO RecuperarPeloId(int id)
         {
             var retorno = grupoRepository.GetByID(id);
-            return retorno != null ? new GrupoProdutoDTO(retorno) : null;
+            if (retorno != null)
+            {
+                return new GrupoProdutoDTO(retorno);
+            }
+            else
+            {
+                return null;
+            }
         }
 
         public int RecuperarQuantidade()
@@ -49,21 +61,38 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
         }
 
 
-        public string Salvar(GrupoProdutoDTO grupoDTO)
+        public GrupoProdutoDTO Salvar(GrupoProdutoDTO grupoDTO)
+        {
+            try
+            {
+                var x =  grupoRepository.Insert(grupoDTO.retornoGrupoProdutoEntity());
+                grupoRepository.Save();
+                return new GrupoProdutoDTO(x);
+            }
+            catch(Exception e)
+            {
+                throw;
+            }
+            
+          
+            
+        }
+
+        public GrupoProdutoDTO Alterar (GrupoProdutoDTO grupoDTO)
         {
 
-            var model = context.Set<GrupoProdutoEntity>().AsNoTracking().Where(e => e.Id == grupoDTO.Id).FirstOrDefault();
+            var model = context.GrupoProduto.FirstOrDefault(e => e.Id == grupoDTO.Id);
 
-            if (model == null)
+            if (model != null)
+            {             
+                model.Ativo = grupoDTO.Ativo;
+                model.Nome = grupoDTO.Nome;
+                context.SaveChangesAsync();
+                return grupoDTO;
+            }
+            else
             {
-                grupoRepository.Insert(grupoDTO.retornoGrupoProdutoEntity());
-                grupoRepository.Save();
-                return "Ok";
-            }else
-            {
-                grupoRepository.Update(grupoDTO.retornoGrupoProdutoEntity());
-                grupoRepository.Save();
-                return "No Content";
+                return null;
             }
         }
     }

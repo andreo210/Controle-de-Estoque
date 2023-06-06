@@ -15,7 +15,8 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
 
         public GrupoProdutoDTO RecuperarPeloId(int id);
 
-        public string Salvar(GrupoProdutoDTO cidadeDTO);
+        public GrupoProdutoDTO Salvar(GrupoProdutoDTO grupoDTO);
+        public GrupoProdutoDTO Alterar(GrupoProdutoDTO grupoDTO);
 
         public string ExcluirPeloId(int id);
 

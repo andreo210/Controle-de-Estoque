@@ -21,27 +21,34 @@ namespace ControleEstoque.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] LocalArmazenamentoDTO localDTO)
         {
-            localArmazenamentoHadlers.Salvar(localDTO);
-            return Ok();
+           var x =  localArmazenamentoHadlers.Salvar(localDTO);
+            return Ok(x);
+        }
+
+        [HttpPut]
+        public IActionResult Alterar([FromBody] LocalArmazenamentoDTO localDTO)
+        {
+            var x = localArmazenamentoHadlers.Alterar(localDTO);
+            return Ok(x);
         }
 
         [HttpGet]
-        public IEnumerable<LocalArmazenamentoDTO> Get()
+        public IActionResult Get()
         {
-            return localArmazenamentoHadlers.RecuperarLista();
+            return Ok(localArmazenamentoHadlers.RecuperarLista());
         }
 
         // GET api/<PessoaFisicaController>/5
         [HttpGet("{id}")]
-        public LocalArmazenamentoDTO Get(int id)
-        { 
-            return localArmazenamentoHadlers.RecuperarPeloId(id);
+        public IActionResult Get(int id)
+        {
+            return Ok(localArmazenamentoHadlers.RecuperarPeloId(id));
         }
 
         [HttpGet("Cont")]
-        public int GetQuantidade()
+        public IActionResult GetQuantidade()
         {
-            return localArmazenamentoHadlers.RecuperarQuantidade();
+            return Ok(localArmazenamentoHadlers.RecuperarQuantidade());
         }
 
         // DELETE api/<PessoaFisicaController>/5
