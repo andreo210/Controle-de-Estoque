@@ -20,11 +20,6 @@ namespace ControleEstoque.Infra.Mapping
             builder.Property(p => p.Id)
                 .ValueGeneratedOnAdd();//auto incremento
 
-            builder.Property(p => p.Nome)
-             .HasMaxLength(60)//define o tamanho da string
-             .IsRequired();//obrigatorio
-
-
             builder.Property(p => p.Ativo)
                 .IsRequired();
 

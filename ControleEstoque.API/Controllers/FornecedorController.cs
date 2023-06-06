@@ -1,5 +1,7 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Handlers.Contato;
 using ControleEstoque.App.Handlers.Fornecedor;
+using ControleEstoque.App.Views;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,17 +15,20 @@ namespace ControleEstoque.API.Controllers
     [ApiController]
     public class FornecedorController : ControllerBase
     {
-        IFornecedorHandlers fornecedorHandlers;
-        public FornecedorController(IFornecedorHandlers _fornecedorHandlers)
+        private readonly IFornecedorHandlers _fornecedorHandlers;
+        private readonly IContatoHandler _contatosHandler;
+
+        public FornecedorController(IFornecedorHandlers fornecedorHandlers, IContatoHandler contatosHandler)
         {
-            this.fornecedorHandlers = _fornecedorHandlers;
+            this._fornecedorHandlers = fornecedorHandlers;
+            this._contatosHandler = contatosHandler;
         }
 
            
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorDTO fornecedorDTO)
         {
-            var x = fornecedorHandlers.Salvar(fornecedorDTO);
+            var x = _fornecedorHandlers.Salvar(fornecedorDTO);
             if (x != null)
             {
                 return Ok(x);
@@ -35,16 +40,16 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<FornecedorDTO> Get()
+        public IEnumerable<FornecedorView> Get()
         {
-            return fornecedorHandlers.RecuperarLista();
+            return _fornecedorHandlers.RecuperarLista();
         }
 
    
         [HttpGet("{id}")]
         public  IActionResult Get(int id)
         {
-            var x = fornecedorHandlers.RecuperarPeloId(id);
+            var x = _fornecedorHandlers.RecuperarPeloId(id);
             if (x!=null)
             {
                 return Ok(x);
@@ -66,12 +71,12 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("Cont")]
         public int GetQuantidade()
         {
-            return fornecedorHandlers.RecuperarQuantidade();
+            return _fornecedorHandlers.RecuperarQuantidade();
         }
         [HttpPut]
         public IActionResult Alterar(FornecedorDTO fornecedorDTO)
         {
-            var x = fornecedorHandlers.Alterar(fornecedorDTO);
+            var x = _fornecedorHandlers.Alterar(fornecedorDTO);
             if (x=="OK")
             {
                 return Ok(fornecedorDTO);
@@ -86,7 +91,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult Delete(int id)
         {
             
-                var x = fornecedorHandlers.ExcluirPeloId(id);
+                var x = _fornecedorHandlers.ExcluirPeloId(id);
 
                 if (x == "OK")
                 {

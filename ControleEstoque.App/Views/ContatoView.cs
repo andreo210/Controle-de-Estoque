@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleEstoque.App.Dtos
+namespace ControleEstoque.App.Views
 {
-    public class ContatosDTO
+    public class ContatoView
     {
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -19,18 +19,17 @@ namespace ControleEstoque.App.Dtos
         public int TipoContatoId { get; set; }
         public int FornecedorID { get; set; }
 
-        public ContatosDTO(ContatoEntity contatoEntity)
+        public ContatoView(ContatoEntity contatoEntity)
         {
             this.Id = contatoEntity.Id;
             this.Ativo = contatoEntity.Ativo;
             this.CodigoPais = contatoEntity.CodigoPais;
             this.DDD = contatoEntity.DDD;
             this.Numero = contatoEntity.Numero;
-            this.Nome = contatoEntity.Nome;
             this.TipoContatoId = contatoEntity.TipoContatoId;
             this.FornecedorID = contatoEntity.IdFornecedor;
         }
-        public ContatosDTO()
+        public ContatoView()
         {
 
         }
@@ -39,7 +38,6 @@ namespace ControleEstoque.App.Dtos
             return new ContatoEntity()
             {
                 Id = this.Id,
-                Nome = this.Nome,
                 Numero = this.Numero,
                 DDD = this.DDD,
                 CodigoPais = this.CodigoPais,
@@ -49,6 +47,5 @@ namespace ControleEstoque.App.Dtos
 
             };
         }
-
     }
 }

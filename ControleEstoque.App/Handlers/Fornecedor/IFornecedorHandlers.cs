@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,14 @@ namespace ControleEstoque.App.Handlers.Fornecedor
     {
         public int RecuperarQuantidade();
 
-        public List<FornecedorDTO> RecuperarLista();
+        public IEnumerable<FornecedorView> RecuperarLista();
 
-        public FornecedorDTO RecuperarPeloId(int id);
+        public FornecedorView RecuperarPeloId(int id);
 
         public FornecedorDTO Salvar(FornecedorDTO fornecedorDTO);
 
         public string ExcluirPeloId(int id);
-        public string Alterar(FornecedorDTO fornecedorDTO);
+        public string Alterar(FornecedorDTO fornecedor);
 
     }
 }

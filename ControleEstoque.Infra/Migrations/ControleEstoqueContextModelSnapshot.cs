@@ -42,11 +42,6 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<int>("IdFornecedor")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
                     b.Property<string>("Numero")
                         .IsRequired()
                         .HasMaxLength(9)
@@ -95,7 +90,7 @@ namespace ControleEstoque.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("IdFornecedor")
+                    b.Property<int?>("IdFornecedor")
                         .HasColumnType("int");
 
                     b.Property<string>("Logradouro")
@@ -116,7 +111,8 @@ namespace ControleEstoque.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdFornecedor")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[IdFornecedor] IS NOT NULL");
 
                     b.ToTable("tbEndereco");
                 });
@@ -578,9 +574,7 @@ namespace ControleEstoque.Infra.Migrations
                 {
                     b.HasOne("ControleEstoque.Domain.Entidades.FornecedorEntity", "Fornecedor")
                         .WithOne("Endereco")
-                        .HasForeignKey("ControleEstoque.Domain.Entidades.EnderecoEntity", "IdFornecedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ControleEstoque.Domain.Entidades.EnderecoEntity", "IdFornecedor");
 
                     b.Navigation("Fornecedor");
                 });

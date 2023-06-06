@@ -9,6 +9,7 @@ namespace ControleEstoque.Domain.Repository
 {
    public  interface IFornecedorRepository : IGlobalRepository<FornecedorEntity>
     {
-        
+        public List<FornecedorEntity> BuscarFornecedores();
+        public FornecedorEntity BuscarFornecedoresPorID(int id);
     }
 }
