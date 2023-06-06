@@ -11,7 +11,7 @@ namespace ControleEstoque.API.Controllers
     [Route("api/[controller]")]
     [ApiController]
     public class LocalArmazenamentoController : ControllerBase
-    {
+    { //
         ILocalArmazenamentoHandlers localArmazenamentoHadlers;
         public LocalArmazenamentoController(ILocalArmazenamentoHandlers _localArmazenamentoHadlers)
         {
