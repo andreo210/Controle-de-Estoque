@@ -18,7 +18,7 @@ namespace ControleEstoque.Domain.Entidades
         public string Pais { get; set; }
         public bool Ativo { get; set; }
 
-        public int IdFornecedor { get; set; }
+        public int? IdFornecedor { get; set; }
         public FornecedorEntity Fornecedor { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Views;
 using ControleEstoque.Domain.Repository;
 using ControleEstoque.Infra.Data;
 using Microsoft.EntityFrameworkCore;
@@ -15,12 +16,17 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         
         private readonly ControleEstoqueContext context;
 
-        IFornecedorRepository fornecedorRepository;
+        private readonly IFornecedorRepository fornecedorRepository;
+        private readonly IContatoRepository contatoRepository;
+        private readonly IEnderecoRepository enderecoRepository;
 
-        public FornecedorHandlers(IFornecedorRepository _fornecedorRepository, ControleEstoqueContext _context)
+
+        public FornecedorHandlers(IFornecedorRepository _fornecedorRepository, ControleEstoqueContext _context, IContatoRepository _contatoRepository, IEnderecoRepository _enderecoRepository)
         {
             fornecedorRepository = _fornecedorRepository;
             context = _context;
+            contatoRepository = _contatoRepository;
+            enderecoRepository = _enderecoRepository;
 
         }
         public string ExcluirPeloId(int id)
@@ -46,23 +52,26 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         }
 
 
-        public List<FornecedorDTO> RecuperarLista()
+        public IEnumerable<FornecedorView> RecuperarLista()
         {
             try
-            {
-                return fornecedorRepository.Get().Select(x => new FornecedorDTO(x)).ToList();
+             {
+                var todos = fornecedorRepository.BuscarFornecedores();
+                 var x=  todos.Select(x => new FornecedorView(x)).ToList();
+                return x;
+
             }catch(Exception e)
             {
                 throw;
             }
         }
 
-        public FornecedorDTO RecuperarPeloId(int id)
+        public FornecedorView RecuperarPeloId(int id)
         {
             try
             {
-                var retorno = fornecedorRepository.GetByID(id);
-                return retorno != null ? new FornecedorDTO(retorno) : null;
+                var retorno = fornecedorRepository.BuscarFornecedoresPorID(id);
+                return retorno != null ? new FornecedorView(retorno) : null;
             }catch(Exception e)
             {
                 throw;
@@ -87,24 +96,36 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         {
             try
             {
-                var x = fornecedorRepository.Insert(fornecedorDTO.retornoFornecedorEntity());
+                //inseri o fornecedor
+                var x = fornecedorRepository.Insert(fornecedorDTO);
                 return new FornecedorDTO(x);
+
             }catch(Exception e)
             {
                 throw ;
             }
         }
 
-        public string Alterar(FornecedorDTO fornecedorDTO)
+        public string Alterar(FornecedorDTO fornecedor)
         {
             try
             {
-                var model = context.Fornecedor.AsNoTracking().FirstOrDefault(x => x.Id == fornecedorDTO.Id);
-
+                var model = context.Fornecedor.AsNoTracking().Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == fornecedor.Id);
+                var contato = context.Contato.AsNoTracking().FirstOrDefault(x => x.Id == model.Contato.Id);
+                var endereco = context.Endereco.AsNoTracking().FirstOrDefault(x => x.Id == model.Endereco.Id);
+                model = fornecedor;
+                contato = fornecedor.Contato.retornoContatoEntity();
+                endereco = fornecedor.Endereco.retornoEnderecoEntity();
                 if (model != null)
                 {
-                    fornecedorRepository.Update(fornecedorDTO.retornoFornecedorEntity());
-                    fornecedorRepository.Save();
+
+                    context.Entry(model).State = EntityState.Modified;
+                    context.Entry(contato).State = EntityState.Modified;
+                    context.Entry(endereco).State = EntityState.Modified;
+
+                    context.Update(contato);
+                    context.Update(endereco);
+                    context.SaveChanges();
                     return "OK";
                 }
                 else
@@ -118,6 +139,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             }
         }
 
+        
     }
 
     

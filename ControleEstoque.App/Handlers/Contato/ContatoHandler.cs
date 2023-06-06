@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Views;
 using ControleEstoque.Domain.Repository;
 using System;
 using System.Collections.Generic;
@@ -11,16 +12,27 @@ namespace ControleEstoque.App.Handlers.Contato
     public class ContatoHandler : IContatoHandler
     {
         private readonly IContatoRepository _contato;
+        private readonly IFornecedorRepository _fornecedor;
 
-        public ContatoHandler(IContatoRepository contato)
+        public ContatoHandler(IContatoRepository contato, IFornecedorRepository fornecedor)
         {
             _contato = contato;
+            _fornecedor = fornecedor;
 
         }
 
-        public List<ContatosDTO> RecuperarLista()
+        public List<ContatoView> RecuperarLista()
         {
-            return _contato.Get().Select(x => new ContatosDTO(x)).ToList();
+            var x = _contato.Get().Select(x => new ContatoView(x)).ToList();
+            var lista = new List<ContatoView>();
+            foreach (var todos in x)
+            {
+                var fornecedor = _fornecedor.GetByID(todos.FornecedorID);
+                todos.Nome = fornecedor.Nome;
+                lista.Add(todos);
+
+            }
+            return lista;
         }
 
 

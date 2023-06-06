@@ -1,5 +1,6 @@
 ﻿using ControleEstoque.Domain.Entidades;
 using ControleEstoque.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,12 +11,23 @@ namespace ControleEstoque.Infra.Data
 {
 	public class FornecedorRepository : GlobalRepository<FornecedorEntity>, IFornecedorRepository
 	{
-		
+		private readonly ControleEstoqueContext _dbContext;
 		public FornecedorRepository(ControleEstoqueContext dbContext) : base(dbContext)
 		{
-			
+			_dbContext = dbContext;
 		}
 
-		
+		public List<FornecedorEntity> BuscarFornecedores()
+        {
+			return  _dbContext.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).ToList();
+
+		}
+
+		public FornecedorEntity BuscarFornecedoresPorID(int id)
+		{
+			return _dbContext.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x=>x.Id == id);
+
+		}
+
 	}
 }

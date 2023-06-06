@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(ControleEstoqueContext))]
-    [Migration("20230527175237_primeira")]
+    [Migration("20230604103531_primeira")]
     partial class primeira
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,11 +44,6 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<int>("IdFornecedor")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasMaxLength(60)
-                        .HasColumnType("nvarchar(60)");
-
                     b.Property<string>("Numero")
                         .IsRequired()
                         .HasMaxLength(9)
@@ -62,8 +57,7 @@ namespace ControleEstoque.Infra.Migrations
                     b.HasIndex("IdFornecedor")
                         .IsUnique();
 
-                    b.HasIndex("TipoContatoId")
-                        .IsUnique();
+                    b.HasIndex("TipoContatoId");
 
                     b.ToTable("tbContato");
                 });
@@ -98,7 +92,7 @@ namespace ControleEstoque.Infra.Migrations
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int>("IdFornecedor")
+                    b.Property<int?>("IdFornecedor")
                         .HasColumnType("int");
 
                     b.Property<string>("Logradouro")
@@ -119,7 +113,8 @@ namespace ControleEstoque.Infra.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("IdFornecedor")
-                        .IsUnique();
+                        .IsUnique()
+                        .HasFilter("[IdFornecedor] IS NOT NULL");
 
                     b.ToTable("tbEndereco");
                 });
@@ -167,37 +162,35 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
-                    b.Property<int>("ContatoId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("EnderecoId")
-                        .HasColumnType("int");
+                    b.Property<string>("Email")
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)")
+                        .HasColumnName("Email");
 
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)")
-                        .HasColumnName("nome");
+                        .HasColumnName("Nome");
 
                     b.Property<string>("NumDocumento")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
-                        .HasColumnName("num_documento");
+                        .HasColumnName("Num_documento");
 
                     b.Property<string>("RazaoSocial")
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)")
-                        .HasColumnName("razao_social");
+                        .HasColumnName("Razao_social");
 
-                    b.Property<int>("TipoPessoaId")
+                    b.Property<int>("TipoFornecedorId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TipoPessoaId")
-                        .IsUnique();
+                    b.HasIndex("TipoFornecedorId");
 
-                    b.ToTable("fornecedor");
+                    b.ToTable("tbFornecedor");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.GrupoProdutoEntity", b =>
@@ -451,7 +444,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TipoContatos");
+                    b.ToTable("tbTipoContato");
 
                     b.HasData(
                         new
@@ -477,7 +470,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PessoaEntities");
+                    b.ToTable("tbTipoFornecedor");
 
                     b.HasData(
                         new
@@ -569,8 +562,8 @@ namespace ControleEstoque.Infra.Migrations
                         .IsRequired();
 
                     b.HasOne("ControleEstoque.Domain.Entidades.Tipo.TipoContatoEntity", "TipoContato")
-                        .WithOne("Contato")
-                        .HasForeignKey("ControleEstoque.Domain.Entidades.ContatoEntity", "TipoContatoId")
+                        .WithMany("Contato")
+                        .HasForeignKey("TipoContatoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -583,9 +576,7 @@ namespace ControleEstoque.Infra.Migrations
                 {
                     b.HasOne("ControleEstoque.Domain.Entidades.FornecedorEntity", "Fornecedor")
                         .WithOne("Endereco")
-                        .HasForeignKey("ControleEstoque.Domain.Entidades.EnderecoEntity", "IdFornecedor")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ControleEstoque.Domain.Entidades.EnderecoEntity", "IdFornecedor");
 
                     b.Navigation("Fornecedor");
                 });
@@ -604,8 +595,8 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.FornecedorEntity", b =>
                 {
                     b.HasOne("ControleEstoque.Domain.Entidades.Tipo.TipoPessoaEntity", "TipoPessoa")
-                        .WithOne("Fornecedor")
-                        .HasForeignKey("ControleEstoque.Domain.Entidades.FornecedorEntity", "TipoPessoaId")
+                        .WithMany("Fornecedor")
+                        .HasForeignKey("TipoFornecedorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

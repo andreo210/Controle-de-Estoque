@@ -9,5 +9,6 @@ namespace ControleEstoque.Domain.Repository
 {
     public interface IContatoRepository : IGlobalRepository<ContatoEntity>
     {
+        public ContatoEntity buscarContato(int idFornecedor);
     }
 }
