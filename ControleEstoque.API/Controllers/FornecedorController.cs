@@ -1,5 +1,6 @@
 ﻿using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.Contato;
+using ControleEstoque.App.Handlers.Endereço;
 using ControleEstoque.App.Handlers.Fornecedor;
 using ControleEstoque.App.Views;
 using Microsoft.AspNetCore.Http;
@@ -17,11 +18,13 @@ namespace ControleEstoque.API.Controllers
     {
         private readonly IFornecedorHandlers _fornecedorHandlers;
         private readonly IContatoHandler _contatosHandler;
+        private readonly IEnderecoHandler enderecoHandler;
 
-        public FornecedorController(IFornecedorHandlers fornecedorHandlers, IContatoHandler contatosHandler)
+        public FornecedorController(IFornecedorHandlers fornecedorHandlers, IContatoHandler contatosHandler, IEnderecoHandler enderecoHandler)
         {
             this._fornecedorHandlers = fornecedorHandlers;
             this._contatosHandler = contatosHandler;
+            this.enderecoHandler = enderecoHandler;
         }
 
            
@@ -38,14 +41,42 @@ namespace ControleEstoque.API.Controllers
                 return BadRequest();
             }
         }
-
+        //tras todos os fornecedores
         [HttpGet]
-        public IEnumerable<FornecedorView> Get()
+        public IActionResult Get()
         {
-            return _fornecedorHandlers.RecuperarLista();
+            return Ok( _fornecedorHandlers.RecuperarLista());
         }
 
-   
+        //tras todos os contatos dos fornecedores
+        [HttpGet("Contato/Listar")]
+        public IActionResult GetContatos()
+        {
+            return Ok( _contatosHandler.RecuperarLista());
+        }
+
+        //tras o contato dos fornecedor com Id
+        [HttpGet("Contato/{id}")]
+        public IActionResult GetContatos(int id)
+        {
+            return Ok( _contatosHandler.FindByID(id));
+        }
+
+        //tras todos os endereco dos fornecedores
+        [HttpGet("Endereco/Listar")]
+        public IEnumerable<EnderecoView> GetEndereco()
+        {
+            return enderecoHandler.RecuperarLista();
+        }
+
+        //tras o endereco dos fornecedor com Id
+        [HttpGet("Endereco/{id}")]
+        public IActionResult GetEndereco(int id)
+        {
+            return Ok(enderecoHandler.FindByID(id));
+        }
+
+
         [HttpGet("{id}")]
         public  IActionResult Get(int id)
         {
@@ -68,11 +99,14 @@ namespace ControleEstoque.API.Controllers
             }
         }
 
+        //retorna a quantidade de fornecedor
         [HttpGet("Cont")]
-        public int GetQuantidade()
+        public IActionResult GetQuantidade()
         {
-            return _fornecedorHandlers.RecuperarQuantidade();
+            return Ok( _fornecedorHandlers.RecuperarQuantidade());
         }
+
+
         [HttpPut]
         public IActionResult Alterar(FornecedorDTO fornecedorDTO)
         {
@@ -88,8 +122,7 @@ namespace ControleEstoque.API.Controllers
         }
 
           [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
-        {
+        public IActionResult Delete(int id)        {
             
                 var x = _fornecedorHandlers.ExcluirPeloId(id);
 

@@ -23,23 +23,29 @@ namespace ControleEstoque.App.Handlers.Contato
 
         public List<ContatoView> RecuperarLista()
         {
-            var x = _contato.Get().Select(x => new ContatoView(x)).ToList();
-            var lista = new List<ContatoView>();
-            foreach (var todos in x)
+            try
             {
-                var fornecedor = _fornecedor.GetByID(todos.FornecedorID);
-                todos.Nome = fornecedor.Nome;
-                lista.Add(todos);
+                var lista = _contato.Get().Select(x => new ContatoView(x)).ToList();
+                return lista;
 
+            }catch(Exception e)
+            {
+                throw;
             }
-            return lista;
         }
 
 
-        public ContatosDTO FindByID(int id)
+        public ContatoView FindByID(int id)
         {
-            var retorno = _contato.GetByID(id);
-            return retorno != null ? new ContatosDTO(retorno) : null;
+            try
+            {
+                var retorno = _contato.GetByID(id);
+                return retorno != null ? new ContatoView(retorno) : null;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
         public ContatosDTO Salvar(ContatosDTO contatoDTO)
         {

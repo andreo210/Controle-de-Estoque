@@ -21,28 +21,34 @@ namespace ControleEstoque.API.Controllers
         // POST api/<PessoaFisicaController>
         [HttpPost]
         public IActionResult Post([FromBody] GrupoProdutoDTO grupoDTO)
+        { 
+            return Ok(grupoHandler.Salvar(grupoDTO));
+        }
+
+        [HttpPut]
+        public IActionResult Alterar([FromBody] GrupoProdutoDTO grupoDTO)
         {
-            grupoHandler.Salvar(grupoDTO);
-            return Ok();
+            grupoHandler.Alterar(grupoDTO);
+            return Ok(grupoDTO);
         }
 
         [HttpGet]
-        public IEnumerable<GrupoProdutoDTO> Get()
+        public IActionResult Get()
         {
-            return grupoHandler.RecuperarLista();
+            return Ok( grupoHandler.RecuperarLista());
         }
 
         // GET api/<PessoaFisicaController>/5
         [HttpGet("{id}")]
-        public GrupoProdutoDTO Get(int id)
+        public IActionResult Get(int id)
         {
-            return grupoHandler.RecuperarPeloId(id);
+            return Ok( grupoHandler.RecuperarPeloId(id));
         }
 
         [HttpGet("Cont")]
-        public int GetQuantidade()
+        public IActionResult GetQuantidade()
         {
-            return grupoHandler.RecuperarQuantidade();
+            return Ok( grupoHandler.RecuperarQuantidade());
         }
 
         // DELETE api/<PessoaFisicaController>/5
@@ -50,7 +56,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult Delete(int id)
         {
             grupoHandler.ExcluirPeloId(id);
-            return Ok();
+            return Ok("Grupo de Produto com id : "+id+ " foi excluido com sucesso");
         }
     }
 }

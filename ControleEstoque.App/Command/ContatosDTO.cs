@@ -9,7 +9,7 @@ namespace ControleEstoque.App.Dtos
 {
     public class ContatosDTO
     {
-        public int Id { get; set; }
+        //public int Id { get; set; }
         public string Numero { get; set; }
         public string DDD { get; set; }
         public string CodigoPais { get; set; }
@@ -20,7 +20,7 @@ namespace ControleEstoque.App.Dtos
 
         public ContatosDTO(ContatoEntity contatoEntity)
         {
-            this.Id = contatoEntity.Id;
+            //this.Id = contatoEntity.Id;
             this.Ativo = contatoEntity.Ativo;
             this.CodigoPais = contatoEntity.CodigoPais;
             this.DDD = contatoEntity.DDD;
@@ -40,7 +40,7 @@ namespace ControleEstoque.App.Dtos
         {
             return new ContatoEntity()
             {
-                Id = this.Id,
+               // Id = this.Id,
                 Numero = this.Numero,
                 DDD = this.DDD,
                 CodigoPais = this.CodigoPais,

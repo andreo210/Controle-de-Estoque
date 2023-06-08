@@ -38,17 +38,18 @@ namespace ControleEstoque.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddProblemDetails(ConfigureProblemDetails);
+            services.AddProblemDetails();
             services.AddControllers();
-            //serviço que injeta o servico de conexão com o banco
-            services.AddSqlServerDbContext<ControleEstoqueContext>(Configuration["ConnectionStrings:CadastroSocialUnicoContext"] ?? "");
 
-            //injetando o serviço do extension do APP
-            
+
+            //serviço que injeta o servico de conexão com o banco
+            services.AddSqlServerDbContext<ControleEstoqueContext>(Configuration["ConnectionStrings:dbControleEstoque"] ?? "");
+
+            //injetando o serviço do extension do APP            
             services.AddApplicationServices();
             services.AddElmah<SqlErrorLog>(options =>
             {
-                options.ConnectionString = "Data Source=DESKTOP-EBTAI3N\\SQLEXPRESS01; Initial Catalog=ElmaCore;Integrated Security=True";
+                options.ConnectionString = Configuration["ConnectionStrings:dbElmahCore"] ?? "";
                 //options.SqlServerDatabaseSchemaName = "Errors"; //Defaults to dbo if not set
                 options.SqlServerDatabaseTableName = "ElmahError"; //Defaults to ELMAH_Error if not set                
 
@@ -84,7 +85,7 @@ namespace ControleEstoque.API
             // app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseElmah();
@@ -93,25 +94,6 @@ namespace ControleEstoque.API
                 endpoints.MapControllers();
             });
         }
-        private void ConfigureProblemDetails(ProblemDetailsOptions options)
-        {
-            // Only include exception details in a development environment. There's really no nee
-            // to set this as it's the default behavior. It's just included here for completeness :)
-           // options.IncludeExceptionDetails = (ctx, ex) => Environment.IsDevelopment();
-
-            // You can configure the middleware to re-throw certain types of exceptions, all exceptions or based on a predicate.
-            // This is useful if you have upstream middleware that needs to do additional handling of exceptions.
-            options.Rethrow<NotSupportedException>();
-
-            // This will map NotImplementedException to the 501 Not Implemented status code.
-            options.MapToStatusCode<NotImplementedException>(StatusCodes.Status501NotImplemented);
-
-            // This will map HttpRequestException to the 503 Service Unavailable status code.
-            options.MapToStatusCode<HttpRequestException>(StatusCodes.Status503ServiceUnavailable);
-
-            // Because exceptions are handled polymorphically, this will act as a "catch all" mapping, which is why it's added last.
-            // If an exception other than NotImplementedException and HttpRequestException is thrown, this will handle it.
-            options.MapToStatusCode<Exception>(StatusCodes.Status500InternalServerError);
-        }
+        
     }
 }

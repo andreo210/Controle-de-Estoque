@@ -18,7 +18,6 @@ namespace ControleEstoque.API.Controllers
             this.inventarioHandler = _inventarioHandler;
         }
 
-        // POST api/<PessoaFisicaController>
         [HttpPost]
         public IActionResult Post([FromBody] InventarioEstoqueDTO inventarioDTO)
         {
@@ -27,25 +26,25 @@ namespace ControleEstoque.API.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<InventarioEstoqueDTO> Get()
+        public IActionResult Get()
         {
-            return inventarioHandler.RecuperarLista();
+            return Ok(inventarioHandler.RecuperarLista());
         }
 
-        // GET api/<PessoaFisicaController>/5
+
         [HttpGet("{id}")]
-        public InventarioEstoqueDTO Get(int id)
+        public IActionResult Get(int id)
         {
-            return inventarioHandler.RecuperarPeloId(id);
+            return Ok( inventarioHandler.RecuperarPeloId(id));
         }
 
         [HttpGet("Cont")]
-        public int GetQuantidade()
+        public IActionResult GetQuantidade()
         {
-            return inventarioHandler.RecuperarQuantidade();
+            return Ok( inventarioHandler.RecuperarQuantidade());
         }
 
-        // DELETE api/<PessoaFisicaController>/5
+  
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
