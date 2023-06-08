@@ -76,8 +76,8 @@ namespace ControleEstoque.API.Controllers
         [HttpPut]
         public IActionResult Alterar(FornecedorDTO fornecedorDTO)
         {
-            var x = _fornecedorHandlers.Alterar(fornecedorDTO);
-            if (x=="OK")
+            var x = _fornecedorHandlers.Alterarfornecedor(fornecedorDTO);
+            if (x!= null)
             {
                 return Ok(fornecedorDTO);
             }

@@ -38,7 +38,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
                 {
                     fornecedorRepository.Delete(id);
                     fornecedorRepository.Save();
-                    return "Ok";
+                    return "OK";
                 }
                 else
                 {
@@ -106,19 +106,9 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             }
         }
 
-        public string Alterar(FornecedorDTO fornecedor)
-        {
-            try
-            {
-                return alterarfornecedor(fornecedor);
-            }
-            catch(Exception e)
-            {
-                throw;
-            }
-        }
+    
 
-        private string alterarfornecedor(FornecedorDTO fornecedor)
+        public FornecedorDTO Alterarfornecedor(FornecedorDTO fornecedor)
         {
             try
             {
@@ -150,11 +140,11 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
 
                     context.SaveChanges();
-                    return "OK";
+                    return new FornecedorDTO(model);
                 }
                 else
                 {
-                    return "Usuario nao encontrado";
+                    return null;
                 }
             }
             catch (Exception e)

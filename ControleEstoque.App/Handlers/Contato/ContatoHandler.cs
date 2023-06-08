@@ -24,14 +24,7 @@ namespace ControleEstoque.App.Handlers.Contato
         public List<ContatoView> RecuperarLista()
         {
             var x = _contato.Get().Select(x => new ContatoView(x)).ToList();
-            var lista = new List<ContatoView>();
-            foreach (var todos in x)
-            {
-                var fornecedor = _fornecedor.GetByID(todos.FornecedorID);
-                todos.Nome = fornecedor.Nome;
-                lista.Add(todos);
-
-            }
+            var lista = new List<ContatoView>();           
             return lista;
         }
 
