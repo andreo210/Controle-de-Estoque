@@ -1,5 +1,6 @@
 ﻿
 using ControleEstoque.App.Handlers.Contato;
+using ControleEstoque.App.Handlers.Endereço;
 using ControleEstoque.App.Handlers.Fornecedor;
 using ControleEstoque.App.Handlers.GrupoProduto;
 using ControleEstoque.App.Handlers.InventarioEstoque;
@@ -25,6 +26,7 @@ namespace ControleEstoque.App.Extentions
             service.AddScoped<ISaidaProdutoHandlers, SaidaProdutoHandlers>();
             service.AddScoped<IProdutoHandlers, ProdutoHandlers>();
             service.AddScoped<IContatoHandler, ContatoHandler>();
+            service.AddScoped<IEnderecoHandler, EnderecoHandler>();
 
             return service;
         }

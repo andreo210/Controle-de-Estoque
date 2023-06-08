@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(ControleEstoqueContext))]
-    [Migration("20230604103531_primeira")]
+    [Migration("20230606121630_primeira")]
     partial class primeira
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

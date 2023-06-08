@@ -138,7 +138,6 @@ namespace ControleEstoque.App.Handlers.Fornecedor
                     model.Endereco.Estado = fornecedor.Endereco.Estado;
                     model.Endereco.Pais = fornecedor.Endereco.Pais;
 
-
                     context.SaveChanges();
                     return new FornecedorDTO(model);
                 }

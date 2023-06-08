@@ -47,21 +47,36 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
 
         }
 
-        public string Salvar(LocalArmazenamentoDTO localDTO)
+        public LocalArmazenamentoDTO Salvar(LocalArmazenamentoDTO localDTO)
+        {
+            try
+            {
+                var x = localRepository.Insert(localDTO.retornoLocalArmazenamento());
+                localRepository.Save();
+                return new LocalArmazenamentoDTO(x);
+            }
+            catch (Exception e)
+            {
+                throw;
+      
+            }
+            
+        }
+
+        public LocalArmazenamentoDTO Alterar(LocalArmazenamentoDTO localDTO)
         {
             var model = context.Set<LocalArmazenamentoEntity>().AsNoTracking().Where(e => e.Id == localDTO.Id).FirstOrDefault();
 
-            if (model == null)
+            if (model != null)
             {
-                localRepository.Insert(localDTO.retornoLocalArmazenamento());
-               localRepository.Save();
-                return "Ok";
+                model.Ativo = localDTO.Ativo;
+                model.Nome = localDTO.Nome;
+                context.SaveChangesAsync();
+                return  new LocalArmazenamentoDTO(model);
             }
             else
-            {
-                localRepository.Update(localDTO.retornoLocalArmazenamento());
-                localRepository.Save();
-                return "No Content";
+            {                
+                return null;
             }
         }
     }
