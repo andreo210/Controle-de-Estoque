@@ -2,7 +2,9 @@
 
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
+	<GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);1591</NoWarn>
+	</PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Service\**" />
@@ -26,6 +28,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ControleEstoque.App\ControleEstoque.App.csproj" />
     <ProjectReference Include="..\ControleEstoque.Infra\ControleEstoque.Infra.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Exception\" />
   </ItemGroup>
 
 </Project>

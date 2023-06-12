@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ControleEstoque.App\ControleEstoque.App.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\Views\" />
+  </ItemGroup>
+
+  <ItemGroup>
+	  <PackageReference Include="ElmahCore" Version="2.1.2" />
+	  <PackageReference Include="ElmahCore.Sql" Version="2.1.2" />
+
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.17">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+</Project>

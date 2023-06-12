@@ -1,5 +1,7 @@
-﻿using ControleEstoque.App.Dtos;
+﻿using ControleEstoque.API.exceptions;
+using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.GrupoProduto;
+using ControleEstoque.App.Views;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -20,43 +22,70 @@ namespace ControleEstoque.API.Controllers
 
         // POST api/<PessoaFisicaController>
         [HttpPost]
-        public IActionResult Post([FromBody] GrupoProdutoDTO grupoDTO)
+        public IActionResult Post([FromBody] GrupoProdutoCommand grupoDTO)
         { 
             return Ok(grupoHandler.Salvar(grupoDTO));
         }
 
         [HttpPut]
-        public IActionResult Alterar([FromBody] GrupoProdutoDTO grupoDTO)
+        public IActionResult Alterar([FromBody] GrupoProdutoView grupoDTO)
         {
-            grupoHandler.Alterar(grupoDTO);
-            return Ok(grupoDTO);
+            var grupo = grupoHandler.Alterar(grupoDTO);
+            if (grupo == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(grupo);
+
+            }
         }
 
-        [HttpGet]
+            [HttpGet]
         public IActionResult Get()
         {
             return Ok( grupoHandler.RecuperarLista());
         }
 
+
         // GET api/<PessoaFisicaController>/5
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            return Ok( grupoHandler.RecuperarPeloId(id));
+            var grupo = grupoHandler.RecuperarPeloId(id);
+
+            if (grupo == null)
+            {
+                return NotFound();
+            }else
+            {
+                return Ok(grupo);
+            }
+            
         }
 
         [HttpGet("Cont")]
         public IActionResult GetQuantidade()
         {
-            return Ok( grupoHandler.RecuperarQuantidade());
+            return Ok(grupoHandler.RecuperarQuantidade());
         }
 
         // DELETE api/<PessoaFisicaController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            grupoHandler.ExcluirPeloId(id);
-            return Ok("Grupo de Produto com id : "+id+ " foi excluido com sucesso");
+
+            var grupo = grupoHandler.ExcluirPeloId(id);
+
+            if (grupo == null)
+            {
+                return NotFound();
+            }
+            else
+            {
+                return Ok(grupo);
+            }
         }
     }
 }

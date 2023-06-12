@@ -49,17 +49,11 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
 
         public LocalArmazenamentoDTO Salvar(LocalArmazenamentoDTO localDTO)
         {
-            try
-            {
+            
                 var x = localRepository.Insert(localDTO.retornoLocalArmazenamento());
                 localRepository.Save();
                 return new LocalArmazenamentoDTO(x);
-            }
-            catch (Exception e)
-            {
-                throw;
-      
-            }
+          
             
         }
 

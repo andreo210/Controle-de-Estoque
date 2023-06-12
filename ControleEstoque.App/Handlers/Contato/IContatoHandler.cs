@@ -12,7 +12,7 @@ namespace ControleEstoque.App.Handlers.Contato
     {
         public List<ContatoView> RecuperarLista();
         public ContatoView FindByID(int id);
-        public ContatosDTO Salvar(ContatosDTO contatoDTO);
-        public string ExcluirPeloId(int id);
+        public ContatosCommand Salvar(ContatosCommand contatoDTO);
+        public void ExcluirPeloId(int id);
     }
 }
