@@ -29,21 +29,13 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             enderecoRepository = _enderecoRepository;
 
         }
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
             try
-            {
-                var x = RecuperarPeloId(id);
-                if (x != null)
-                {
+            {                
                     fornecedorRepository.Delete(id);
-                    fornecedorRepository.Save();
-                    return "OK";
-                }
-                else
-                {
-                    return "fornecedor não encontardo";
-                }
+                    fornecedorRepository.Save();                   
+                            
             }catch(Exception e)
             {
                 throw;
@@ -92,13 +84,13 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         }
 
 
-        public FornecedorDTO Salvar(FornecedorDTO fornecedorDTO)       
+        public FornecedorCommand Salvar(FornecedorCommand fornecedorDTO)       
         {
             try
             {
-                //inseri o fornecedor
+                
                 var x = fornecedorRepository.Insert(fornecedorDTO);
-                return new FornecedorDTO(x);
+                return new FornecedorCommand(x);
 
             }catch(Exception e)
             {
@@ -108,11 +100,11 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
     
 
-        public FornecedorDTO Alterarfornecedor(FornecedorDTO fornecedor)
+        public FornecedorCommand Alterarfornecedor(int id,FornecedorCommand fornecedor)
         {
             try
             {
-                var model = context.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == fornecedor.Id);
+                var model = context.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == id);
 
                 if (model != null)
                 {
@@ -139,7 +131,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
                     model.Endereco.Pais = fornecedor.Endereco.Pais;
 
                     context.SaveChanges();
-                    return new FornecedorDTO(model);
+                    return new FornecedorCommand(model);
                 }
                 else
                 {

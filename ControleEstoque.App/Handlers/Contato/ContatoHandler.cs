@@ -47,22 +47,22 @@ namespace ControleEstoque.App.Handlers.Contato
                 throw;
             }
         }
-        public ContatosDTO Salvar(ContatosDTO contatoDTO)
+        public ContatosCommand Salvar(ContatosCommand contatoDTO)
         {
             var x = _contato.Insert(contatoDTO.retornoContatoEntity());
-            return new ContatosDTO(x);
+            return new ContatosCommand(x);
         }
 
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
             try
             {
                 _contato.Delete(id);
                 _contato.Save();
-                return "OK";
-            }catch(Exception e)
+            }
+            catch(Exception e)
             {
-                return "ERROR";
+                throw;
             }
 
         }

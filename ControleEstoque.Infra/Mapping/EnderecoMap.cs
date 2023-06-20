@@ -52,7 +52,8 @@ namespace ControleEstoque.Infra.Mapping
 
             builder.HasOne(p => p.Fornecedor)
               .WithOne(p => p.Endereco)
-              .HasForeignKey<EnderecoEntity>(p => p.IdFornecedor);
+              .HasForeignKey<EnderecoEntity>(p => p.IdFornecedor)
+              .OnDelete(DeleteBehavior.Cascade); 
 
         }
     }

@@ -25,6 +25,8 @@ namespace ControleEstoque.Infra.Data
         : base(options)
         {
         }
+
+
         //DBSET CRIA AS TABELAS
         //as classes são adicionadas como propriedades ao DbContexte são mapeadas por padrão para tabelas de banco de dados
         public DbSet<FornecedorEntity> Fornecedor { get; set; }
@@ -39,7 +41,7 @@ namespace ControleEstoque.Infra.Data
         public DbSet<UnidadeMedidaEntity> UnidadeMedida { get; set; }
         public DbSet<UsuarioEntity> Usuario { get; set; }
         public DbSet<ContatoEntity> Contato { get; set; }
-        public DbSet<EnderecoEntity> Endereco{ get; set; }
+        public DbSet<EnderecoEntity> Endereco { get; set; }
         public DbSet<TipoContatoEntity> TipoContatos { get; set; }
         public DbSet<TipoPessoaEntity> PessoaEntities { get; set; }
 

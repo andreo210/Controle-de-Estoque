@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Views;
 using ControleEstoque.Domain.Entidades;
 using ControleEstoque.Domain.Repository;
 using ControleEstoque.Infra.Data;
@@ -23,13 +24,21 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
             context = _context;
 
         }
-        public string ExcluirPeloId(int id)
-        {
+        public GrupoProdutoView ExcluirPeloId(int id)
+        {            
             try
             {
-                grupoRepository.Delete(id);
-                grupoRepository.Save();
-                return "Ok";
+                var grupo = RecuperarPeloId(id);
+                if(grupo == null)
+                {
+                    return null;
+                }else
+                {
+                    grupoRepository.Delete(id);
+                    grupoRepository.Save();
+                    return grupo;
+                }                
+
             }catch(Exception e)
             {
                 throw;
@@ -37,17 +46,18 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
 
         }
 
-        public List<GrupoProdutoDTO> RecuperarLista()
+        public List<GrupoProdutoView> RecuperarLista()
         {
-            return grupoRepository.Get().Select(x => new GrupoProdutoDTO(x)).ToList();
+            return grupoRepository.Get().Select(x => new GrupoProdutoView(x)).ToList();
         }
 
-        public GrupoProdutoDTO RecuperarPeloId(int id)
+
+        public GrupoProdutoView RecuperarPeloId(int id)
         {
             var retorno = grupoRepository.GetByID(id);
             if (retorno != null)
             {
-                return new GrupoProdutoDTO(retorno);
+                return new GrupoProdutoView(retorno);
             }
             else
             {
@@ -55,40 +65,40 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
             }
         }
 
+
         public int RecuperarQuantidade()
         {
             return grupoRepository.Get().Count();
         }
 
 
-        public GrupoProdutoDTO Salvar(GrupoProdutoDTO grupoDTO)
+        public GrupoProdutoView Salvar(GrupoProdutoCommand grupoDTO)
         {
             try
             {
-                var x =  grupoRepository.Insert(grupoDTO.retornoGrupoProdutoEntity());
+                var grupoEntity =  grupoRepository.Insert(grupoDTO.retornoGrupoProdutoEntity());
                 grupoRepository.Save();
-                return new GrupoProdutoDTO(x);
+                return new GrupoProdutoView(grupoEntity);
             }
             catch(Exception e)
             {
                 throw;
-            }
-            
-          
-            
+            }         
         }
 
-        public GrupoProdutoDTO Alterar (GrupoProdutoDTO grupoDTO)
+
+        public GrupoProdutoView Alterar (GrupoProdutoView grupo)
         {
 
-            var model = context.GrupoProduto.FirstOrDefault(e => e.Id == grupoDTO.Id);
+            var model = context.GrupoProduto.FirstOrDefault(x=>x.Id == grupo.Id);
 
             if (model != null)
             {             
-                model.Ativo = grupoDTO.Ativo;
-                model.Nome = grupoDTO.Nome;
-                context.SaveChangesAsync();
-                return grupoDTO;
+                model.Ativo = grupo.Ativo;
+                model.Nome = grupo.Nome;
+                context.GrupoProduto.Update(model);
+                context.SaveChanges();
+                return  new GrupoProdutoView(model);
             }
             else
             {

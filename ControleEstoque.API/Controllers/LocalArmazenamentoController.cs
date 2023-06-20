@@ -1,4 +1,5 @@
-﻿using ControleEstoque.App.Dtos;
+﻿using ControleEstoque.API.exceptions;
+using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.LocalArmazenamento;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -21,8 +22,10 @@ namespace ControleEstoque.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] LocalArmazenamentoDTO localDTO)
         {
-           var x =  localArmazenamentoHadlers.Salvar(localDTO);
-            return Ok(x);
+            
+                var x = localArmazenamentoHadlers.Salvar(localDTO);
+                return Ok(x);
+           
         }
 
         [HttpPut]

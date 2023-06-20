@@ -7,9 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleEstoque.Domain", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleEstoque.Infra", "ControleEstoque.Infra\ControleEstoque.Infra.csproj", "{12F96FE8-E11A-4288-B045-58531F503F02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleEstoque.App", "ControleEstoque.App\ControleEstoque.App.csproj", "{DDA36375-2D12-417D-894C-DED00AB0C0A1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleEstoque.App", "ControleEstoque.App\ControleEstoque.App.csproj", "{DDA36375-2D12-417D-894C-DED00AB0C0A1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleEstoque.API", "ControleEstoque.API\ControleEstoque.API.csproj", "{64DA756F-D568-4331-B192-934676429E5F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleEstoque.API", "ControleEstoque.API\ControleEstoque.API.csproj", "{64DA756F-D568-4331-B192-934676429E5F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleEstoque.Site", "ControleEstoque.Site\ControleEstoque.Site.csproj", "{E9680BF2-7BE2-434E-96EA-EB259FA38728}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{64DA756F-D568-4331-B192-934676429E5F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64DA756F-D568-4331-B192-934676429E5F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64DA756F-D568-4331-B192-934676429E5F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E9680BF2-7BE2-434E-96EA-EB259FA38728}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E9680BF2-7BE2-434E-96EA-EB259FA38728}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E9680BF2-7BE2-434E-96EA-EB259FA38728}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E9680BF2-7BE2-434E-96EA-EB259FA38728}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

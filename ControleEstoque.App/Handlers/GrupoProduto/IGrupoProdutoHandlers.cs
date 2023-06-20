@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,14 +12,14 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
     {
         public int RecuperarQuantidade();
 
-        public List<GrupoProdutoDTO> RecuperarLista();
+        public List<GrupoProdutoView> RecuperarLista();
 
-        public GrupoProdutoDTO RecuperarPeloId(int id);
+        public GrupoProdutoView RecuperarPeloId(int id);
 
-        public GrupoProdutoDTO Salvar(GrupoProdutoDTO grupoDTO);
-        public GrupoProdutoDTO Alterar(GrupoProdutoDTO grupoDTO);
+        public GrupoProdutoView Salvar(GrupoProdutoCommand grupoDTO);
+        public GrupoProdutoView Alterar(GrupoProdutoView grupoDTO);
 
-        public string ExcluirPeloId(int id);
+        public GrupoProdutoView ExcluirPeloId(int id);
 
     }
 }
