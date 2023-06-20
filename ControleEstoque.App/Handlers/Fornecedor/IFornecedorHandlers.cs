@@ -19,7 +19,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         public FornecedorCommand Salvar(FornecedorCommand fornecedorDTO);
 
         public void ExcluirPeloId(int id);
-        public FornecedorCommand Alterarfornecedor(FornecedorCommand fornecedor);
+        public FornecedorCommand Alterarfornecedor(int id, FornecedorCommand fornecedor);
 
     }
 }

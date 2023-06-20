@@ -100,11 +100,11 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
     
 
-        public FornecedorCommand Alterarfornecedor(FornecedorCommand fornecedor)
+        public FornecedorCommand Alterarfornecedor(int id,FornecedorCommand fornecedor)
         {
             try
             {
-                var model = context.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == fornecedor.Id);
+                var model = context.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == id);
 
                 if (model != null)
                 {
