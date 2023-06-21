@@ -23,22 +23,21 @@ namespace ControleEstoque.App.Handlers.InventarioEstoque
             inventarioRepository = _inventarioRepository;
             context = _context;
         }
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
             inventarioRepository.Delete(id);
-            inventarioRepository.Save();
-            return "ok";
+            inventarioRepository.Save();            
         }
 
-        public List<InventarioEstoqueDTO> RecuperarLista()
+        public List<InventarioEstoqueView> RecuperarLista()
         {
-            return inventarioRepository.Get().Select(x => new InventarioEstoqueDTO(x)).ToList();
+            return inventarioRepository.Get().Select(x => new InventarioEstoqueView(x)).ToList();
         }
 
-        public InventarioEstoqueDTO RecuperarPeloId(int id)
+        public InventarioEstoqueView RecuperarPeloId(int id)
         {
             var retorno = inventarioRepository.GetByID(id);
-            return retorno != null ? new InventarioEstoqueDTO(retorno) : null;
+            return retorno != null ? new InventarioEstoqueView(retorno) : null;
         }
 
         public int RecuperarQuantidade()
@@ -46,22 +45,44 @@ namespace ControleEstoque.App.Handlers.InventarioEstoque
             return inventarioRepository.Get().Count();
         }
 
-        public string Salvar(InventarioEstoqueDTO inventarioDTO)
+        public InventarioEstoqueView Salvar(InventarioEstoqueCommand inventario)
         {
-            var model = context.Set<InventarioEstoqueEntity>().AsNoTracking().Where(e => e.Id == inventarioDTO.Id).FirstOrDefault();
-
-            if (model == null)
+            try
             {
-                inventarioRepository.Insert(inventarioDTO.retornoInventarioEstoque());
+                var x = inventarioRepository.Insert(inventario.retornoInventarioEstoque());
                 inventarioRepository.Save();
-                return "Ok";
+                return new InventarioEstoqueView(x);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
+        }
+      
+
+
+        public InventarioEstoqueView Alterar(int id, InventarioEstoqueCommand inventario)
+        {
+
+            var model = context.InventarioEstoque.FirstOrDefault(x => x.Id == id);
+
+            if (model != null)
+            {
+                model.Data = inventario.Data;
+                model.IdProduto = inventario.IdProduto;
+                model.Motivo = inventario.Motivo;
+                model.QuantidadeEstoque = inventario.QuantidadeEstoque;
+                model.QuantidadeInventario = inventario.QuantidadeInventario;
+                context.InventarioEstoque.Update(model);
+                context.SaveChanges();
+                return new InventarioEstoqueView(model);
             }
             else
             {
-                inventarioRepository.Update(inventarioDTO.retornoInventarioEstoque());
-                inventarioRepository.Save();
-                return "No Content";
+                return null;
             }
         }
+
     }
 }

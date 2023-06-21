@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Dtos
 {
     public class EnderecoCommand
-    {
-       // public int Id { get; set; }
+    {       
         public string? Logradouro { get; set; }
         public string? CEP { get; set; }
         public string? Numero { get; set; }
@@ -18,11 +18,12 @@ namespace ControleEstoque.App.Dtos
         public string? Estado { get; set; }
         public string? Pais { get; set; }
         public bool Ativo { get; set; }
+
+        [JsonIgnore]
         public int? FornecedorID { get; set; }
 
         public EnderecoCommand(EnderecoEntity enderecoEntity)
         {
-           // this.Id = enderecoEntity.Id;
             this.Ativo = enderecoEntity.Ativo;
             this.Logradouro = enderecoEntity.Logradouro;
             this.Bairro = enderecoEntity.Bairro;
@@ -41,10 +42,9 @@ namespace ControleEstoque.App.Dtos
         {
             return new EnderecoEntity()
             {
-               // Id = this.Id,
                 Bairro = this.Bairro,
                 CEP = this.Numero,
-               Cidade = this.Cidade,
+                Cidade = this.Cidade,
                 Estado = this.Estado,
                 Pais = this.Pais,
                 IdFornecedor = FornecedorID,

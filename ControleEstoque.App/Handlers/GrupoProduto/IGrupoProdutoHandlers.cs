@@ -17,7 +17,7 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
         public GrupoProdutoView RecuperarPeloId(int id);
 
         public GrupoProdutoView Salvar(GrupoProdutoCommand grupoDTO);
-        public GrupoProdutoView Alterar(GrupoProdutoView grupoDTO);
+        public GrupoProdutoView Alterar(int id, GrupoProdutoCommand grupo);
 
         public GrupoProdutoView ExcluirPeloId(int id);
 

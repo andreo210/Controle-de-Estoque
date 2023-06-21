@@ -84,13 +84,13 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         }
 
 
-        public FornecedorCommand Salvar(FornecedorCommand fornecedorDTO)       
+        public FornecedorView Salvar(FornecedorCommand fornecedorDTO)       
         {
             try
             {
                 
                 var x = fornecedorRepository.Insert(fornecedorDTO);
-                return new FornecedorCommand(x);
+                return new FornecedorView(x);
 
             }catch(Exception e)
             {
@@ -100,7 +100,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
     
 
-        public FornecedorCommand Alterarfornecedor(int id,FornecedorCommand fornecedor)
+        public FornecedorView Alterarfornecedor(int id,FornecedorCommand fornecedor)
         {
             try
             {
@@ -131,7 +131,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
                     model.Endereco.Pais = fornecedor.Endereco.Pais;
 
                     context.SaveChanges();
-                    return new FornecedorCommand(model);
+                    return new FornecedorView(model);
                 }
                 else
                 {

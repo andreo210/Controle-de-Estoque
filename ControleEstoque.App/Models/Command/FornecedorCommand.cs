@@ -2,6 +2,7 @@
 using ControleEstoque.Domain.Entidades.Tipo;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,9 +17,8 @@ namespace ControleEstoque.App.Dtos
         }
 
 
-        public FornecedorCommand(FornecedorEntity entidade)
-        {
-            this.Id = entidade.Id;
+        public FornecedorCommand(FornecedorEntity entidade)        {
+            
             this.Nome = entidade.Nome;
             this.RazaoSocial = entidade.RazaoSocial;
             this.NumDocumento = entidade.NumDocumento;           
@@ -30,15 +30,21 @@ namespace ControleEstoque.App.Dtos
 
         }
 
-   
-        public int Id { get; set; }
+        [Required]
         public string Nome { get; set; }
+        [Required]
         public string RazaoSocial { get; set; }
+        [Required]
         public string NumDocumento { get; set; }
+        [Required]
         public string Email { get; set; }
+        [Required]
         public int TipoPessoaId { get; set; }
+        [Required]
         public bool Ativo { get; set; }
+        [Required]
         public ContatosCommand Contato { get; set; }
+        [Required]
         public EnderecoCommand Endereco { get; set; }
         
 
@@ -49,7 +55,6 @@ namespace ControleEstoque.App.Dtos
             return new FornecedorEntity
             {
                 Ativo = fornecedorView.Ativo,
-                Id = fornecedorView.Id,
                 Nome = fornecedorView.Nome,
                 RazaoSocial = fornecedorView.RazaoSocial,
                 NumDocumento = fornecedorView.NumDocumento,
@@ -65,7 +70,6 @@ namespace ControleEstoque.App.Dtos
             return new FornecedorCommand
             {
                 Ativo = fornecedorEntity.Ativo,
-                Id = fornecedorEntity.Id,
                 Nome = fornecedorEntity.Nome,
                 RazaoSocial = fornecedorEntity.RazaoSocial,
                 NumDocumento = fornecedorEntity.NumDocumento,
