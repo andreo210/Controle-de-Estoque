@@ -87,10 +87,10 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
         }
 
 
-        public GrupoProdutoView Alterar (GrupoProdutoView grupo)
+        public GrupoProdutoView Alterar (int id, GrupoProdutoCommand grupo)
         {
 
-            var model = context.GrupoProduto.FirstOrDefault(x=>x.Id == grupo.Id);
+            var model = context.GrupoProduto.FirstOrDefault(x=>x.Id == id);
 
             if (model != null)
             {             

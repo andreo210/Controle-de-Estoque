@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Dtos
 {
-    public class InventarioEstoqueDTO
+    public class InventarioEstoqueView
     {
-        public InventarioEstoqueDTO()
+        public InventarioEstoqueView()
         {
 
         }
-        public InventarioEstoqueDTO(InventarioEstoqueEntity entity)
+        public InventarioEstoqueView(InventarioEstoqueEntity entity)
         {
             this.Id = entity.Id;
             this.Data = entity.Data;
@@ -44,5 +44,38 @@ namespace ControleEstoque.App.Dtos
                 IdProduto = this.IdProduto
             };
         }
+
+        public static implicit operator InventarioEstoqueEntity(InventarioEstoqueView inventarioEstoque)
+        {
+            return new InventarioEstoqueEntity
+            {
+                
+                Id = inventarioEstoque.Id,
+                Data = inventarioEstoque.Data,
+                Motivo = inventarioEstoque.Motivo,
+                QuantidadeEstoque= inventarioEstoque.QuantidadeEstoque,
+                QuantidadeInventario= inventarioEstoque.QuantidadeInventario,
+                IdProduto = inventarioEstoque.IdProduto
+            };
+
+        }
+        public static implicit operator InventarioEstoqueView(InventarioEstoqueEntity inventarioEstoque)
+        {
+            return new InventarioEstoqueView
+            {
+
+                Id = inventarioEstoque.Id,
+                Data = inventarioEstoque.Data,
+                Motivo = inventarioEstoque.Motivo,
+                QuantidadeEstoque = inventarioEstoque.QuantidadeEstoque,
+                QuantidadeInventario = inventarioEstoque.QuantidadeInventario,
+                IdProduto = inventarioEstoque.IdProduto
+            };
+
+        }
+
+
+
+
     }
 }

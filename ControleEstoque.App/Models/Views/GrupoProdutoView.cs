@@ -14,13 +14,12 @@ namespace ControleEstoque.App.Views
             this.Id = entity.Id;
             this.Nome = entity.Nome;
             this.Ativo = entity.Ativo;
-
         }
         public GrupoProdutoView()
         {
 
         }
-        //atributos
+        
         public int Id { get; set; }
         public string Nome { get; set; }
         public bool Ativo { get; set; }
@@ -34,5 +33,7 @@ namespace ControleEstoque.App.Views
                 Ativo = this.Ativo
             };
         }
+
+
     }
 }

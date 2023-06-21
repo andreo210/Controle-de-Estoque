@@ -11,12 +11,13 @@ namespace ControleEstoque.App.Handlers.InventarioEstoque
     {
         public int RecuperarQuantidade();
 
-        public List<InventarioEstoqueDTO> RecuperarLista();
+        public List<InventarioEstoqueView> RecuperarLista();
 
-        public InventarioEstoqueDTO RecuperarPeloId(int id);
+        public InventarioEstoqueView RecuperarPeloId(int id);
 
-        public string Salvar(InventarioEstoqueDTO inventarioDTO);
+        public InventarioEstoqueView Salvar(InventarioEstoqueCommand inventarioDTO);
 
-        public string ExcluirPeloId(int id);
+        public void ExcluirPeloId(int id);
+        public InventarioEstoqueView Alterar(int id, InventarioEstoqueCommand inventario);
     }
 }
