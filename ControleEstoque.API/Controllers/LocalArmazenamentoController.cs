@@ -1,5 +1,4 @@
-﻿using ControleEstoque.API.exceptions;
-using ControleEstoque.App.Dtos;
+﻿using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.LocalArmazenamento;
 using Microsoft.AspNetCore.Mvc;
 using System;

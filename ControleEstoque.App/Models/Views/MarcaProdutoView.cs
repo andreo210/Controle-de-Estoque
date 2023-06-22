@@ -7,13 +7,13 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Dtos
 {
-    public  class MarcaProdutoDTO
+    public  class MarcaProdutoView
     {
-        public MarcaProdutoDTO()
+        public MarcaProdutoView()
         {
 
         }
-        public MarcaProdutoDTO(MarcaProdutoEntity entity)
+        public MarcaProdutoView(MarcaProdutoEntity entity)
         {
             this.Id = entity.Id;
             this.Nome = entity.Nome;
