@@ -43,7 +43,7 @@ namespace ControleEstoque.Infra.Data
         public DbSet<ContatoEntity> Contato { get; set; }
         public DbSet<EnderecoEntity> Endereco { get; set; }
         public DbSet<TipoContatoEntity> TipoContatos { get; set; }
-        public DbSet<TipoPessoaEntity> PessoaEntities { get; set; }
+        public DbSet<TipoPessoaEntity> TipoPessoa { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

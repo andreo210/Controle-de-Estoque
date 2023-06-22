@@ -20,22 +20,21 @@ namespace ControleEstoque.App.Handlers.MarcaProduto
             marcaRepository = _marcaRepository;
             context = _context;
         }
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
             marcaRepository.Delete(id);
-            marcaRepository.Save();
-            return "ok";
+            marcaRepository.Save();            
         }
 
-        public List<MarcaProdutoDTO> RecuperarLista()
+        public List<MarcaProdutoView> RecuperarLista()
         {
-            return marcaRepository.Get().Select(x => new MarcaProdutoDTO(x)).ToList();
+            return marcaRepository.Get().Select(x => new MarcaProdutoView(x)).ToList();
         }
 
-        public MarcaProdutoDTO RecuperarPeloId(int id)
+        public MarcaProdutoView RecuperarPeloId(int id)
         {
             var retorno = marcaRepository.GetByID(id);
-            return retorno != null ? new MarcaProdutoDTO(retorno) : null;
+            return retorno != null ? new MarcaProdutoView(retorno) : null;
         }
 
         public int RecuperarQuantidade()
@@ -43,21 +42,36 @@ namespace ControleEstoque.App.Handlers.MarcaProduto
             return marcaRepository.Get().Count();
         }
 
-        public string Salvar(MarcaProdutoDTO marcaDTO)
+        public MarcaProdutoView Salvar(MarcaProdutoCommand marca)
         {
-            var model = context.Set<MarcaProdutoEntity>().AsNoTracking().Where(e => e.Id == marcaDTO.Id).FirstOrDefault();
-
-            if (model == null)
+            try
             {
-                marcaRepository.Insert(marcaDTO.retornoMarcaProduto());
-                marcaRepository.Save();
-                return "Ok";
+               var model =  marcaRepository.Insert(marca.retornoMarcaProduto());
+               marcaRepository.Save();
+               return new MarcaProdutoView(model);
+
+            }catch(Exception e)
+            {
+                throw;
+            }
+            
+        }
+
+        public MarcaProdutoView Alterar(int id, MarcaProdutoCommand marca)
+        {
+
+            var model = context.MarcaProduto.FirstOrDefault(x => x.Id == id);
+
+            if (model != null)
+            {
+                model.Ativo = marca.Ativo;
+                model.Nome = marca.Nome;
+                context.SaveChanges();
+                return new MarcaProdutoView(model);
             }
             else
             {
-                marcaRepository.Update(marcaDTO.retornoMarcaProduto());
-                marcaRepository.Save();
-                return "No Content";
+                return null;
             }
         }
     }

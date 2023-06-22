@@ -91,7 +91,7 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult GetList()
         {
             var x = inventarioHandler.RecuperarLista();
             if (x != null)
@@ -119,7 +119,7 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult GetId(int id)
         {
             var x = inventarioHandler.RecuperarPeloId(id);
 

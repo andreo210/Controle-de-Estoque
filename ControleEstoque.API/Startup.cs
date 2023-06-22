@@ -1,5 +1,5 @@
 
-using ControleEstoque.API.exceptions;
+using ControleEstoque.App.Exceptions;
 using ControleEstoque.App.Extentions;
 using ControleEstoque.Infra.Data;
 using ControleEstoque.Infra.Extension;
@@ -42,24 +42,24 @@ namespace ControleEstoque.API
         public void ConfigureServices(IServiceCollection services)
         {
             //adiciona o serviço de problemDetais
-            //services.AddProblemDetails(opts =>
-            //{
-            //    opts.IncludeExceptionDetails = (context, ex) =>
-            //    {
-            //        var environment = context.RequestServices.GetRequiredService<IHostEnvironment>();
-            //        return environment.IsDevelopment();
-            //    };
-            //    opts.Map<EntidadeNaoEncontradaException>(exception => new ControleEstoqueDetails
-            //    {
-            //        Title = exception.Title,
-            //        Detail = exception.Detail,
-            //        Status = StatusCodes.Status400BadRequest,
-            //        Type = exception.Type,
-            //        Instance = exception.Instance,
-            //        AdditionalInfo = exception.AdditionalInfo
-            //    });
+            services.AddProblemDetails(opts =>
+            {
+                opts.IncludeExceptionDetails = (context, ex) =>
+                {
+                    var environment = context.RequestServices.GetRequiredService<IHostEnvironment>();
+                    return environment.IsDevelopment();
+                };
+                opts.Map<TipoPessoaNaoEncontradaException>(exception => new ProblemDetails
+                {
+                    Title = exception.Title,
+                    Detail = exception.Detail,
+                    Status = StatusCodes.Status400BadRequest,
+                    Type = exception.Type,
+                    Instance = exception.Instance
+                  
+                });
 
-            //});
+            });
 
             services.AddControllers();
 
@@ -108,7 +108,7 @@ namespace ControleEstoque.API
                app.UseExceptionHandler("/Error");
             }
             //adiciona o serviço de problemDetais
-           // app.UseProblemDetails();
+            app.UseProblemDetails();
 
 
             app.UseSwagger();

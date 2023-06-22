@@ -33,8 +33,4 @@
     <ProjectReference Include="..\ControleEstoque.Infra\ControleEstoque.Infra.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Exception\" />
-  </ItemGroup>
-
 </Project>

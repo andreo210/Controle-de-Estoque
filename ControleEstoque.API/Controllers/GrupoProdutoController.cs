@@ -1,5 +1,4 @@
-﻿using ControleEstoque.API.exceptions;
-using ControleEstoque.App.Dtos;
+﻿using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.GrupoProduto;
 using ControleEstoque.App.Views;
 using Microsoft.AspNetCore.Http;

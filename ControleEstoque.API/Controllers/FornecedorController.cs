@@ -32,7 +32,7 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Cria um novo Fornecedor
         /// </summary>
-        /// <param name="fornecedorDTO"></param>
+        /// <param name="fornecedor"></param>
         /// <returns>Retona um fornecedor criado</returns>
         /// <response code="201">Returna um novo fornecedor</response>
         /// <response code="400">se o item for nulo</response>
@@ -43,13 +43,12 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public IActionResult Post([FromBody] FornecedorCommand fornecedorDTO)
+        public IActionResult Post([FromBody] FornecedorCommand fornecedor)
         {
-            var x = _fornecedorHandlers.Salvar(fornecedorDTO);
-
-            if (x != null)
+            var model = _fornecedorHandlers.Salvar(fornecedor);
+            if (model != null)
             {
-                return Created(HttpContext.Request.Path + "/" + x.Id, x);
+                return Created(HttpContext.Request.Path + "/" + model.Id, model);
             }
             else
             {
@@ -74,10 +73,10 @@ namespace ControleEstoque.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var fornecedores = _fornecedorHandlers.RecuperarLista();
-            if (fornecedores != null)
+            var model = _fornecedorHandlers.RecuperarLista();
+            if (model != null)
             {
-                return Ok(fornecedores);
+                return Ok(model);
             }
             else
             {
@@ -86,7 +85,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         /// <summary>
-        /// Buscar todos os cotatos de fornecedores.
+        /// Buscar um lista de contatos de fornecedores.
         /// </summary>
         /// <remarks>
         /// Exemplo de requisição:        
@@ -94,7 +93,7 @@ namespace ControleEstoque.API.Controllers
         /// </remarks>
         /// <returns>Uma lista de contatos de fornecedores</returns>
         /// <response code="200">Quando existir</response>
-        /// <response code="404">Quando o Fornecedor não existir</response>
+        /// <response code="404">Quando o contato de Fornecedor não existir</response>
         /// <response code="401">Quando não conter um token valido</response> 
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContatoView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -102,10 +101,10 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("Contato/Listar")]
         public IActionResult GetContatos()
         {
-            var contatos = _contatosHandler.RecuperarLista();
-            if (contatos != null)
+            var model = _contatosHandler.RecuperarLista();
+            if (model != null)
             {
-                return Ok(contatos);
+                return Ok(model);
             }
             else
             {
@@ -122,7 +121,7 @@ namespace ControleEstoque.API.Controllers
         /// </remarks>
         /// <returns>Um contato de fornecedor</returns>
         /// <response code="200">Quando existir</response>
-        /// <response code="404">Quando o Fornecedor não existir</response>
+        /// <response code="404">Quando o contato de fornecedor não existir</response>
         /// <response code="401">Quando não conter um token valido</response>  
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ContatoView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
@@ -130,10 +129,10 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("Contato/{id}")]
         public IActionResult GetContatos(int id)
         {
-            var contato = _contatosHandler.FindByID(id);
-            if (contato != null)
+            var model = _contatosHandler.FindByID(id);
+            if (model != null)
             {
-                return Ok(contato);
+                return Ok(model);
             }
             else
             {
@@ -159,11 +158,11 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("Endereco/Listar")]
         public IActionResult GetEndereco()
         {
-            var endereços = enderecoHandler.RecuperarLista();
+            var model = enderecoHandler.RecuperarLista();
 
-            if (endereços != null)
+            if (model != null)
             {
-                return Ok(endereços);
+                return Ok(model);
             }
             else
             {
@@ -190,11 +189,11 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("Endereco/{id}")]
         public IActionResult GetEndereco(int id)
         {
-            var endereços = enderecoHandler.FindByID(id);
+            var model = enderecoHandler.FindByID(id);
 
-            if (endereços != null)
+            if (model != null)
             {
-                return Ok(endereços);
+                return Ok(model);
             }
             else
             {
@@ -223,10 +222,10 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var x = _fornecedorHandlers.RecuperarPeloId(id);
-            if (x != null)
+            var model = _fornecedorHandlers.RecuperarPeloId(id);
+            if (model != null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -258,7 +257,7 @@ namespace ControleEstoque.API.Controllers
         /// Exemplo de requisição:        
         /// PUT /Fornecedor/id           
         /// </remarks>
-        /// <param name="fornecedorDTO"></param>
+        /// <param name="fornecedor"></param>
         /// <returns>Um fornecedor foi alterado</returns>
         /// <response code="200">Quando fornecedor é alterado com sucesso</response>
         /// <response code="404">Quando o Fornecedor não existir</response>  
@@ -267,17 +266,17 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPut("{id}")]
-        public IActionResult Alterar(int id, [FromBody] FornecedorCommand fornecedorDTO)
+        public IActionResult Alterar(int id, [FromBody] FornecedorCommand fornecedor)
         {
-            var x = _fornecedorHandlers.Alterarfornecedor(id, fornecedorDTO);
+            var model = _fornecedorHandlers.Alterarfornecedor(id, fornecedor);
             
-            if (x!= null)
+            if (model!= null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else 
             {
-                return NotFound(ProblemDetails(x.Id));
+                return NotFound(ProblemDetails(model.Id));
             }
         }
 
@@ -297,11 +296,11 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)        {
+        public IActionResult Delete(int id){
             
-                var x = _fornecedorHandlers.RecuperarPeloId(id);
+                var model = _fornecedorHandlers.RecuperarPeloId(id);
 
-                if (x != null) { 
+                if (model != null) { 
                     _fornecedorHandlers.ExcluirPeloId(id);
                     return NoContent();
                 }

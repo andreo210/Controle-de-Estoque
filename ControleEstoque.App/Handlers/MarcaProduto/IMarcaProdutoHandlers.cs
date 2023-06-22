@@ -11,12 +11,13 @@ namespace ControleEstoque.App.Handlers.MarcaProduto
     {
         public int RecuperarQuantidade();
 
-        public List<MarcaProdutoDTO> RecuperarLista();
+        public List<MarcaProdutoView> RecuperarLista();
 
-        public MarcaProdutoDTO RecuperarPeloId(int id);
+        public MarcaProdutoView RecuperarPeloId(int id);
 
-        public string Salvar(MarcaProdutoDTO marcaDTO);
+        public MarcaProdutoView Salvar(MarcaProdutoCommand marca);
+        public MarcaProdutoView Alterar(int id, MarcaProdutoCommand marca);
 
-        public string ExcluirPeloId(int id);
+        public void ExcluirPeloId(int id);
     }
 }

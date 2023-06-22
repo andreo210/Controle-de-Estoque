@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Exceptions;
 using ControleEstoque.App.Views;
 using ControleEstoque.Domain.Repository;
 using ControleEstoque.Infra.Data;
@@ -15,7 +16,6 @@ namespace ControleEstoque.App.Handlers.Fornecedor
     {
         
         private readonly ControleEstoqueContext context;
-
         private readonly IFornecedorRepository fornecedorRepository;
         private readonly IContatoRepository contatoRepository;
         private readonly IEnderecoRepository enderecoRepository;
@@ -33,8 +33,8 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         {
             try
             {                
-                    fornecedorRepository.Delete(id);
-                    fornecedorRepository.Save();                   
+                fornecedorRepository.Delete(id);
+                fornecedorRepository.Save();                   
                             
             }catch(Exception e)
             {
@@ -64,11 +64,14 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             {
                 var retorno = fornecedorRepository.BuscarFornecedoresPorID(id);
                 return retorno != null ? new FornecedorView(retorno) : null;
+
             }catch(Exception e)
             {
                 throw;
             }
         }
+
+        
 
         public int RecuperarQuantidade()
         {
@@ -84,13 +87,19 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         }
 
 
-        public FornecedorView Salvar(FornecedorCommand fornecedorDTO)       
-        {
+        public FornecedorView Salvar(FornecedorCommand fornecedor)       
+        {  
             try
             {
+                var tipoPessoa = context.TipoPessoa.FirstOrDefault(x => x.Id == fornecedor.TipoPessoaId);
+                if (tipoPessoa == null) throw new TipoPessoaNaoEncontradaException("Id:"+ fornecedor.TipoPessoaId+ " do Tipo de pessoa é invalido");
+               
+                else
+                {
+                    var x = fornecedorRepository.Insert(fornecedor);
+                    return new FornecedorView(x);
+                }   
                 
-                var x = fornecedorRepository.Insert(fornecedorDTO);
-                return new FornecedorView(x);
 
             }catch(Exception e)
             {
@@ -142,9 +151,9 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             {
                 throw;
             }
-        }
+        }    
 
-        
+
     }
 
     
