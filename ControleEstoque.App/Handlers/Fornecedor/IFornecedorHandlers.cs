@@ -20,7 +20,9 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
         public void ExcluirPeloId(int id);
         public FornecedorView Alterarfornecedor(int id, FornecedorCommand fornecedor);
-       
+        public string GetTipoPessoa(int id);
+
+
 
     }
 }
