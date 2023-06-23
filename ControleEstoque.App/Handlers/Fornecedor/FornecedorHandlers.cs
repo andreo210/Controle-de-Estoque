@@ -1,5 +1,4 @@
 ﻿using ControleEstoque.App.Dtos;
-using ControleEstoque.App.Exceptions;
 using ControleEstoque.App.Views;
 using ControleEstoque.Domain.Repository;
 using ControleEstoque.Infra.Data;
@@ -91,14 +90,14 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         {  
             try
             {
-                var tipoPessoa = context.TipoPessoa.FirstOrDefault(x => x.Id == fornecedor.TipoPessoaId);
-                if (tipoPessoa == null) throw new TipoPessoaNaoEncontradaException("Id:"+ fornecedor.TipoPessoaId+ " do Tipo de pessoa é invalido");
+                //var tipoPessoa = context.TipoPessoa.FirstOrDefault(x => x.Id == fornecedor.TipoPessoaId);
+                //if (tipoPessoa == null) throw new TipoPessoaNaoEncontradaException("Id:"+ fornecedor.TipoPessoaId+ " do Tipo de pessoa é invalido");
                
-                else
-                {
+               // else
+               // {
                     var x = fornecedorRepository.Insert(fornecedor);
                     return new FornecedorView(x);
-                }   
+                //}   
                 
 
             }catch(Exception e)
@@ -152,6 +151,14 @@ namespace ControleEstoque.App.Handlers.Fornecedor
                 throw;
             }
         }    
+
+        public string GetTipoPessoa(int id)
+        {
+            var tipoPessoa = context.TipoPessoa.FirstOrDefault(x => x.Id == id);
+            if (tipoPessoa == null) return null;
+            else return "OK";
+
+        }
 
 
     }

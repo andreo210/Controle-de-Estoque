@@ -35,16 +35,26 @@ namespace ControleEstoque.API.Controllers
         /// <param name="fornecedor"></param>
         /// <returns>Retona um fornecedor criado</returns>
         /// <response code="201">Returna um novo fornecedor</response>
-        /// <response code="400">se o item for nulo</response>
+        /// <response code="400">se o item for nulo ou não existir</response>
         /// <response code="401">Quando não conter um token valido</response> 
-
+        /// <response code="410">Quando o Tipo de Pessoa é invalido, Tem que ser TipoPessoaId = 1 ou TipoPessoaId = 2</response>
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(FornecedorView))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(410 , Type =typeof(ProblemDetails))]
         [ProducesDefaultResponseType]
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorCommand fornecedor)
         {
+            //verifica se o tipo de pessoa existe
+            var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(fornecedor.TipoPessoaId);
+            if (tipoPessoa is null) return ValidationProblem("O tipo de Pessoa deve ser do TipoPessoaId 1: Pessoa Fisica ou TipoPessoaId 2: Pessoa Juridica",
+                                                             HttpContext.Request.Path,
+                                                             410,
+                                                             "Tipo de Pessoa não encontrada",
+                                                             "https://example.com/probs/out-of-credit",
+                                                             ModelState); ;
+
             var model = _fornecedorHandlers.Salvar(fornecedor);
             if (model != null)
             {
@@ -319,6 +329,18 @@ namespace ControleEstoque.API.Controllers
                 Type = "https://example.com/probs/out-of-credit",
                 Title = "Objeto não encontrado",
                 Detail = "o objeto com id numero :" + id + " não foi encontrado",
+                Instance = HttpContext.Request.Path
+            };
+            return problemDetails;
+        }
+
+        private ProblemDetails ProblemDetailsTipoPessoa()
+        {
+            var problemDetails = new ProblemDetails
+            {
+                Status = 410,                
+                Title = "Tipo de Pessoa não encontrada",
+                Detail = "O tipo de Pessoa deve ser do TipoPessoaId 1: Pessoa Fisica ou TipoPessoaId 2: Pessoa Juridica",
                 Instance = HttpContext.Request.Path
             };
             return problemDetails;

@@ -1,5 +1,5 @@
 
-using ControleEstoque.App.Exceptions;
+using ControleEstoque.API.Extentions;
 using ControleEstoque.App.Extentions;
 using ControleEstoque.Infra.Data;
 using ControleEstoque.Infra.Extension;
@@ -42,24 +42,7 @@ namespace ControleEstoque.API
         public void ConfigureServices(IServiceCollection services)
         {
             //adiciona o serviço de problemDetais
-            services.AddProblemDetails(opts =>
-            {
-                opts.IncludeExceptionDetails = (context, ex) =>
-                {
-                    var environment = context.RequestServices.GetRequiredService<IHostEnvironment>();
-                    return environment.IsDevelopment();
-                };
-                opts.Map<TipoPessoaNaoEncontradaException>(exception => new ProblemDetails
-                {
-                    Title = exception.Title,
-                    Detail = exception.Detail,
-                    Status = StatusCodes.Status400BadRequest,
-                    Type = exception.Type,
-                    Instance = exception.Instance
-                  
-                });
-
-            });
+            services.AddProblemsDetailsExtention();
 
             services.AddControllers();
 
