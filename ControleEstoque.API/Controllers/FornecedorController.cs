@@ -1,4 +1,5 @@
-﻿using ControleEstoque.App.Dtos;
+﻿using ControleEstoque.API.Config;
+using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.Contato;
 using ControleEstoque.App.Handlers.Endereço;
 using ControleEstoque.App.Handlers.Fornecedor;
@@ -37,32 +38,29 @@ namespace ControleEstoque.API.Controllers
         /// <response code="201">Returna um novo fornecedor</response>
         /// <response code="400">se o item for nulo ou não existir</response>
         /// <response code="401">Quando não conter um token valido</response> 
-        /// <response code="410">Quando o Tipo de Pessoa é invalido, Tem que ser TipoPessoaId = 1 ou TipoPessoaId = 2</response>
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(FornecedorView))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(410 , Type =typeof(ProblemDetails))]
         [ProducesDefaultResponseType]
         [HttpPost]
         public IActionResult Post([FromBody] FornecedorCommand fornecedor)
         {
             //verifica se o tipo de pessoa existe
             var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(fornecedor.TipoPessoaId);
-            if (tipoPessoa is null) return ValidationProblem("O tipo de Pessoa deve ser do TipoPessoaId 1: Pessoa Fisica ou TipoPessoaId 2: Pessoa Juridica",
-                                                             HttpContext.Request.Path,
-                                                             410,
-                                                             "Tipo de Pessoa não encontrada",
-                                                             "https://example.com/probs/out-of-credit",
-                                                             ModelState); ;
 
-            var model = _fornecedorHandlers.Salvar(fornecedor);
-            if (model != null)
-            {
-                return Created(HttpContext.Request.Path + "/" + model.Id, model);
-            }
+            if (tipoPessoa is null)
+                return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
             else
             {
-                return BadRequest();
+                var model = _fornecedorHandlers.Salvar(fornecedor);
+                if (model is not null)
+                {
+                    return Created(HttpContext.Request.Path + "/" + model.Id, model);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
         }
 
@@ -195,19 +193,19 @@ namespace ControleEstoque.API.Controllers
         /// <response code="401">Quando não conter um token valido</response>  
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EnderecoView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpGet("Endereco/{id}")]
         public IActionResult GetEndereco(int id)
         {
             var model = enderecoHandler.FindByID(id);
-
+           
             if (model != null)
             {
                 return Ok(model);
             }
             else
             {
-                return NotFound();
+                var problema = new ObjetoNotFoundProblemDetails($"Endereço com  id: {id} não encontrado", Request);
+                return NotFound(problema);
             }
             
         }
@@ -268,6 +266,7 @@ namespace ControleEstoque.API.Controllers
         /// PUT /Fornecedor/id           
         /// </remarks>
         /// <param name="fornecedor"></param>
+        /// /// <param name="id"></param>
         /// <returns>Um fornecedor foi alterado</returns>
         /// <response code="200">Quando fornecedor é alterado com sucesso</response>
         /// <response code="404">Quando o Fornecedor não existir</response>  
