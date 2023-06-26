@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ControleEstoque.App.Dtos
+namespace ControleEstoque.App.Models.Views
 {
-    public class LocalArmazenamentoDTO
+    public class LocalArmazenamentoView
     {
-        public LocalArmazenamentoDTO()
+        public LocalArmazenamentoView()
         {
 
         }
-        public LocalArmazenamentoDTO(LocalArmazenamentoEntity entity)
+        public LocalArmazenamentoView(LocalArmazenamentoEntity entity)
         {
             this.Id = entity.Id;
             this.Nome = entity.Nome;
@@ -30,7 +30,7 @@ namespace ControleEstoque.App.Dtos
             {
                 Id = this.Id,
                 Nome = this.Nome,
-                Ativo = this.Ativo 
+                Ativo = this.Ativo
 
             };
         }

@@ -160,7 +160,13 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
         }
 
+        public string GetTipoContato(int id)
+        {
+            var tipoPessoa = context.Contato.FirstOrDefault(x => x.TipoContatoId == id);
+            if (tipoPessoa == null) return null;
+            else return "OK";
 
+        }
     }
 
     

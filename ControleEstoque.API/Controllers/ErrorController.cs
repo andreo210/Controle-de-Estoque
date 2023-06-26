@@ -8,11 +8,10 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.API.Controllers
 {
-   
-   // [ApiController]
+
+    //[ApiController]
     //public class ErrorController : ControllerBase
     //{
-    //    //caso seja desenvolvimento
     //    [Route("/error-local-development")]
     //    public IActionResult ErrorLocalDevelopment(
     //        [FromServices] IWebHostEnvironment webHostEnvironment)
@@ -30,7 +29,6 @@ namespace ControleEstoque.API.Controllers
     //            title: context.Error.Message);
     //    }
 
-    //    //caso não seja desenvolvimento só retorna problem details
     //    [Route("/error")]
     //    public IActionResult Error() => Problem();
     //}

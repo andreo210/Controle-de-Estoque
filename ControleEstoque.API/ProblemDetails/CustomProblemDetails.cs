@@ -12,6 +12,9 @@ namespace ControleEstoque.API.Config
     {
         public List<string> Errors { get; private set; }
 
+
+
+
         public CustomProblemDetails(HttpStatusCode status, string? detail,IEnumerable<string>? errors =null) : this()
         {
             Title = status switch
