@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Models.Views;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,12 +12,12 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
     {
         public int RecuperarQuantidade();
 
-        public List<LocalArmazenamentoDTO> RecuperarLista();
+        public List<LocalArmazenamentoView> RecuperarLista();
 
-        public LocalArmazenamentoDTO RecuperarPeloId(int id);
+        public LocalArmazenamentoView RecuperarPeloId(int id);
 
-        public LocalArmazenamentoDTO Salvar(LocalArmazenamentoDTO localDTO);
-        public LocalArmazenamentoDTO Alterar(LocalArmazenamentoDTO localDTO);
+        public LocalArmazenamentoView Salvar(LocalArmazenamentoCommand local);
+        public LocalArmazenamentoView Alterar(int id, LocalArmazenamentoCommand local);
 
         public string ExcluirPeloId(int id);
     }

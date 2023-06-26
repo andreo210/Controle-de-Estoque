@@ -36,10 +36,11 @@ namespace ControleEstoque.API.Controllers
         /// <param name="fornecedor"></param>
         /// <returns>Retona um fornecedor criado</returns>
         /// <response code="201">Returna um novo fornecedor</response>
-        /// <response code="400">se o item for nulo ou não existir</response>
+        /// <response code="400">Quando um parametro é invalido ou não existir</response>      
         /// <response code="401">Quando não conter um token valido</response> 
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]        
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(FornecedorView))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
@@ -47,9 +48,16 @@ namespace ControleEstoque.API.Controllers
         {
             //verifica se o tipo de pessoa existe
             var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(fornecedor.TipoPessoaId);
+            //verifica se o tipo de contato existe
+            var tipoContato = _fornecedorHandlers.GetTipoContato(fornecedor.Contato.TipoContatoId);
 
-            if (tipoPessoa is null)
+            if (tipoPessoa is null)            
                 return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
+            
+            
+            else if (tipoContato is null)
+                return BadRequest(new BadRequestProblemDetails("O TipoContatoId deve ser 1 para Celular ou 2 Pessoa para Residencial", Request));
+
             else
             {
                 var model = _fornecedorHandlers.Salvar(fornecedor);
@@ -80,15 +88,15 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(401)]
         [HttpGet]
         public IActionResult Get()
-        {
+        {            
             var model = _fornecedorHandlers.RecuperarLista();
             if (model != null)
-            {
+            {                
                 return Ok(model);
             }
             else
             {
-                return NotFound();
+                return NotFound(new ObjetoNotFoundProblemDetails($"Lista de endereço não encontrada", Request));
             }
         }
 
@@ -144,7 +152,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(ProblemDetails(id));
+                return NotFound(new ObjetoNotFoundProblemDetails($"Contato com  id = {id} não encontrado", Request));
             }
 
         }
@@ -204,8 +212,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                var problema = new ObjetoNotFoundProblemDetails($"Endereço com  id: {id} não encontrado", Request);
-                return NotFound(problema);
+                return NotFound(new ObjetoNotFoundProblemDetails($"Endereço com  id = {id} não encontrado", Request));
             }
             
         }
@@ -238,7 +245,7 @@ namespace ControleEstoque.API.Controllers
             else
             {
 
-                return NotFound(ProblemDetails(id));
+                return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
             }
         }
 
@@ -285,7 +292,7 @@ namespace ControleEstoque.API.Controllers
             }
             else 
             {
-                return NotFound(ProblemDetails(model.Id));
+                return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
             }
         }
 
@@ -315,34 +322,11 @@ namespace ControleEstoque.API.Controllers
                 }
                 else
                 {
-                    return NotFound(ProblemDetails(id));
+                    return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
                 }          
           
-        }
+        }      
 
-        private ProblemDetails ProblemDetails(int id)
-        {
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status404NotFound,
-                Type = "https://example.com/probs/out-of-credit",
-                Title = "Objeto não encontrado",
-                Detail = "o objeto com id numero :" + id + " não foi encontrado",
-                Instance = HttpContext.Request.Path
-            };
-            return problemDetails;
-        }
-
-        private ProblemDetails ProblemDetailsTipoPessoa()
-        {
-            var problemDetails = new ProblemDetails
-            {
-                Status = 410,                
-                Title = "Tipo de Pessoa não encontrada",
-                Detail = "O tipo de Pessoa deve ser do TipoPessoaId 1: Pessoa Fisica ou TipoPessoaId 2: Pessoa Juridica",
-                Instance = HttpContext.Request.Path
-            };
-            return problemDetails;
-        }
+        
     }
 }

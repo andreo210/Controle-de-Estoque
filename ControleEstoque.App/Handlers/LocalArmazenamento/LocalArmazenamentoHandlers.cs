@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Models.Views;
 using ControleEstoque.Domain.Entidades;
 using ControleEstoque.Domain.Repository;
 using ControleEstoque.Infra.Data;
@@ -30,15 +31,15 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
             
         }
 
-        public List<LocalArmazenamentoDTO> RecuperarLista()
+        public List<LocalArmazenamentoView> RecuperarLista()
         {
-            return localRepository.Get().Select(x => new LocalArmazenamentoDTO(x)).ToList();
+            return localRepository.Get().Select(x => new LocalArmazenamentoView(x)).ToList();
         }
 
-        public LocalArmazenamentoDTO RecuperarPeloId(int id)
+        public LocalArmazenamentoView RecuperarPeloId(int id)
         {
             var retorno = localRepository.GetByID(id);
-            return retorno != null ? new LocalArmazenamentoDTO(retorno) : null;
+            return retorno != null ? new LocalArmazenamentoView(retorno) : null;
         }
 
         public int RecuperarQuantidade()
@@ -47,30 +48,42 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
 
         }
 
-        public LocalArmazenamentoDTO Salvar(LocalArmazenamentoDTO localDTO)
+        public LocalArmazenamentoView Salvar(LocalArmazenamentoCommand localDTO)
         {
-            
+            try
+            {
                 var x = localRepository.Insert(localDTO.retornoLocalArmazenamento());
                 localRepository.Save();
-                return new LocalArmazenamentoDTO(x);
-          
+                return new LocalArmazenamentoView(x);
+
+            }catch(Exception e)
+            {
+                throw;
+            }
             
         }
 
-        public LocalArmazenamentoDTO Alterar(LocalArmazenamentoDTO localDTO)
+        public LocalArmazenamentoView Alterar(int id, LocalArmazenamentoCommand local)
         {
-            var model = context.Set<LocalArmazenamentoEntity>().AsNoTracking().Where(e => e.Id == localDTO.Id).FirstOrDefault();
-
-            if (model != null)
+            try
             {
-                model.Ativo = localDTO.Ativo;
-                model.Nome = localDTO.Nome;
-                context.SaveChangesAsync();
-                return  new LocalArmazenamentoDTO(model);
+                var model = context.LocalArmazenamento.FirstOrDefault(x => x.Id == id);
+
+                if (model != null)
+                {
+                    model.Nome = local.Nome;
+                    model.Ativo = local.Ativo;
+                    context.SaveChanges();
+                    return new LocalArmazenamentoView(model);
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
-            {                
-                return null;
+            catch (Exception e)
+            {
+                throw;
             }
         }
     }
