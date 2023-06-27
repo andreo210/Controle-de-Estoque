@@ -51,7 +51,7 @@ namespace ControleEstoque.API.Controllers
             //verifica se o tipo de contato existe
             var tipoContato = _fornecedorHandlers.GetTipoContato(fornecedor.Contato.TipoContatoId);
 
-            if (tipoPessoa is null)            
+            if (tipoPessoa is  null)            
                 return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
             
             
@@ -84,19 +84,19 @@ namespace ControleEstoque.API.Controllers
         /// <response code="404">Quando o Fornecedor não existir</response>
         /// <response code="401">Quando não conter um token valido</response>  
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FornecedorView))]
-        [ProducesResponseType(404)]
-        [ProducesResponseType(401)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+
         [HttpGet]
         public IActionResult Get()
         {            
             var model = _fornecedorHandlers.RecuperarLista();
-            if (model != null)
+            if (model is not null)
             {                
                 return Ok(model);
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Lista de endereço não encontrada", Request));
+                return NotFound();
             }
         }
 
@@ -118,7 +118,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult GetContatos()
         {
             var model = _contatosHandler.RecuperarLista();
-            if (model != null)
+            if (model is not null)
             {
                 return Ok(model);
             }
@@ -127,6 +127,7 @@ namespace ControleEstoque.API.Controllers
                 return NotFound();
             }
         }
+
 
         /// <summary>
         /// Buscar contato pelo id dos fornecedores.
@@ -146,7 +147,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult GetContatos(int id)
         {
             var model = _contatosHandler.FindByID(id);
-            if (model != null)
+            if (model is not null)
             {
                 return Ok(model);
             }
@@ -176,7 +177,7 @@ namespace ControleEstoque.API.Controllers
         {
             var model = enderecoHandler.RecuperarLista();
 
-            if (model != null)
+            if (model is not null)
             {
                 return Ok(model);
             }
@@ -206,7 +207,7 @@ namespace ControleEstoque.API.Controllers
         {
             var model = enderecoHandler.FindByID(id);
            
-            if (model != null)
+            if (model is not null)
             {
                 return Ok(model);
             }
@@ -238,7 +239,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult Get(int id)
         {
             var model = _fornecedorHandlers.RecuperarPeloId(id);
-            if (model != null)
+            if (model is not null)
             {
                 return Ok(model);
             }
@@ -281,19 +282,36 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FornecedorView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(typeof(BadRequestProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesDefaultResponseType]
         [HttpPut("{id}")]
+        
         public IActionResult Alterar(int id, [FromBody] FornecedorCommand fornecedor)
         {
-            var model = _fornecedorHandlers.Alterarfornecedor(id, fornecedor);
-            
-            if (model!= null)
-            {
-                return Ok(model);
+            //verifica se o tipo de pessoa existe
+            var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(fornecedor.TipoPessoaId);
+            //verifica se o tipo de contato existe
+            var tipoContato = _fornecedorHandlers.GetTipoContato(fornecedor.Contato.TipoContatoId);
+
+            if (tipoPessoa is null)
+                return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
+
+
+            else if (tipoContato is null)
+                return BadRequest(new BadRequestProblemDetails("O TipoContatoId deve ser 1 para Celular ou 2 Pessoa para Residencial", Request));
+            else {
+                var model = _fornecedorHandlers.Alterarfornecedor(id, fornecedor);
+
+                if (model is not null)
+                {
+                    return Ok(model);
+                }
+                else
+                {
+                    return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
+                }
             }
-            else 
-            {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
-            }
+        
         }
 
         /// <summary>
@@ -316,7 +334,7 @@ namespace ControleEstoque.API.Controllers
             
                 var model = _fornecedorHandlers.RecuperarPeloId(id);
 
-                if (model != null) { 
+                if (model is not null) { 
                     _fornecedorHandlers.ExcluirPeloId(id);
                     return NoContent();
                 }

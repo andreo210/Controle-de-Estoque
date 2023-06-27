@@ -35,10 +35,10 @@ namespace ControleEstoque.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] GrupoProdutoCommand grupoDTO)
         {
-            var x = grupoHandler.Salvar(grupoDTO);
-            if ( x != null)
+            var model = grupoHandler.Salvar(grupoDTO);
+            if ( model is not null)
             {
-                return Created(HttpContext.Request.Path + "/" + x.Id, x);
+                return Created(HttpContext.Request.Path + "/" + model.Id, model);
             }
             else
             {
@@ -66,10 +66,10 @@ namespace ControleEstoque.API.Controllers
         [HttpPut("{id}")]
         public IActionResult Alterar(int id, [FromBody] GrupoProdutoCommand grupoDTO)
         {
-            var x = grupoHandler.Alterar(id, grupoDTO);
-            if (x != null)
+            var model = grupoHandler.Alterar(id, grupoDTO);
+            if (model is not null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -95,10 +95,10 @@ namespace ControleEstoque.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var x = grupoHandler.RecuperarLista();
-            if (x != null)
+            var model = grupoHandler.RecuperarLista();
+            if (model is not null )
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -124,11 +124,11 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var x = grupoHandler.RecuperarPeloId(id);
+            var model = grupoHandler.RecuperarPeloId(id);
 
-            if (x != null)
+            if (model is not null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -172,9 +172,9 @@ namespace ControleEstoque.API.Controllers
         public IActionResult Delete(int id)
         {
 
-            var x = grupoHandler.RecuperarPeloId(id);
+            var model = grupoHandler.RecuperarPeloId(id);
 
-            if (x != null)
+            if (model is not null)
             {
                 grupoHandler.ExcluirPeloId(id);
                 return NoContent();
