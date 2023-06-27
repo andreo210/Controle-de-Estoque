@@ -21,22 +21,29 @@ namespace ControleEstoque.App.Handlers.SaidaProduto
             saidaRepository = _saidaRepository;
             context = _context;
         }
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
-            saidaRepository.Delete(id);
-            saidaRepository.Save();
-            return "ok";
+            try
+            {
+                saidaRepository.Delete(id);
+                saidaRepository.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
         }
 
-        public List<SaidaProdutoDTO> RecuperarLista()
+        public List<SaidaProdutoView> RecuperarLista()
         {
-            return saidaRepository.Get().Select(x => new SaidaProdutoDTO(x)).ToList();
+            return saidaRepository.Get().Select(x => new SaidaProdutoView(x)).ToList();
         }
 
-        public SaidaProdutoDTO RecuperarPeloId(int id)
+        public SaidaProdutoView RecuperarPeloId(int id)
         {
             var retorno = saidaRepository.GetByID(id);
-            return retorno != null ? new SaidaProdutoDTO(retorno) : null;
+            return retorno != null ? new SaidaProdutoView(retorno) : null;
         }
 
         public int RecuperarQuantidade()
@@ -44,22 +51,42 @@ namespace ControleEstoque.App.Handlers.SaidaProduto
             return saidaRepository.Get().Count();
         }
 
-        public string Salvar(SaidaProdutoDTO cidadeDTO)
+        public SaidaProdutoView Salvar(SaidaProdutoCommand cidade)
         {
-            var model = context.Set<SaidaProdutoEntity>().AsNoTracking().Where(e => e.Id == cidadeDTO.Id).FirstOrDefault();
 
-            if (model == null)
+            try
             {
-                saidaRepository.Insert(cidadeDTO.retornoSaidaProduto());
+                var model= saidaRepository.Insert(cidade);
                 saidaRepository.Save();
-                return "Ok";
+                return new SaidaProdutoView(model);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
+
+        public SaidaProdutoView Alterar(int id, SaidaProdutoCommand saida)
+        {
+
+            var model = context.SaidaProduto.FirstOrDefault(x => x.Id == id);
+
+            if (model != null)
+            {
+                model.IdProduto = saida.IdProduto;
+                model.Numero = saida.Numero;
+                model.Data = DateTime.Now;
+                model.Quantidade = saida.Quantidade;
+                context.SaveChanges();
+                return new SaidaProdutoView(model);
             }
             else
             {
-                saidaRepository.Update(cidadeDTO.retornoSaidaProduto());
-                saidaRepository.Save();
-                return "No Content";
+                return null;
             }
         }
+
     }
 }

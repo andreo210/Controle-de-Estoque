@@ -11,7 +11,6 @@ namespace ControleEstoque.API.Config
 {
     public class ObjetoNotFoundProblemDetails : ProblemDetails
     {
-        public string Erro { get; set; }
         public ObjetoNotFoundProblemDetails(string detalhe, HttpRequest request)
         {
             Title = "Objeto não encontrado";

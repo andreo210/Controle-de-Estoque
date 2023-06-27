@@ -14,13 +14,11 @@ namespace ControleEstoque.App.Dtos
 
         }
         public LocalArmazenamentoCommand(LocalArmazenamentoEntity entity)
-        {
-            this.Id = entity.Id;
+        {            
             this.Nome = entity.Nome;
             this.Ativo = entity.Ativo;
         }
 
-        public int Id { get; set; }
         public string Nome { get; set; }
         public bool Ativo { get; set; }
 
@@ -28,7 +26,6 @@ namespace ControleEstoque.App.Dtos
         {
             return new LocalArmazenamentoEntity()
             {
-                Id = this.Id,
                 Nome = this.Nome,
                 Ativo = this.Ativo 
 

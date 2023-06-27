@@ -38,7 +38,7 @@ namespace ControleEstoque.API.Controllers
         {
             var model = marcaHandler.Salvar(marca);
 
-            if (model != null)
+            if (model is null)
             {
                 return Created(HttpContext.Request.Path + "/" + model.Id, model);
             }
@@ -69,7 +69,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult GetList()
         {
             var model = marcaHandler.RecuperarLista();
-            if (model != null)
+            if (model is null)
             {
                 return Ok(model);
             }
@@ -97,11 +97,11 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetId(int id)
         {
-            var x = marcaHandler.RecuperarPeloId(id);
+            var model = marcaHandler.RecuperarPeloId(id);
 
-            if (x != null)
+            if (model is null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -147,9 +147,9 @@ namespace ControleEstoque.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var x =marcaHandler.RecuperarPeloId(id);
+            var model =marcaHandler.RecuperarPeloId(id);
 
-            if (x != null)
+            if (model is null)
             {
                 marcaHandler.ExcluirPeloId(id);
                 return NoContent();
@@ -179,14 +179,14 @@ namespace ControleEstoque.API.Controllers
         [HttpPut("{id}")]
         public IActionResult Alterar(int id, [FromBody] MarcaProdutoCommand marca)
         {
-            var x = marcaHandler.Alterar(id, marca);
-            if (x != null)
+            var model = marcaHandler.Alterar(id, marca);
+            if (model is null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
-                return NotFound();
+                return NotFound(new ObjetoNotFoundProblemDetails($"Marca de produto com  id = {id} não encontrado", Request));
             }
 
         }
