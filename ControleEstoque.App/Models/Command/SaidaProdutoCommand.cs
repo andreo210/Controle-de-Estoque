@@ -41,9 +41,6 @@ namespace ControleEstoque.App.Dtos
 
         }
 
-
-
-        //metodo de retorno da entidade para DTO
         public SaidaProdutoEntity retornoSaidaProduto()
         {
             return new SaidaProdutoEntity()
@@ -57,10 +54,7 @@ namespace ControleEstoque.App.Dtos
         }
 
         //construtores
-        public SaidaProdutoCommand()
-        {
-
-        }
+        public SaidaProdutoCommand() { }
 
         public SaidaProdutoCommand(SaidaProdutoEntity entity)
         {

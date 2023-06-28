@@ -11,12 +11,14 @@ namespace ControleEstoque.App.Handlers.UnidadeMedida
     {
         public int RecuperarQuantidade();
 
-        public List<UnidadeMedidaDTO> RecuperarLista();
+        public List<UnidadeMedidaView> RecuperarLista();
 
-        public UnidadeMedidaDTO RecuperarPeloId(int id);
+        public UnidadeMedidaView RecuperarPeloId(int id);
 
-        public string Salvar(UnidadeMedidaDTO cidadeDTO);
+        public UnidadeMedidaView Salvar(UnidadeMedidaCommand unidade);
 
-        public string ExcluirPeloId(int id);
+        public void ExcluirPeloId(int id);
+
+        public UnidadeMedidaView Alterar(int id, UnidadeMedidaCommand unidade);
     }
 }
