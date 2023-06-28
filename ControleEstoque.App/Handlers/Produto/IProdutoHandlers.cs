@@ -11,11 +11,11 @@ namespace ControleEstoque.App.Handlers.Produto
     {
         public int RecuperarQuantidade();
 
-        public List<ProdutoDTO> RecuperarLista();
+        public List<ProdutoCommand> RecuperarLista();
 
-        public ProdutoDTO RecuperarPeloId(int id);
+        public ProdutoCommand RecuperarPeloId(int id);
 
-        public string Salvar(ProdutoDTO cidadeDTO);
+        public string Salvar(ProdutoCommand cidadeDTO);
 
         public string ExcluirPeloId(int id);
     }

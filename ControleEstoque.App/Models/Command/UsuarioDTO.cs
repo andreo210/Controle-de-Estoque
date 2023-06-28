@@ -11,10 +11,7 @@ namespace ControleEstoque.App.Dtos
     class UsuarioDTO
     {
         //costrutor vazio
-        public UsuarioDTO()
-        {
-
-        }
+        public UsuarioDTO(){  }
 
 
         //contrutor que preenche a entidade

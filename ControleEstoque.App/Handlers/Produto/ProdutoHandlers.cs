@@ -30,15 +30,15 @@ namespace ControleEstoque.App.Handlers.Produto
             return "Ok";
         }
 
-        public List<ProdutoDTO> RecuperarLista()
+        public List<ProdutoCommand> RecuperarLista()
         {
-            return produtoRepository.Get().Select(x => new ProdutoDTO(x)).ToList(); ;
+            return produtoRepository.Get().Select(x => new ProdutoCommand(x)).ToList(); ;
         }
 
-        public ProdutoDTO RecuperarPeloId(int id)
+        public ProdutoCommand RecuperarPeloId(int id)
         {
             var retorno = produtoRepository.GetByID(id);
-            return retorno != null ? new ProdutoDTO(retorno) : null;
+            return retorno != null ? new ProdutoCommand(retorno) : null;
         }
 
         public int RecuperarQuantidade()
@@ -46,7 +46,7 @@ namespace ControleEstoque.App.Handlers.Produto
             return produtoRepository.Get().Count();
         }
 
-        public string Salvar(ProdutoDTO cidadeDTO)
+        public string Salvar(ProdutoView cidadeDTO)
         {
             var model = context.Set<ProdutoEntity>().AsNoTracking().Where(e => e.Id == cidadeDTO.Id).FirstOrDefault();
 

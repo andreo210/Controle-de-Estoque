@@ -11,59 +11,82 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Handlers.UnidadeMedida
 {
-    class UnidadeMedidaHandlers : IUnidadeMedidaHandlers
+    public class UnidadeMedidaHandlers : IUnidadeMedidaHandlers
     {
-        IUnidadeMedidaRepository unidadeRepository;
+        private readonly IUnidadeMedidaRepository EntradaRepository;
         private readonly ControleEstoqueContext context;
-        public UnidadeMedidaHandlers(IUnidadeMedidaRepository _unidadeRepository, ControleEstoqueContext _context)
+
+        public UnidadeMedidaHandlers(IUnidadeMedidaRepository _EntradaRepository, ControleEstoqueContext _context)
         {
-            unidadeRepository = _unidadeRepository;
+            EntradaRepository = _EntradaRepository;
             context = _context;
         }
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
-            unidadeRepository.Delete(id);
-            unidadeRepository.Save();
-            return "Ok";
+            try
+            {
+                EntradaRepository.Delete(id);
+                EntradaRepository.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
-
-        public List<UnidadeMedidaDTO> RecuperarLista()
+        public List<UnidadeMedidaView> RecuperarLista()
         {
-            return unidadeRepository.Get().Select(x => new UnidadeMedidaDTO(x)).ToList();
+            return EntradaRepository.Get().Select(x => new UnidadeMedidaView(x)).ToList();
         }
 
-        public UnidadeMedidaDTO RecuperarPeloId(int id)
+        public UnidadeMedidaView RecuperarPeloId(int id)
         {
-            var retorno = unidadeRepository.GetByID(id);
-            return retorno != null ? new UnidadeMedidaDTO(retorno) : null;
+            var retorno = EntradaRepository.GetByID(id);
+            return retorno != null ? new UnidadeMedidaView(retorno) : null;
         }
 
         public int RecuperarQuantidade()
         {
-            return unidadeRepository.Get().Count();
+            return EntradaRepository.Get().Count();
+        }
+
+        public UnidadeMedidaView Salvar(UnidadeMedidaCommand cidade)
+        {
+
+            try
+            {
+                var model = EntradaRepository.Insert(cidade);
+                EntradaRepository.Save();
+                return new UnidadeMedidaView(model);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
 
-        public string Salvar(UnidadeMedidaDTO unidadeDTO)
+        public UnidadeMedidaView Alterar(int id, UnidadeMedidaCommand Entrada)
         {
-            var model = context.Set<UnidadeMedidaEntity>().AsNoTracking().Where(e => e.Id == unidadeDTO.Id).FirstOrDefault();
 
-            if (model == null)
+            var model = context.UnidadeMedida.FirstOrDefault(x => x.Id == id);
+
+            if (model is not null)
             {
-                unidadeRepository.Insert(unidadeDTO.retornoUnidadeMedida());
-                unidadeRepository.Save();
-                return "Ok";
+                model.Nome = Entrada.Nome;
+                model.Sigla= Entrada.Sigla;
+                model.Ativo = Entrada.Ativo;
+                context.SaveChanges();
+                return model;
             }
             else
             {
-                unidadeRepository.Update(unidadeDTO.retornoUnidadeMedida());
-                unidadeRepository.Save();
-                return "No Content";
+                return null;
             }
         }
-
-
+                
     }
 }
 

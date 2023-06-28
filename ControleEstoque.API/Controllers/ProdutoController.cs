@@ -21,21 +21,21 @@ namespace ControleEstoque.API.Controllers
 
         // POST api/<PessoaFisicaController>
         [HttpPost]
-        public IActionResult Post([FromBody] ProdutoDTO produtoDTO)
+        public IActionResult Post([FromBody] ProdutoCommand produtoDTO)
         {
             produtoHandler.Salvar(produtoDTO);
             return Ok();
         }
 
         [HttpGet]
-        public IEnumerable<ProdutoDTO> Get()
+        public IEnumerable<ProdutoCommand> Get()
         {
             return produtoHandler.RecuperarLista();
         }
 
         // GET api/<PessoaFisicaController>/5
         [HttpGet("{id}")]
-        public ProdutoDTO Get(int id)
+        public ProdutoCommand Get(int id)
         {
             return produtoHandler.RecuperarPeloId(id);
         }
