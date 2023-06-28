@@ -8,8 +8,6 @@ namespace ControleEstoque.Domain.Entidades
 {
     public class ProdutoEntity
     {
-        #region Atributos
-
         public int Id { get; set; }
         public string Codigo { get; set; }
         public string Nome { get; set; }
@@ -30,6 +28,5 @@ namespace ControleEstoque.Domain.Entidades
         public bool Ativo { get; set; }
         public string Imagem { get; set; }
 
-        #endregion
     }
 }

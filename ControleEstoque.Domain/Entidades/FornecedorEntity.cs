@@ -15,16 +15,15 @@ namespace ControleEstoque.Domain.Entidades
         public string RazaoSocial { get; set; }
         public string NumDocumento { get; set; }
         public string  Email { get; set; }
+        public int TipoFornecedorId { get; set; }
+        public bool Ativo { get; set; }
         public ContatoEntity Contato { get; set; }
 
-        public EnderecoEntity Endereco { get; set; } 
-      
+        public EnderecoEntity Endereco { get; set; }       
 
-
-        public int TipoFornecedorId { get; set; }
         public TipoPessoaEntity TipoPessoa { get; set; }
 
-        public bool Ativo { get; set; }
+        
      
     }
 }

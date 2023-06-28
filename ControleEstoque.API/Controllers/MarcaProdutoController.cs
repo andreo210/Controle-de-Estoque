@@ -38,7 +38,7 @@ namespace ControleEstoque.API.Controllers
         {
             var model = marcaHandler.Salvar(marca);
 
-            if (model is null)
+            if (model is not null)
             {
                 return Created(HttpContext.Request.Path + "/" + model.Id, model);
             }
@@ -69,7 +69,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult GetList()
         {
             var model = marcaHandler.RecuperarLista();
-            if (model is null)
+            if (model is not null)
             {
                 return Ok(model);
             }
@@ -99,7 +99,7 @@ namespace ControleEstoque.API.Controllers
         {
             var model = marcaHandler.RecuperarPeloId(id);
 
-            if (model is null)
+            if (model is not null)
             {
                 return Ok(model);
             }
@@ -147,9 +147,9 @@ namespace ControleEstoque.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var model =marcaHandler.RecuperarPeloId(id);
+            var model = marcaHandler.RecuperarPeloId(id);
 
-            if (model is null)
+            if (model is not null)
             {
                 marcaHandler.ExcluirPeloId(id);
                 return NoContent();
@@ -180,7 +180,7 @@ namespace ControleEstoque.API.Controllers
         public IActionResult Alterar(int id, [FromBody] MarcaProdutoCommand marca)
         {
             var model = marcaHandler.Alterar(id, marca);
-            if (model is null)
+            if (model is not null )
             {
                 return Ok(model);
             }
