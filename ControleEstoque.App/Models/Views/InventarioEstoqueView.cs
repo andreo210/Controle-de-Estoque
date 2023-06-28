@@ -9,6 +9,15 @@ namespace ControleEstoque.App.Dtos
 {
     public class InventarioEstoqueView
     {
+        
+        public int Id { get; set; }
+        public DateTime Data { get; set; }
+        public string Motivo { get; set; }
+        public int QuantidadeEstoque { get; set; }
+        public int QuantidadeInventario { get; set; }
+        public int IdProduto { get; set; }
+        //public ProdutoEntity Produto { get; set; }
+
         public InventarioEstoqueView()
         {
 
@@ -21,17 +30,10 @@ namespace ControleEstoque.App.Dtos
             this.QuantidadeInventario = entity.QuantidadeInventario;
             this.QuantidadeInventario = entity.QuantidadeEstoque;
             this.IdProduto = entity.IdProduto;
-           // this.Produto = entity.Produto;
-                 
+            // this.Produto = entity.Produto;
+
         }
 
-        public int Id { get; set; }
-        public DateTime Data { get; set; }
-        public string Motivo { get; set; }
-        public int QuantidadeEstoque { get; set; }
-        public int QuantidadeInventario { get; set; }
-        public int IdProduto { get; set; }
-        //public ProdutoEntity Produto { get; set; }
 
         public InventarioEstoqueEntity retornoInventarioEstoque()
         {
@@ -48,8 +50,7 @@ namespace ControleEstoque.App.Dtos
         public static implicit operator InventarioEstoqueEntity(InventarioEstoqueView inventarioEstoque)
         {
             return new InventarioEstoqueEntity
-            {
-                
+            {                
                 Id = inventarioEstoque.Id,
                 Data = inventarioEstoque.Data,
                 Motivo = inventarioEstoque.Motivo,
@@ -71,7 +72,6 @@ namespace ControleEstoque.App.Dtos
                 QuantidadeInventario = inventarioEstoque.QuantidadeInventario,
                 IdProduto = inventarioEstoque.IdProduto
             };
-
         }
 
 
