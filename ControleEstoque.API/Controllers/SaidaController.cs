@@ -22,16 +22,16 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Cria um nova saida de produto
         /// </summary>
-        /// <param name="saida"></param>
+        /// <param name="command"></param>
         /// <returns>Retona uma Saida</returns>
         /// <response code="201">Returna um novo fornecedor</response>
         /// <response code="400">se o item for nulo</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(SaidaProdutoView))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public IActionResult Post([FromBody] SaidaProdutoCommand saida)
+        public IActionResult Post([FromBody] SaidaProdutoCommand command)
         {
-            var model = saidaHandler.Salvar(saida);
+            var model = saidaHandler.Salvar(command);
             if (model is not null)
             {
                 return Created(HttpContext.Request.Path + "/" + model.Id, model);
@@ -46,7 +46,7 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Alterar uma saida de produto.
         /// </summary>
-        /// <param name="saida"></param>
+        /// <param name="command"></param>
         /// <param name="id"></param>
         /// <returns>Um grupo de produto foi alterado</returns>
         /// <response code="200">Quando saida de produto é alterado com sucesso</response>
@@ -55,9 +55,9 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         [HttpPut("{id}")]
-        public IActionResult Alterar(int id, [FromBody] SaidaProdutoCommand saida)
+        public IActionResult Alterar(int id, [FromBody] SaidaProdutoCommand command)
         {
-            var model = saidaHandler.Alterar(id, saida);
+            var model = saidaHandler.Alterar(id, command);
             if (model is not null)
             {
                 return Ok(model);

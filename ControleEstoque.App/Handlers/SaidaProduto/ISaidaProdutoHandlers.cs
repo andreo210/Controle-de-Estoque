@@ -15,9 +15,9 @@ namespace ControleEstoque.App.Handlers.SaidaProduto
 
         public SaidaProdutoView RecuperarPeloId(int id);
 
-        public SaidaProdutoView Salvar(SaidaProdutoCommand cidadeDTO);
+        public SaidaProdutoView Salvar(SaidaProdutoCommand command);
 
         public void ExcluirPeloId(int id);
-        public SaidaProdutoView Alterar(int id, SaidaProdutoCommand saida);
+        public SaidaProdutoView Alterar(int id, SaidaProdutoCommand command);
     }
 }

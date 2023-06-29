@@ -13,7 +13,7 @@ namespace ControleEstoque.API.Config
     {
         public BadRequestProblemDetails(string detalhe, HttpRequest request)
         {
-            Title = "Parametro invalida";
+            Title = "Parametro ou requisição invalida";
             Status = 400;
             Detail = detalhe;
             Instance = request.Path;

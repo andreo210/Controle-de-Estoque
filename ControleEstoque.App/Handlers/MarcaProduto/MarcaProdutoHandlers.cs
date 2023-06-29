@@ -13,40 +13,51 @@ namespace ControleEstoque.App.Handlers.MarcaProduto
 {
     public class MarcaProdutoHandlers : IMarcaProdutoHandlers
     {
-        IMarcaProdutoRepository marcaRepository;
-        private readonly ControleEstoqueContext context;
-        public MarcaProdutoHandlers(IMarcaProdutoRepository _marcaRepository, ControleEstoqueContext _context)
+        private readonly IMarcaProdutoRepository marcaRepository;       
+        public MarcaProdutoHandlers(IMarcaProdutoRepository _marcaRepository)
         {
-            marcaRepository = _marcaRepository;
-            context = _context;
+            marcaRepository = _marcaRepository;            
         }
+
+        //excluir
         public void ExcluirPeloId(int id)
         {
-            marcaRepository.Delete(id);
-            marcaRepository.Save();            
+            try
+            {
+                marcaRepository.Delete(id);
+                marcaRepository.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
+        //buscar lista
         public List<MarcaProdutoView> RecuperarLista()
         {
-            return marcaRepository.Get().Select(x => new MarcaProdutoView(x)).ToList();
+            return marcaRepository.Get().Select(model => new MarcaProdutoView(model)).ToList();
         }
 
+        //buscar por id
         public MarcaProdutoView RecuperarPeloId(int id)
         {
-            var retorno = marcaRepository.GetByID(id);
-            return retorno != null ? new MarcaProdutoView(retorno) : null;
+            var model = marcaRepository.GetByID(id);
+            return model is not null ? new MarcaProdutoView(model) : null;
         }
 
+        //buscar quantidade
         public int RecuperarQuantidade()
         {
             return marcaRepository.Get().Count();
         }
 
-        public MarcaProdutoView Salvar(MarcaProdutoCommand marca)
+        //salvar
+        public MarcaProdutoView Salvar(MarcaProdutoCommand command)
         {
             try
             {
-               var model =  marcaRepository.Insert(marca.retornoMarcaProduto());
+               var model =  marcaRepository.Insert(command.retornoMarcaProduto());
                marcaRepository.Save();
                return new MarcaProdutoView(model);
 
@@ -57,17 +68,17 @@ namespace ControleEstoque.App.Handlers.MarcaProduto
             
         }
 
-        public MarcaProdutoView Alterar(int id, MarcaProdutoCommand marca)
+        //alterar
+        public MarcaProdutoView Alterar(int id, MarcaProdutoCommand command)
         {
+            var model = RecuperarPeloId(id);
 
-            var model = context.MarcaProduto.FirstOrDefault(x => x.Id == id);
-
-            if (model != null)
+            if (model is not null)
             {
-                model.Ativo = marca.Ativo;
-                model.Nome = marca.Nome;
-                context.SaveChanges();
-                return new MarcaProdutoView(model);
+                model.Ativo = command.Ativo;
+                model.Nome = command.Nome;
+                marcaRepository.Save();
+                return model;
             }
             else
             {

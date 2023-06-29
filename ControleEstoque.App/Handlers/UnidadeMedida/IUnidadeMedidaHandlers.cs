@@ -15,10 +15,10 @@ namespace ControleEstoque.App.Handlers.UnidadeMedida
 
         public UnidadeMedidaView RecuperarPeloId(int id);
 
-        public UnidadeMedidaView Salvar(UnidadeMedidaCommand unidade);
+        public UnidadeMedidaView Salvar(UnidadeMedidaCommand command);
 
         public void ExcluirPeloId(int id);
 
-        public UnidadeMedidaView Alterar(int id, UnidadeMedidaCommand unidade);
+        public UnidadeMedidaView Alterar(int id, UnidadeMedidaCommand command);
     }
 }

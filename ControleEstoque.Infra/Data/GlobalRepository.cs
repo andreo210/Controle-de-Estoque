@@ -60,13 +60,12 @@ namespace ControleEstoque.Infra.Data
         public virtual TEntity GetByID(object id)
         {
            var entity= dbSet.Find(id);
-            //context.Entry(entity).State = EntityState.Detached;
-            return entity;
+           return entity;
         }
 
 
         //inserir
-        public TEntity Insert(TEntity entity)
+        public virtual TEntity Insert(TEntity entity)
         {
             dbSet.Add(entity);
             Save();

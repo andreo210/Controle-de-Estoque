@@ -12,12 +12,10 @@ namespace ControleEstoque.App.Handlers.EntradaProduto
     class EntradaProdutoHandlers : IEntradaProdutoHandlers
     {
         private readonly IEntradaProdutoRepository EntradaRepository;
-        private readonly ControleEstoqueContext context;
 
-        public EntradaProdutoHandlers(IEntradaProdutoRepository _EntradaRepository, ControleEstoqueContext _context)
+        public EntradaProdutoHandlers(IEntradaProdutoRepository _EntradaRepository)
         {
             EntradaRepository = _EntradaRepository;
-            context = _context;
         }
         public void ExcluirPeloId(int id)
         {
@@ -36,13 +34,21 @@ namespace ControleEstoque.App.Handlers.EntradaProduto
 
         public List<EntradaProdutoView> RecuperarLista()
         {
-            return EntradaRepository.Get().Select(x => new EntradaProdutoView(x)).ToList();
+            try
+            {
+                var listaModels = EntradaRepository.Get().Select(model => new EntradaProdutoView(model)).ToList();
+                return listaModels;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public EntradaProdutoView RecuperarPeloId(int id)
         {
-            var retorno = EntradaRepository.GetByID(id);
-            return retorno != null ? new EntradaProdutoView(retorno) : null;
+            var model = EntradaRepository.GetByID(id);
+            return model is not null ? new EntradaProdutoView(model) : null;
         }
 
         public int RecuperarQuantidade()
@@ -50,12 +56,12 @@ namespace ControleEstoque.App.Handlers.EntradaProduto
             return EntradaRepository.Get().Count();
         }
 
-        public EntradaProdutoView Salvar(EntradaProdutoCommand cidade)
+        public EntradaProdutoView Salvar(EntradaProdutoCommand command)
         {
 
             try
             {
-                var model = EntradaRepository.Insert(cidade);
+                var model = EntradaRepository.Insert(command);
                 EntradaRepository.Save();
                 return new EntradaProdutoView(model);
             }
@@ -67,19 +73,18 @@ namespace ControleEstoque.App.Handlers.EntradaProduto
         }
 
 
-        public EntradaProdutoView Alterar(int id, EntradaProdutoCommand Entrada)
+        public EntradaProdutoView Alterar(int id, EntradaProdutoCommand command)
         {
 
-            var model = context.EntradaProduto.FirstOrDefault(x => x.Id == id);
-
-            if (model != null)
+            var model = RecuperarPeloId(id);
+            if (model is not null)
             {
-                model.IdProduto = Entrada.IdProduto;
-                model.Numero = Entrada.Numero;
+                model.IdProduto = command.IdProduto;
+                model.Numero = command.Numero;
                 model.Data = DateTime.Now;
-                model.Quantidade = Entrada.Quantidade;
-                context.SaveChanges();
-                return new EntradaProdutoView(model);
+                model.Quantidade = command.Quantidade;
+                EntradaRepository.Save();
+                return model;
             }
             else
             {

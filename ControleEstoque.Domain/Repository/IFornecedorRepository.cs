@@ -11,5 +11,7 @@ namespace ControleEstoque.Domain.Repository
     {
         public List<FornecedorEntity> BuscarFornecedores();
         public FornecedorEntity BuscarFornecedoresPorID(int id);
+        public string GetTipoPessoa(int id);
+        public string GetTipoContato(int id);
     }
 }

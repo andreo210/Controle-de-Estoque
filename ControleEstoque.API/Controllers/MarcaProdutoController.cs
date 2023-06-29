@@ -24,7 +24,7 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Cria uma nova marca de produto
         /// </summary>
-        /// <param name="marca"></param>
+        /// <param name="command"></param>
         /// <returns>Retona uma marca de produto</returns>
         /// <response code="201">Returna uma nova marcar</response>
         /// <response code="400">se o item for nulo</response>
@@ -34,9 +34,9 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost] 
-        public IActionResult Post([FromBody] MarcaProdutoCommand marca)
+        public IActionResult Post([FromBody] MarcaProdutoCommand command)
         {
-            var model = marcaHandler.Salvar(marca);
+            var model = marcaHandler.Salvar(command);
 
             if (model is not null)
             {
@@ -168,7 +168,7 @@ namespace ControleEstoque.API.Controllers
         /// PUT /GrupoProduto/id           
         /// </remarks>
         /// /// <param name="id"></param>
-        /// <param name="marca"></param>
+        /// <param name="command"></param>
         /// <returns>Um grupo de produto foi alterado</returns>
         /// <response code="200">Quando fornecedor é alterado com sucesso</response>
         /// <response code="404">Quando o Fornecedor não existir</response>  
@@ -177,9 +177,9 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPut("{id}")]
-        public IActionResult Alterar(int id, [FromBody] MarcaProdutoCommand marca)
+        public IActionResult Alterar(int id, [FromBody] MarcaProdutoCommand command)
         {
-            var model = marcaHandler.Alterar(id, marca);
+            var model = marcaHandler.Alterar(id, command);
             if (model is not null )
             {
                 return Ok(model);

@@ -21,12 +21,27 @@ namespace ControleEstoque.App.Handlers.Contato
 
         }
 
+        public void ExcluirPeloId(int id)
+        {
+            try
+            {
+                _contato.Delete(id);
+                _contato.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
+
         public List<ContatoView> RecuperarLista()
         {
             try
             {
-                var lista = _contato.Get().Select(x => new ContatoView(x)).ToList();
-                return lista;
+              var ListaModel = _contato.Get().Select(model => new ContatoView(model)).ToList();
+              return ListaModel;
 
             }catch(Exception e)
             {
@@ -39,37 +54,27 @@ namespace ControleEstoque.App.Handlers.Contato
         {
             try
             {
-                var retorno = _contato.GetByID(id);
-                return retorno != null ? new ContatoView(retorno) : null;
+                var model = _contato.GetByID(id);
+                return model is not null ? new ContatoView(model) : null;
             }
             catch (Exception e)
             {
                 throw;
             }
         }
-        public ContatosCommand Salvar(ContatosCommand contatoDTO)
-        {
-            var x = _contato.Insert(contatoDTO.retornoContatoEntity());
-            return new ContatosCommand(x);
-        }
-
-        public void ExcluirPeloId(int id)
+        public ContatoView Salvar(ContatosCommand command)
         {
             try
             {
-                _contato.Delete(id);
-                _contato.Save();
+                var model = _contato.Insert(command.retornoContatoEntity());
+                return new ContatoView(model);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw;
             }
-
         }
-
-        
-
-
+             
 
 
     }

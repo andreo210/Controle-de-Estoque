@@ -10,9 +10,10 @@ namespace ControleEstoque.App.Handlers.Contato
 {
     public interface IContatoHandler
     {
+        public void ExcluirPeloId(int id);
         public List<ContatoView> RecuperarLista();
         public ContatoView FindByID(int id);
-        public ContatosCommand Salvar(ContatosCommand contatoDTO);
-        public void ExcluirPeloId(int id);
+        public ContatoView Salvar(ContatosCommand command);
+        
     }
 }

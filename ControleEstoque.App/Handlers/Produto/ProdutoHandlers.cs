@@ -13,55 +13,120 @@ namespace ControleEstoque.App.Handlers.Produto
 {
     class ProdutoHandlers : IProdutoHandlers
     {
-        private readonly ControleEstoqueContext context;
-
         IProdutoRepository produtoRepository;
 
-        public ProdutoHandlers(IProdutoRepository _produtoRepository, ControleEstoqueContext _context)
+        public ProdutoHandlers(IProdutoRepository _produtoRepository)
         {
-            produtoRepository = _produtoRepository;
-            context = _context;
-
+            produtoRepository = _produtoRepository;          
         }
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
-            produtoRepository.Delete(id);
-            produtoRepository.Save();
-            return "Ok";
+          
+            try
+            {
+                produtoRepository.Delete(id);
+                produtoRepository.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
-        public List<ProdutoCommand> RecuperarLista()
+        public List<ProdutoView> RecuperarLista()
         {
-            return produtoRepository.Get().Select(x => new ProdutoCommand(x)).ToList(); ;
+            
+            try
+            {
+                var listaModel = produtoRepository.Get().Select(model => new ProdutoView(model)).ToList();
+                return listaModel;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
-        public ProdutoCommand RecuperarPeloId(int id)
+        public ProdutoView RecuperarPeloId(int id)
         {
-            var retorno = produtoRepository.GetByID(id);
-            return retorno != null ? new ProdutoCommand(retorno) : null;
+            try
+            {
+                var model = produtoRepository.GetByID(id);
+                return model is not null ? model : null; ;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public int RecuperarQuantidade()
-        {
-            return produtoRepository.Get().Count();
-        }
-
-        public string Salvar(ProdutoView cidadeDTO)
-        {
-            var model = context.Set<ProdutoEntity>().AsNoTracking().Where(e => e.Id == cidadeDTO.Id).FirstOrDefault();
-
-            if (model == null)
+        {            
+            try
             {
-                produtoRepository.Insert(cidadeDTO.retornoProduto());
-                produtoRepository.Save();
-                return "Ok";
+                return produtoRepository.Get().Count();
             }
-            else
+            catch (Exception e)
             {
-                produtoRepository.Update(cidadeDTO.retornoProduto());
-                produtoRepository.Save();
-                return "No Content";
+                throw;
             }
         }
+
+
+
+        public ProdutoView Salvar(ProdutoCommand command)
+        {
+
+            try
+            {
+                var model = produtoRepository.Insert(command);
+                produtoRepository.Save();
+                return model;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
+        }
+
+
+        public ProdutoView Alterar(int id, ProdutoCommand command)
+        {
+            try
+            {
+                var model = produtoRepository.GetByID(id);
+
+                if (model is not null)
+                {
+                    model.Nome = command.Nome;
+                    model.Ativo = command.Ativo;
+                    model.Codigo = command.Codigo;
+                    model.IdFornecedor = command.IdFornecedor;
+                    model.IdGrupo = command.IdGrupo;
+                    model.IdLocalArmazenamento = command.IdLocalArmazenamento;
+                    model.IdMarca = command.IdMarca;
+                    model.IdUnidadeMedida = command.IdUnidadeMedida;
+                    model.Imagem = command.Imagem;
+                    model.PrecoCusto = command.PrecoCusto;
+                    model.PrecoVenda = command.PrecoVenda;
+                    model.QuantEstoque = command.QuantEstoque;
+                    produtoRepository.Save();
+                    return model;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
+        }
+
     }
 }
+    
+

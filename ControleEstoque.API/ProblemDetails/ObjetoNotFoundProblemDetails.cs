@@ -17,7 +17,7 @@ namespace ControleEstoque.API.Config
             Status = 404;
             Detail = detalhe;
             Instance = request.Path;
-            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.4";      
+            Type = "https://tools.ietf.org/html/rfc7231#section-6.5.1";      
 
         }        
     }

@@ -22,7 +22,7 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Cria um novo Inventario
         /// </summary>
-        /// <param name="inventario"></param>
+        /// <param name="command"></param>
         /// <returns>Retona um fornecedor criado</returns>
         /// <response code="201">Returna um novo fornecedor</response>
         /// <response code="400">se o item for nulo</response>
@@ -31,12 +31,12 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPost]
-        public IActionResult Post([FromBody] InventarioEstoqueCommand inventario)
+        public IActionResult Post([FromBody] InventarioEstoqueCommand command)
         {
-            var x = inventarioHandler.Salvar(inventario);
-            if (x != null)
+            var model = inventarioHandler.Salvar(command);
+            if (model is not null)
             {
-                return Created(HttpContext.Request.Path + "/" + x.Id, x);
+                return Created(HttpContext.Request.Path + "/" + model.Id, model);
             }
             else
             {
@@ -51,7 +51,8 @@ namespace ControleEstoque.API.Controllers
         /// Exemplo de requisição:        
         /// PUT /GrupoProduto/id           
         /// </remarks>
-        /// <param name="grupoDTO"></param>
+        ///<param name="id"></param>
+        /// <param name="command"></param>
         /// <returns>Um grupo de produto foi alterado</returns>
         /// <response code="200">Quando fornecedor é alterado com sucesso</response>
         /// <response code="404">Quando o Fornecedor não existir</response>  
@@ -60,12 +61,12 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpPut("{id}")]
-        public IActionResult Alterar(int id, [FromBody] InventarioEstoqueCommand inventario)
+        public IActionResult Alterar(int id, [FromBody] InventarioEstoqueCommand command)
         {
-            var x = inventarioHandler.Alterar(id, inventario);
-            if (x != null)
+            var model = inventarioHandler.Alterar(id, command);
+            if (model is not null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -93,10 +94,10 @@ namespace ControleEstoque.API.Controllers
         [HttpGet]
         public IActionResult GetList()
         {
-            var x = inventarioHandler.RecuperarLista();
-            if (x != null)
+            var model = inventarioHandler.RecuperarLista();
+            if (model is not null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -121,11 +122,11 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("{id}")]
         public IActionResult GetId(int id)
         {
-            var x = inventarioHandler.RecuperarPeloId(id);
+            var model = inventarioHandler.RecuperarPeloId(id);
 
-            if (x != null)
+            if (model is not null)
             {
-                return Ok(x);
+                return Ok(model);
             }
             else
             {
@@ -168,9 +169,9 @@ namespace ControleEstoque.API.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            var x = inventarioHandler.RecuperarPeloId(id);
+            var model = inventarioHandler.RecuperarPeloId(id);
 
-            if (x != null)
+            if (model is not null)
             {
                 inventarioHandler.ExcluirPeloId(id);
                 return NoContent();
