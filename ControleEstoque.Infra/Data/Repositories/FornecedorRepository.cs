@@ -20,12 +20,26 @@ namespace ControleEstoque.Infra.Data
 		public List<FornecedorEntity> BuscarFornecedores()
         {
 			return  _dbContext.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).ToList();
-
 		}
 
 		public FornecedorEntity BuscarFornecedoresPorID(int id)
 		{
 			return _dbContext.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x=>x.Id == id);
+		}
+
+		public string GetTipoPessoa(int id)
+		{
+			var tipoPessoa = _dbContext.TipoPessoa.FirstOrDefault(x => x.Id == id);
+			if (tipoPessoa is null) return null;
+			else return "OK";
+
+		}
+
+		public string GetTipoContato(int id)
+		{
+			var tipoPessoa = _dbContext.Contato.FirstOrDefault(x => x.TipoContatoId == id);
+			if (tipoPessoa is null) return null;
+			else return "OK";
 
 		}
 

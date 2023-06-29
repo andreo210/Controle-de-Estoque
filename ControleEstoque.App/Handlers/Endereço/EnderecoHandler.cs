@@ -20,10 +20,9 @@ namespace ControleEstoque.App.Handlers.Endereço
         public List<EnderecoView> RecuperarLista()
         {
             try
-            {
-                var lista = enderecoRepository.Get().Select(x => new EnderecoView(x)).ToList();
-                return lista;
-
+            {    
+                var listaModels = enderecoRepository.Get().Select(model => new EnderecoView(model)).ToList();
+                return listaModels;
             }
             catch (Exception e)
             {
@@ -36,8 +35,8 @@ namespace ControleEstoque.App.Handlers.Endereço
         {
             try
             {
-                var retorno = enderecoRepository.GetByID(id);
-                return retorno != null ? new EnderecoView(retorno) : null;
+                var model = enderecoRepository.GetByID(id);
+                return model is not null ? new EnderecoView(model) : null;
             }
             catch (Exception e)
             {

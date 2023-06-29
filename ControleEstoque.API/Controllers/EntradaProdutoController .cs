@@ -29,9 +29,9 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(EntradaProdutoView))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public IActionResult Post([FromBody] EntradaProdutoCommand entrada)
+        public IActionResult Post([FromBody] EntradaProdutoCommand command)
         {
-            var model = EntradaHandler.Salvar(entrada);
+            var model = EntradaHandler.Salvar(command);
             if (model is not null)
             {
                 return Created(HttpContext.Request.Path + "/" + model.Id, model);
@@ -55,9 +55,9 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         [HttpPut("{id}")]
-        public IActionResult Alterar(int id, [FromBody] EntradaProdutoCommand Entrada)
+        public IActionResult Alterar(int id, [FromBody] EntradaProdutoCommand command)
         {
-            var model = EntradaHandler.Alterar(id, Entrada);
+            var model = EntradaHandler.Alterar(id, command);
             if (model is not null)
             {
                 return Ok(model);

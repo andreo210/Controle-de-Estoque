@@ -16,9 +16,9 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
 
         public LocalArmazenamentoView RecuperarPeloId(int id);
 
-        public LocalArmazenamentoView Salvar(LocalArmazenamentoCommand local);
-        public LocalArmazenamentoView Alterar(int id, LocalArmazenamentoCommand local);
+        public LocalArmazenamentoView Salvar(LocalArmazenamentoCommand command);
+        public LocalArmazenamentoView Alterar(int id, LocalArmazenamentoCommand command);
 
-        public string ExcluirPeloId(int id);
+        public void ExcluirPeloId(int id);
     }
 }

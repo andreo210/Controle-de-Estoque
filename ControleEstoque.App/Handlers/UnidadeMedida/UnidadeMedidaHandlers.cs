@@ -14,12 +14,10 @@ namespace ControleEstoque.App.Handlers.UnidadeMedida
     public class UnidadeMedidaHandlers : IUnidadeMedidaHandlers
     {
         private readonly IUnidadeMedidaRepository EntradaRepository;
-        private readonly ControleEstoqueContext context;
 
-        public UnidadeMedidaHandlers(IUnidadeMedidaRepository _EntradaRepository, ControleEstoqueContext _context)
+        public UnidadeMedidaHandlers(IUnidadeMedidaRepository _EntradaRepository )
         {
             EntradaRepository = _EntradaRepository;
-            context = _context;
         }
         public void ExcluirPeloId(int id)
         {
@@ -32,33 +30,54 @@ namespace ControleEstoque.App.Handlers.UnidadeMedida
             {
                 throw;
             }
-
         }
 
         public List<UnidadeMedidaView> RecuperarLista()
-        {
-            return EntradaRepository.Get().Select(x => new UnidadeMedidaView(x)).ToList();
+        {            
+            try
+            {
+                var listaModel = EntradaRepository.Get().Select(model => new UnidadeMedidaView(model)).ToList();
+                return listaModel;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public UnidadeMedidaView RecuperarPeloId(int id)
-        {
-            var retorno = EntradaRepository.GetByID(id);
-            return retorno != null ? new UnidadeMedidaView(retorno) : null;
+        {            
+            try
+            {
+                var model = EntradaRepository.GetByID(id);
+                return model is not null ? new UnidadeMedidaView(model) : null; 
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public int RecuperarQuantidade()
-        {
-            return EntradaRepository.Get().Count();
+        {            
+            try
+            {
+                return EntradaRepository.Get().Count();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
-        public UnidadeMedidaView Salvar(UnidadeMedidaCommand cidade)
+        public UnidadeMedidaView Salvar(UnidadeMedidaCommand command)
         {
 
             try
             {
-                var model = EntradaRepository.Insert(cidade);
+                var model = EntradaRepository.Insert(command);
                 EntradaRepository.Save();
-                return new UnidadeMedidaView(model);
+                return model;
             }
             catch (Exception e)
             {
@@ -68,17 +87,17 @@ namespace ControleEstoque.App.Handlers.UnidadeMedida
         }
 
 
-        public UnidadeMedidaView Alterar(int id, UnidadeMedidaCommand Entrada)
+        public UnidadeMedidaView Alterar(int id, UnidadeMedidaCommand command)
         {
 
-            var model = context.UnidadeMedida.FirstOrDefault(x => x.Id == id);
+            var model = RecuperarPeloId(id);
 
             if (model is not null)
             {
-                model.Nome = Entrada.Nome;
-                model.Sigla= Entrada.Sigla;
-                model.Ativo = Entrada.Ativo;
-                context.SaveChanges();
+                model.Nome = command.Nome;
+                model.Sigla= command.Sigla;
+                model.Ativo = command.Ativo;
+                EntradaRepository.Save();
                 return model;
             }
             else

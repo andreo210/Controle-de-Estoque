@@ -16,42 +16,70 @@ namespace ControleEstoque.App.Handlers.InventarioEstoque
 
     {
         IinventarioEstoqueRepository inventarioRepository;
-        private readonly ControleEstoqueContext context;
 
-        public InventarioEstoqueHandlers(IinventarioEstoqueRepository _inventarioRepository, ControleEstoqueContext _context)
+        public InventarioEstoqueHandlers(IinventarioEstoqueRepository _inventarioRepository)
         {
             inventarioRepository = _inventarioRepository;
-            context = _context;
         }
         public void ExcluirPeloId(int id)
         {
-            inventarioRepository.Delete(id);
-            inventarioRepository.Save();            
+            try
+            {
+                inventarioRepository.Delete(id);
+                inventarioRepository.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public List<InventarioEstoqueView> RecuperarLista()
         {
-            return inventarioRepository.Get().Select(x => new InventarioEstoqueView(x)).ToList();
+            try
+            {
+                var listaModels = inventarioRepository.Get().Select(model => new InventarioEstoqueView(model)).ToList();
+                return listaModels;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public InventarioEstoqueView RecuperarPeloId(int id)
         {
-            var retorno = inventarioRepository.GetByID(id);
-            return retorno != null ? new InventarioEstoqueView(retorno) : null;
+            try
+            {
+                var model = inventarioRepository.GetByID(id);
+                return model is not null ? new InventarioEstoqueView(model) : null;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
+
 
         public int RecuperarQuantidade()
         {
-            return inventarioRepository.Get().Count();
+            try
+            {
+                return inventarioRepository.Get().Count();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
-        public InventarioEstoqueView Salvar(InventarioEstoqueCommand inventario)
+        public InventarioEstoqueView Salvar(InventarioEstoqueCommand command)
         {
             try
             {
-                var x = inventarioRepository.Insert(inventario.retornoInventarioEstoque());
+                var model = inventarioRepository.Insert(command.retornoInventarioEstoque());
                 inventarioRepository.Save();
-                return new InventarioEstoqueView(x);
+                return new InventarioEstoqueView(model);
             }
             catch (Exception e)
             {
@@ -62,26 +90,31 @@ namespace ControleEstoque.App.Handlers.InventarioEstoque
       
 
 
-        public InventarioEstoqueView Alterar(int id, InventarioEstoqueCommand inventario)
+        public InventarioEstoqueView Alterar(int id, InventarioEstoqueCommand command)
         {
-
-            var model = context.InventarioEstoque.FirstOrDefault(x => x.Id == id);
-
-            if (model != null)
+            try
             {
-                model.Data = inventario.Data;
-                model.IdProduto = inventario.IdProduto;
-                model.Motivo = inventario.Motivo;
-                model.QuantidadeEstoque = inventario.QuantidadeEstoque;
-                model.QuantidadeInventario = inventario.QuantidadeInventario;
-                context.InventarioEstoque.Update(model);
-                context.SaveChanges();
-                return new InventarioEstoqueView(model);
+                var model = RecuperarPeloId(id);
+                if (model is not null)
+                {
+                    model.Data = command.Data;
+                    model.IdProduto = command.IdProduto;
+                    model.Motivo = command.Motivo;
+                    model.QuantidadeEstoque = command.QuantidadeEstoque;
+                    model.QuantidadeInventario = command.QuantidadeInventario;
+                    inventarioRepository.Save();
+                    return new InventarioEstoqueView(model);
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (Exception e)
             {
-                return null;
+                throw;
             }
+
         }
 
     }

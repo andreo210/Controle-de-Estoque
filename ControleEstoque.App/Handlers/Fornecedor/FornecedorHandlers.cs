@@ -14,19 +14,12 @@ namespace ControleEstoque.App.Handlers.Fornecedor
     public class FornecedorHandlers : IFornecedorHandlers
     {
         
-        private readonly ControleEstoqueContext context;
+        
         private readonly IFornecedorRepository fornecedorRepository;
-        private readonly IContatoRepository contatoRepository;
-        private readonly IEnderecoRepository enderecoRepository;
 
-
-        public FornecedorHandlers(IFornecedorRepository _fornecedorRepository, ControleEstoqueContext _context, IContatoRepository _contatoRepository, IEnderecoRepository _enderecoRepository)
+        public FornecedorHandlers(IFornecedorRepository _fornecedorRepository,  IContatoRepository _contatoRepository, IEnderecoRepository _enderecoRepository)
         {
             fornecedorRepository = _fornecedorRepository;
-            context = _context;
-            contatoRepository = _contatoRepository;
-            enderecoRepository = _enderecoRepository;
-
         }
         public void ExcluirPeloId(int id)
         {
@@ -38,8 +31,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             }catch(Exception e)
             {
                 throw;
-            }
-           
+            }           
         }
 
 
@@ -47,9 +39,8 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         {
             try
              {
-                var todos = fornecedorRepository.BuscarFornecedores();
-                 var x=  todos.Select(x => new FornecedorView(x)).ToList();
-                return x;
+                var ListaModels = fornecedorRepository.BuscarFornecedores().Select(model => new FornecedorView(model)).ToList();
+                return ListaModels;    
 
             }catch(Exception e)
             {
@@ -61,15 +52,14 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         {
             try
             {
-                var retorno = fornecedorRepository.BuscarFornecedoresPorID(id);
-                return retorno != null ? new FornecedorView(retorno) : null;
+                var model = fornecedorRepository.BuscarFornecedoresPorID(id);
+                return model is not null ? new FornecedorView(model) : null;
 
             }catch(Exception e)
             {
                 throw;
             }
         }
-
         
 
         public int RecuperarQuantidade()
@@ -86,19 +76,13 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         }
 
 
-        public FornecedorView Salvar(FornecedorCommand fornecedor)       
+        public FornecedorView Salvar(FornecedorCommand command)       
         {  
             try
-            {
-                //var tipoPessoa = context.TipoPessoa.FirstOrDefault(x => x.Id == fornecedor.TipoPessoaId);
-                //if (tipoPessoa == null) throw new TipoPessoaNaoEncontradaException("Id:"+ fornecedor.TipoPessoaId+ " do Tipo de pessoa é invalido");
-               
-               // else
-               // {
-                    var x = fornecedorRepository.Insert(fornecedor);
-                    return new FornecedorView(x);
-                //}   
-                
+            {                
+                var model = fornecedorRepository.Insert(command);
+                fornecedorRepository.Save();
+                return new FornecedorView(model);      
 
             }catch(Exception e)
             {
@@ -108,37 +92,37 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
     
 
-        public FornecedorView Alterarfornecedor(int id,FornecedorCommand fornecedor)
+        public FornecedorView Alterarfornecedor(int id,FornecedorCommand command)
         {
             try
             {
-                var model = context.Fornecedor.Include(x => x.Contato).Include(x => x.Endereco).FirstOrDefault(x => x.Id == id);
+                var model = fornecedorRepository.BuscarFornecedoresPorID(id);
 
                 if (model != null)
                 {
                     //informação do fornecedor
-                    model.Nome = fornecedor.Nome;
-                    model.RazaoSocial = fornecedor.RazaoSocial;
-                    model.NumDocumento = fornecedor.NumDocumento;
-                    model.Ativo = fornecedor.Ativo;
-                    model.Email = fornecedor.Email;
+                    model.Nome = command.Nome;
+                    model.RazaoSocial = command.RazaoSocial;
+                    model.NumDocumento = command.NumDocumento;
+                    model.Ativo = command.Ativo;
+                    model.Email = command.Email;
 
                     //contato do fornecedor
-                    model.Contato.CodigoPais = fornecedor.Contato.CodigoPais;
-                    model.Contato.DDD = fornecedor.Contato.DDD;
-                    model.Contato.Numero = fornecedor.Contato.Numero;
-                    model.Contato.TipoContatoId = fornecedor.Contato.TipoContatoId;
+                    model.Contato.CodigoPais = command.Contato.CodigoPais;
+                    model.Contato.DDD = command.Contato.DDD;
+                    model.Contato.Numero = command.Contato.Numero;
+                    model.Contato.TipoContatoId = command.Contato.TipoContatoId;
 
 
                     //endereco do fornecedor
-                    model.Endereco.Logradouro = fornecedor.Endereco.Logradouro;
-                    model.Endereco.CEP = fornecedor.Endereco.CEP;
-                    model.Endereco.Numero = fornecedor.Endereco.Numero;
-                    model.Endereco.Bairro = fornecedor.Endereco.Bairro;
-                    model.Endereco.Estado = fornecedor.Endereco.Estado;
-                    model.Endereco.Pais = fornecedor.Endereco.Pais;
+                    model.Endereco.Logradouro = command.Endereco.Logradouro;
+                    model.Endereco.CEP = command.Endereco.CEP;
+                    model.Endereco.Numero = command.Endereco.Numero;
+                    model.Endereco.Bairro = command.Endereco.Bairro;
+                    model.Endereco.Estado = command.Endereco.Estado;
+                    model.Endereco.Pais = command.Endereco.Pais;
 
-                    context.SaveChanges();
+                    fornecedorRepository.Save();
                     return new FornecedorView(model);
                 }
                 else
@@ -154,17 +138,26 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
         public string GetTipoPessoa(int id)
         {
-            var tipoPessoa = context.TipoPessoa.FirstOrDefault(x => x.Id == id);
-            if (tipoPessoa == null) return null;
-            else return "OK";
-
+            try
+            {
+                return fornecedorRepository.GetTipoPessoa(id);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public string GetTipoContato(int id)
         {
-            var tipoPessoa = context.Contato.FirstOrDefault(x => x.TipoContatoId == id);
-            if (tipoPessoa == null) return null;
-            else return "OK";
+            try
+            {
+                return fornecedorRepository.GetTipoContato(id);
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
 
         }
     }

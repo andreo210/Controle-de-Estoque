@@ -15,46 +15,73 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
     public class LocalArmazenamentoHandlers : ILocalArmazenamentoHandlers
     {
 
-        ILocalArmazenamentoRepository localRepository;
-        private readonly ControleEstoqueContext context;
-        public LocalArmazenamentoHandlers(ILocalArmazenamentoRepository _localRepository, ControleEstoqueContext _context)
+        private readonly  ILocalArmazenamentoRepository localRepository;
+        public LocalArmazenamentoHandlers(ILocalArmazenamentoRepository _localRepository)
         {
             localRepository = _localRepository;
-            context = _context;
         }
-        public string ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {
-            localRepository.Delete(id);
-            localRepository.Save();
-            return "ok";
-
-            
+            try
+            {
+                localRepository.Delete(id);
+                localRepository.Save();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
         public List<LocalArmazenamentoView> RecuperarLista()
         {
-            return localRepository.Get().Select(x => new LocalArmazenamentoView(x)).ToList();
+            try
+            {
+               var listaModels = localRepository.Get().Select(model => new LocalArmazenamentoView(model)).ToList();
+                return listaModels;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+            
         }
 
         public LocalArmazenamentoView RecuperarPeloId(int id)
-        {
-            var retorno = localRepository.GetByID(id);
-            return retorno != null ? new LocalArmazenamentoView(retorno) : null;
+        {            
+            try
+            {
+                var model = localRepository.GetByID(id);
+                return model is not null ? new LocalArmazenamentoView(model) : null;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+
         }
 
         public int RecuperarQuantidade()
         {
-            return localRepository.Get().Count();
+            
+            try
+            {
+                return localRepository.Get().Count();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
 
         }
 
-        public LocalArmazenamentoView Salvar(LocalArmazenamentoCommand localDTO)
+        public LocalArmazenamentoView Salvar(LocalArmazenamentoCommand command)
         {
             try
             {
-                var x = localRepository.Insert(localDTO.retornoLocalArmazenamento());
+                var model = localRepository.Insert(command.retornoLocalArmazenamento());
                 localRepository.Save();
-                return new LocalArmazenamentoView(x);
+                return new LocalArmazenamentoView(model);
 
             }catch(Exception e)
             {
@@ -67,14 +94,14 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
         {
             try
             {
-                var model = context.LocalArmazenamento.FirstOrDefault(x => x.Id == id);
+                var model = RecuperarPeloId(id);
 
-                if (model != null)
+                if (model is not null)
                 {
                     model.Nome = local.Nome;
                     model.Ativo = local.Ativo;
-                    context.SaveChanges();
-                    return new LocalArmazenamentoView(model);
+                    localRepository.Save();
+                    return model;
                 }
                 else
                 {

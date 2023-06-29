@@ -15,9 +15,9 @@ namespace ControleEstoque.App.Handlers.InventarioEstoque
 
         public InventarioEstoqueView RecuperarPeloId(int id);
 
-        public InventarioEstoqueView Salvar(InventarioEstoqueCommand inventarioDTO);
+        public InventarioEstoqueView Salvar(InventarioEstoqueCommand command);
 
         public void ExcluirPeloId(int id);
-        public InventarioEstoqueView Alterar(int id, InventarioEstoqueCommand inventario);
+        public InventarioEstoqueView Alterar(int id, InventarioEstoqueCommand command);
     }
 }

@@ -33,7 +33,7 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Cria um novo Fornecedor
         /// </summary>
-        /// <param name="fornecedor"></param>
+        /// <param name="command"></param>
         /// <returns>Retona um fornecedor criado</returns>
         /// <response code="201">Returna um novo fornecedor</response>
         /// <response code="400">Quando um parametro é invalido ou não existir</response>      
@@ -44,12 +44,12 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPost]
-        public IActionResult Post([FromBody] FornecedorCommand fornecedor)
+        public IActionResult Post([FromBody] FornecedorCommand command)
         {
             //verifica se o tipo de pessoa existe
-            var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(fornecedor.TipoPessoaId);
+            var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(command.TipoPessoaId);
             //verifica se o tipo de contato existe
-            var tipoContato = _fornecedorHandlers.GetTipoContato(fornecedor.Contato.TipoContatoId);
+            var tipoContato = _fornecedorHandlers.GetTipoContato(command.Contato.TipoContatoId);
 
             if (tipoPessoa is  null)            
                 return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
@@ -60,7 +60,7 @@ namespace ControleEstoque.API.Controllers
 
             else
             {
-                var model = _fornecedorHandlers.Salvar(fornecedor);
+                var model = _fornecedorHandlers.Salvar(command);
                 if (model is not null)
                 {
                     return Created(HttpContext.Request.Path + "/" + model.Id, model);
@@ -273,7 +273,7 @@ namespace ControleEstoque.API.Controllers
         /// Exemplo de requisição:        
         /// PUT /Fornecedor/id           
         /// </remarks>
-        /// <param name="fornecedor"></param>
+        /// <param name="command"></param>
         /// /// <param name="id"></param>
         /// <returns>Um fornecedor foi alterado</returns>
         /// <response code="200">Quando fornecedor é alterado com sucesso</response>
@@ -286,12 +286,12 @@ namespace ControleEstoque.API.Controllers
         [ProducesDefaultResponseType]
         [HttpPut("{id}")]
         
-        public IActionResult Alterar(int id, [FromBody] FornecedorCommand fornecedor)
+        public IActionResult Alterar(int id, [FromBody] FornecedorCommand command)
         {
             //verifica se o tipo de pessoa existe
-            var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(fornecedor.TipoPessoaId);
+            var tipoPessoa = _fornecedorHandlers.GetTipoPessoa(command.TipoPessoaId);
             //verifica se o tipo de contato existe
-            var tipoContato = _fornecedorHandlers.GetTipoContato(fornecedor.Contato.TipoContatoId);
+            var tipoContato = _fornecedorHandlers.GetTipoContato(command.Contato.TipoContatoId);
 
             if (tipoPessoa is null)
                 return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
@@ -300,7 +300,7 @@ namespace ControleEstoque.API.Controllers
             else if (tipoContato is null)
                 return BadRequest(new BadRequestProblemDetails("O TipoContatoId deve ser 1 para Celular ou 2 Pessoa para Residencial", Request));
             else {
-                var model = _fornecedorHandlers.Alterarfornecedor(id, fornecedor);
+                var model = _fornecedorHandlers.Alterarfornecedor(id, command);
 
                 if (model is not null)
                 {

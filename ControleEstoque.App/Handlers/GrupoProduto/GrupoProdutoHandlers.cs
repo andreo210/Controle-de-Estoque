@@ -13,31 +13,22 @@ using System.Threading.Tasks;
 namespace ControleEstoque.App.Handlers.GrupoProduto
 {
    public   class GrupoProdutoHandlers : IGrupoProdutoHandlers
-    {
-        private readonly ControleEstoqueContext context;
+    {       
 
         IGrupoProdutoRepository grupoRepository;
 
-        public GrupoProdutoHandlers(IGrupoProdutoRepository _grupoRepositoryy, ControleEstoqueContext _context)
+        public GrupoProdutoHandlers(IGrupoProdutoRepository _grupoRepository)
         {
-            grupoRepository = _grupoRepositoryy;
-            context = _context;
+            grupoRepository = _grupoRepository;
+            
 
         }
-        public GrupoProdutoView ExcluirPeloId(int id)
+        public void ExcluirPeloId(int id)
         {            
             try
-            {
-                var grupo = RecuperarPeloId(id);
-                if(grupo == null)
-                {
-                    return null;
-                }else
-                {
-                    grupoRepository.Delete(id);
-                    grupoRepository.Save();
-                    return grupo;
-                }                
+            {               
+              grupoRepository.Delete(id);
+              grupoRepository.Save();  
 
             }catch(Exception e)
             {
@@ -48,37 +39,59 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
 
         public List<GrupoProdutoView> RecuperarLista()
         {
-            return grupoRepository.Get().Select(x => new GrupoProdutoView(x)).ToList();
+            try
+            {
+                var listaModels = grupoRepository.Get().Select(model => new GrupoProdutoView(model)).ToList();
+                return listaModels;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 
         public GrupoProdutoView RecuperarPeloId(int id)
         {
-            var retorno = grupoRepository.GetByID(id);
-            if (retorno != null)
+            try
             {
-                return new GrupoProdutoView(retorno);
+                var model = grupoRepository.GetByID(id);
+                if (model is not null)
+                {
+                    return new GrupoProdutoView(model);
+                }
+                else
+                {
+                    return null;
+                }
             }
-            else
+            catch (Exception e)
             {
-                return null;
+                throw;
             }
         }
 
 
         public int RecuperarQuantidade()
         {
-            return grupoRepository.Get().Count();
+            try
+            {
+                return grupoRepository.Get().Count();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
 
 
-        public GrupoProdutoView Salvar(GrupoProdutoCommand grupoDTO)
+        public GrupoProdutoView Salvar(GrupoProdutoCommand command)
         {
             try
             {
-                var grupoEntity =  grupoRepository.Insert(grupoDTO.retornoGrupoProdutoEntity());
+                var model =  grupoRepository.Insert(command.retornoGrupoProdutoEntity());
                 grupoRepository.Save();
-                return new GrupoProdutoView(grupoEntity);
+                return new GrupoProdutoView(model);
             }
             catch(Exception e)
             {
@@ -87,22 +100,28 @@ namespace ControleEstoque.App.Handlers.GrupoProduto
         }
 
 
-        public GrupoProdutoView Alterar (int id, GrupoProdutoCommand grupo)
+        public GrupoProdutoView Alterar (int id, GrupoProdutoCommand command)
         {
-
-            var model = context.GrupoProduto.FirstOrDefault(x=>x.Id == id);
-
-            if (model != null)
-            {             
-                model.Ativo = grupo.Ativo;
-                model.Nome = grupo.Nome;
-                context.GrupoProduto.Update(model);
-                context.SaveChanges();
-                return  new GrupoProdutoView(model);
-            }
-            else
+            try
             {
-                return null;
+
+                var model = RecuperarPeloId(id);
+
+                if (model != null)
+                {
+                    model.Ativo = command.Ativo;
+                    model.Nome = command.Nome;
+                    grupoRepository.Save();
+                    return model;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
             }
         }
     }

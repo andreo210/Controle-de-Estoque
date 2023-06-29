@@ -23,16 +23,16 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Cria um nova Unidade Medida de produto
         /// </summary>
-        /// <param name="UnidadeMedida"></param>
+        /// <param name="command"></param>
         /// <returns>Retona uma Unidade Medida</returns>
         /// <response code="201">Returna um novo Unidade Medida</response>
         /// <response code="400">se o item for nulo</response>
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(UnidadeMedidaView))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [HttpPost]
-        public IActionResult Post([FromBody] UnidadeMedidaCommand UnidadeMedida)
+        public IActionResult Post([FromBody] UnidadeMedidaCommand command)
         {
-            var model = UnidadeMedidaHandler.Salvar(UnidadeMedida);
+            var model = UnidadeMedidaHandler.Salvar(command);
             if (model is not null)
             {
                 return Created(HttpContext.Request.Path + "/" + model.Id, model);
@@ -47,7 +47,7 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Alterar uma Unidade Medida de produto.
         /// </summary>
-        /// <param name="UnidadeMedida"></param>
+        /// <param name="command"></param>
         /// <param name="id"></param>
         /// <returns>Uma Unidade Medida foi alterado</returns>
         /// <response code="200">Quando Unidade Medida de produto é alterado com sucesso</response>
@@ -56,9 +56,9 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         [HttpPut("{id}")]
-        public IActionResult Alterar(int id, [FromBody] UnidadeMedidaCommand UnidadeMedida)
+        public IActionResult Alterar(int id, [FromBody] UnidadeMedidaCommand command)
         {
-            var model = UnidadeMedidaHandler.Alterar(id, UnidadeMedida);
+            var model = UnidadeMedidaHandler.Alterar(id, command);
             if (model is not null)
             {
                 return Ok(model);
