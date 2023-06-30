@@ -14,18 +14,25 @@ namespace ControleEstoque.Domain.Entidades
         public decimal PrecoCusto { get; set; }
         public decimal PrecoVenda { get; set; }
         public int QuantEstoque { get; set; }
+
         public int IdUnidadeMedida { get; set; }
         public virtual UnidadeMedidaEntity UnidadeMedida { get; set; }
+
         public int IdGrupo { get; set; }
         public virtual GrupoProdutoEntity Grupo { get; set; }
+
         public int IdMarca { get; set; }
         public  MarcaProdutoEntity Marca { get; set; }
+
         public int IdFornecedor { get; set; }
         public virtual FornecedorEntity Fornecedor { get; set; }
+
         public int IdLocalArmazenamento { get; set; }
         public virtual LocalArmazenamentoEntity LocalArmazenamento { get; set; }
+
         public bool Ativo { get; set; }
         public string Imagem { get; set; }
+
 
     }
 }

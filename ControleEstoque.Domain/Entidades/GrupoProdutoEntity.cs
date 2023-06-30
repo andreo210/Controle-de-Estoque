@@ -8,10 +8,10 @@ namespace ControleEstoque.Domain.Entidades
 {
     public class GrupoProdutoEntity
     {
-        #region Atributos
+        
         public int Id { get; set; }
         public string Nome { get; set; }
         public bool Ativo { get; set; }
-        #endregion
+        public ICollection<ProdutoEntity> Produtos { get; set; }
     }
 }

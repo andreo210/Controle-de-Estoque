@@ -51,58 +51,32 @@ namespace ControleEstoque.Infra.Mapping
                .IsRequired()//obrigatorio
                .HasColumnName("imagem");
 
-            //chaves estrangeiras
-
-            builder.Property(p => p.IdUnidadeMedida)//chave
-               .HasColumnName("id_unidade_medida")//nome
-               .IsRequired();//obrigatorio
-
+      
             builder.HasOne(p => p.UnidadeMedida)//uma unidade de medida 
-                .WithMany()//tem muitos produtos
+                .WithMany(uni => uni.Produtos)//tem muitos produtos
                 .HasForeignKey(p => p.IdUnidadeMedida)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
 
 
-            builder.Property(p => p.IdMarca)//chave
-              .HasColumnName("id_marca")//nome
-              .IsRequired();//obrigatorio
-
             builder.HasOne(p => p.Marca)//uma unidade de medida 
-                .WithMany()//tem muitos produtos
+                .WithMany(marca => marca.Produtos)//tem muitos produtos
                 .HasForeignKey(p => p.IdMarca)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
 
 
-
-            builder.Property(p => p.IdGrupo)
-               .IsRequired()//obrigatorio
-               .HasColumnName("id_grupo"); //nome da coluna
-
-            builder.HasOne(p => p.Grupo)//um grupo
-                .WithMany()//tem muitos produtos
+            builder.HasOne(produto => produto.Grupo)//um grupo
+                .WithMany(grupo => grupo.Produtos)//tem muitos produtos
                 .HasForeignKey(p => p.IdGrupo)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
-
-
-                       
-
-
-            builder.Property(p => p.IdFornecedor)
-             .IsRequired()//obrigatorio
-             .HasColumnName("id_fornecedor"); //nome da coluna
+            
 
             builder.HasOne(p => p.Fornecedor)//um fornecedor
-                .WithMany()//tem muitos produtos
+                .WithMany(forn=> forn.Produtos)//tem muitos produtos
                 .HasForeignKey(p => p.IdFornecedor)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
 
-
-            builder.Property(p => p.IdLocalArmazenamento)
-             .IsRequired()//obrigatorio
-             .HasColumnName("id_local_aramazenamento"); //nome da coluna
-
             builder.HasOne(p => p.LocalArmazenamento)//um local de armazenamentos
-                .WithMany()//tem muitos produtos
+                .WithMany(local => local.Produtos)//tem muitos produtos
                 .HasForeignKey(p => p.IdLocalArmazenamento)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
         }

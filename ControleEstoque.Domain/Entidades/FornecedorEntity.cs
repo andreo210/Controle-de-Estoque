@@ -22,8 +22,9 @@ namespace ControleEstoque.Domain.Entidades
         public EnderecoEntity Endereco { get; set; }       
 
         public TipoPessoaEntity TipoPessoa { get; set; }
+        public ICollection<ProdutoEntity> Produtos { get; set; }
 
-        
-     
+
+
     }
 }

@@ -8,12 +8,13 @@ namespace ControleEstoque.Domain.Entidades
 {
     public class UnidadeMedidaEntity
     {
-        #region Atributos
+        
         public int Id { get; set; }
         public string Nome { get; set; }
         public string Sigla { get; set; }
         public bool Ativo { get; set; }
-        #endregion
+        public ICollection<ProdutoEntity> Produtos { get; set; }
+        
 
     }
 }
