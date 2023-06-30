@@ -16,7 +16,7 @@ namespace ControleEstoque.Infra.Mapping
             builder.ToTable("tbTipoContato");
             builder.HasData(
                 new TipoContatoEntity { Id = 1,  Nome = "Celular" },
-                new TipoPessoaEntity { Id = 2, Tipo = "Residencial" }
+                new TipoPessoaEntity { Id = 2, Tipo = "Residencial"}
                 );
         }
     }

@@ -37,7 +37,7 @@ namespace ControleEstoque.Infra.Data
 
 		public string GetTipoContato(int id)
 		{
-			var tipoPessoa = _dbContext.Contato.FirstOrDefault(x => x.TipoContatoId == id);
+			var tipoPessoa = _dbContext.TipoContatos.FirstOrDefault(x => x.Id == id);
 			if (tipoPessoa is null) return null;
 			else return "OK";
 

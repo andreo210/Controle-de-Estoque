@@ -24,6 +24,16 @@ namespace ControleEstoque.API.Filter
                 };
                 context.ExceptionHandled = true;
             }
+            if (context.Exception is Exception e)
+            {
+                context.Result = new ObjectResult(e.Message)
+                {
+                    StatusCode = 555
+
+
+            };
+                context.ExceptionHandled = true;
+            }
             if (context.Exception is UnauthorizedAccessException ex)
             {
                 context.Result = new ObjectResult(ex.Message)

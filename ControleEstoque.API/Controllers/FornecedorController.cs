@@ -23,6 +23,8 @@ namespace ControleEstoque.API.Controllers
         private readonly IContatoHandler _contatosHandler;
         private readonly IEnderecoHandler enderecoHandler;
 
+
+
         public FornecedorController(IFornecedorHandlers fornecedorHandlers, IContatoHandler contatosHandler, IEnderecoHandler enderecoHandler)
         {
             this._fornecedorHandlers = fornecedorHandlers;

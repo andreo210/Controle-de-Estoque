@@ -1,5 +1,11 @@
-﻿using ControleEstoque.App.Dtos;
+﻿using ControleEstoque.API.Config;
+using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Handlers.Fornecedor;
+using ControleEstoque.App.Handlers.GrupoProduto;
+using ControleEstoque.App.Handlers.LocalArmazenamento;
+using ControleEstoque.App.Handlers.MarcaProduto;
 using ControleEstoque.App.Handlers.Produto;
+using ControleEstoque.App.Handlers.UnidadeMedida;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,9 +21,19 @@ namespace ControleEstoque.API.Controllers
     {
 
         private readonly IProdutoHandlers handler;
-        public ProdutoController(IProdutoHandlers _handler)
+        private readonly IGrupoProdutoHandlers grupoHandler;
+        private readonly ILocalArmazenamentoHandlers localHandler;
+        private readonly IUnidadeMedidaHandlers unidadeHandler;
+        private readonly IFornecedorHandlers fornecedorHandler;
+        private readonly IMarcaProdutoHandlers marcaHandler;
+        public ProdutoController(IProdutoHandlers _handler, IGrupoProdutoHandlers _grupoHandler, ILocalArmazenamentoHandlers _localHandler, IFornecedorHandlers _fornecedorHandler, IUnidadeMedidaHandlers _unidadeHandler, IMarcaProdutoHandlers _marcaHandler)
         {
             this.handler = _handler;
+            this.grupoHandler = _grupoHandler;
+            this.localHandler = _localHandler;
+            this.fornecedorHandler = _fornecedorHandler;
+            this.unidadeHandler = _unidadeHandler;
+            this.marcaHandler = _marcaHandler;
         }
 
         /// <summary>
@@ -32,14 +48,38 @@ namespace ControleEstoque.API.Controllers
         [HttpPost]
         public IActionResult Salvar([FromBody] ProdutoCommand command)
         {
-            var model = handler.Salvar(command);
-            if (model is not null)
-            {
-                return Created(HttpContext.Request.Path + "/" + model.Id, model);
-            }
+            //verifica se o tipo  existe
+            var idGrupo = grupoHandler.RecuperarPeloId(command.IdGrupo);
+            var idLocalArmazenamento = localHandler.RecuperarPeloId(command.IdLocalArmazenamento);
+            var idFornecedor = fornecedorHandler.RecuperarPeloId(command.IdFornecedor);
+            var idUnidadeMedida = unidadeHandler.RecuperarPeloId(command.IdUnidadeMedida);
+            var idMarca = marcaHandler.RecuperarPeloId(command.IdMarca);
+
+            if (idGrupo is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Grupo é invalido e não foi encontrado", Request));
+
+            else if (idLocalArmazenamento is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Local de armazenamento é invalido e não foi encontrado", Request));
+
+            else if (idUnidadeMedida is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Unidade de medida é invalido e não foi encontrado", Request));
+
+            else if (idFornecedor is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Fornecedor é invalido e não foi encontrado", Request));
+
+            else if (idMarca is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Marca de Produto é invalido e não foi encontrado", Request));
             else
             {
-                return BadRequest();
+                var model = handler.Salvar(command);
+                if (model is not null)
+                {
+                    return Created(HttpContext.Request.Path + "/" + model.Id, model);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
 
         }
@@ -52,22 +92,47 @@ namespace ControleEstoque.API.Controllers
         /// <returns>Um produto foi alterado</returns>
         /// <response code="200">Quando produto é alterado com sucesso</response>
         /// <response code="404">Quando  produto não existir</response>  
+        /// <response code="400">se o item for nulo</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(ProdutoView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
         [HttpPut("{id}")]
         public IActionResult Alterar(int id, [FromBody] ProdutoCommand command)
         {
-            var model = handler.Alterar(id, command);
-            if (model is not null)
-            {
-                return Ok(model);
-            }
+            //verifica se o tipo  existe
+            var idGrupo = grupoHandler.RecuperarPeloId(command.IdGrupo);
+            var idLocalArmazenamento = localHandler.RecuperarPeloId(command.IdLocalArmazenamento);
+            var idFornecedor = fornecedorHandler.RecuperarPeloId(command.IdFornecedor);
+            var idUnidadeMedida = unidadeHandler.RecuperarPeloId(command.IdUnidadeMedida);
+            var idMarca = marcaHandler.RecuperarPeloId(command.IdMarca);
+
+            if (idGrupo is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Grupo é invalido e não foi encontrado", Request));
+
+            else if (idLocalArmazenamento is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Local de armazenamento é invalido e não foi encontrado", Request));
+
+            else if (idUnidadeMedida is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Unidade de medida é invalido e não foi encontrado", Request));
+
+            else if (idFornecedor is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Fornecedor é invalido e não foi encontrado", Request));
+
+            else if (idMarca is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Marca de Produto é invalido e não foi encontrado", Request));
             else
             {
-                return NotFound();
+                var model = handler.Alterar(id, command);
+                if (model is not null)
+                {
+                    return Ok(model);
+                }
+                else
+                {
+                    return NotFound();
+                }
             }
-
         }
 
         /// <summary>
@@ -81,6 +146,7 @@ namespace ControleEstoque.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
+            
             var model = handler.RecuperarLista();
             if (model is not null)
             {

@@ -42,7 +42,7 @@ namespace ControleEstoque.Infra.Mapping
             builder.HasOne(p => p.Fornecedor)
               .WithOne(p => p.Contato)
               .HasForeignKey<ContatoEntity>(p => p.IdFornecedor)
-              .OnDelete(DeleteBehavior.Cascade); ;
+              .OnDelete(DeleteBehavior.Cascade); 
 
         }
     }

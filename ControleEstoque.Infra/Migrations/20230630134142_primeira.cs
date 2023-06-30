@@ -169,60 +169,6 @@ namespace ControleEstoque.Infra.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "produto",
-                columns: table => new
-                {
-                    id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    codigo = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    preco_custo = table.Column<decimal>(type: "decimal(7,2)", precision: 7, scale: 2, nullable: false),
-                    preco_venda = table.Column<decimal>(type: "decimal(7,2)", precision: 7, scale: 2, nullable: false),
-                    quant_estoque = table.Column<int>(type: "int", nullable: false),
-                    id_unidade_medida = table.Column<int>(type: "int", nullable: false),
-                    id_grupo = table.Column<int>(type: "int", nullable: false),
-                    id_marca = table.Column<int>(type: "int", nullable: false),
-                    id_fornecedor = table.Column<int>(type: "int", nullable: false),
-                    id_local_aramazenamento = table.Column<int>(type: "int", nullable: false),
-                    Ativo = table.Column<bool>(type: "bit", nullable: false),
-                    imagem = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_produto", x => x.id);
-                    table.ForeignKey(
-                        name: "FK_produto_tb_grupoProduto_id_grupo",
-                        column: x => x.id_grupo,
-                        principalTable: "tb_grupoProduto",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_produto_tb_locaisArmazenamento_id_local_aramazenamento",
-                        column: x => x.id_local_aramazenamento,
-                        principalTable: "tb_locaisArmazenamento",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_produto_tb_MarcasProdutos_id_marca",
-                        column: x => x.id_marca,
-                        principalTable: "tb_MarcasProdutos",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_produto_tb_unidade_medida_id_unidade_medida",
-                        column: x => x.id_unidade_medida,
-                        principalTable: "tb_unidade_medida",
-                        principalColumn: "id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_produto_tbFornecedor_id_fornecedor",
-                        column: x => x.id_fornecedor,
-                        principalTable: "tbFornecedor",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "tbContato",
                 columns: table => new
                 {
@@ -276,7 +222,62 @@ namespace ControleEstoque.Infra.Migrations
                         column: x => x.IdFornecedor,
                         principalTable: "tbFornecedor",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "produto",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    codigo = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    nome = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    preco_custo = table.Column<decimal>(type: "decimal(7,2)", precision: 7, scale: 2, nullable: false),
+                    preco_venda = table.Column<decimal>(type: "decimal(7,2)", precision: 7, scale: 2, nullable: false),
+                    quant_estoque = table.Column<int>(type: "int", nullable: false),
+                    IdUnidadeMedida = table.Column<int>(type: "int", nullable: false),
+                    IdGrupo = table.Column<int>(type: "int", nullable: false),
+                    IdMarca = table.Column<int>(type: "int", nullable: false),
+                    IdFornecedor = table.Column<int>(type: "int", nullable: false),
+                    IdLocalArmazenamento = table.Column<int>(type: "int", nullable: false),
+                    Ativo = table.Column<bool>(type: "bit", nullable: false),
+                    imagem = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    EntradaId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_produto", x => x.id);
+                    table.ForeignKey(
+                        name: "FK_produto_tb_grupoProduto_IdGrupo",
+                        column: x => x.IdGrupo,
+                        principalTable: "tb_grupoProduto",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_produto_tb_locaisArmazenamento_IdLocalArmazenamento",
+                        column: x => x.IdLocalArmazenamento,
+                        principalTable: "tb_locaisArmazenamento",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_produto_tb_MarcasProdutos_IdMarca",
+                        column: x => x.IdMarca,
+                        principalTable: "tb_MarcasProdutos",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_produto_tb_unidade_medida_IdUnidadeMedida",
+                        column: x => x.IdUnidadeMedida,
+                        principalTable: "tb_unidade_medida",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_produto_tbFornecedor_IdFornecedor",
+                        column: x => x.IdFornecedor,
+                        principalTable: "tbFornecedor",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -379,29 +380,34 @@ namespace ControleEstoque.Infra.Migrations
                 column: "UsuariosId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_produto_id_fornecedor",
+                name: "IX_produto_EntradaId",
                 table: "produto",
-                column: "id_fornecedor");
+                column: "EntradaId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_produto_id_grupo",
+                name: "IX_produto_IdFornecedor",
                 table: "produto",
-                column: "id_grupo");
+                column: "IdFornecedor");
 
             migrationBuilder.CreateIndex(
-                name: "IX_produto_id_local_aramazenamento",
+                name: "IX_produto_IdGrupo",
                 table: "produto",
-                column: "id_local_aramazenamento");
+                column: "IdGrupo");
 
             migrationBuilder.CreateIndex(
-                name: "IX_produto_id_marca",
+                name: "IX_produto_IdLocalArmazenamento",
                 table: "produto",
-                column: "id_marca");
+                column: "IdLocalArmazenamento");
 
             migrationBuilder.CreateIndex(
-                name: "IX_produto_id_unidade_medida",
+                name: "IX_produto_IdMarca",
                 table: "produto",
-                column: "id_unidade_medida");
+                column: "IdMarca");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_produto_IdUnidadeMedida",
+                table: "produto",
+                column: "IdUnidadeMedida");
 
             migrationBuilder.CreateIndex(
                 name: "IX_saida_produto_id_produto",
@@ -430,12 +436,21 @@ namespace ControleEstoque.Infra.Migrations
                 name: "IX_tbFornecedor_TipoFornecedorId",
                 table: "tbFornecedor",
                 column: "TipoFornecedorId");
+
+            migrationBuilder.AddForeignKey(
+                name: "FK_produto_entrada_produto_EntradaId",
+                table: "produto",
+                column: "EntradaId",
+                principalTable: "entrada_produto",
+                principalColumn: "id",
+                onDelete: ReferentialAction.Restrict);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(
-                name: "entrada_produto");
+            migrationBuilder.DropForeignKey(
+                name: "FK_entrada_produto_produto_id_produto",
+                table: "entrada_produto");
 
             migrationBuilder.DropTable(
                 name: "inventario_estoque");
@@ -459,10 +474,13 @@ namespace ControleEstoque.Infra.Migrations
                 name: "Usuario");
 
             migrationBuilder.DropTable(
+                name: "tbTipoContato");
+
+            migrationBuilder.DropTable(
                 name: "produto");
 
             migrationBuilder.DropTable(
-                name: "tbTipoContato");
+                name: "entrada_produto");
 
             migrationBuilder.DropTable(
                 name: "tb_grupoProduto");

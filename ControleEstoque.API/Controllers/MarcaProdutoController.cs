@@ -68,7 +68,7 @@ namespace ControleEstoque.API.Controllers
         [HttpGet]
         public IActionResult GetList()
         {
-            var model = marcaHandler.RecuperarLista();
+           var model = marcaHandler.RecuperarLista();
             if (model is not null)
             {
                 return Ok(model);

@@ -147,7 +147,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasIndex("IdProduto");
 
-                    b.ToTable("tbEntrada_produto");
+                    b.ToTable("entrada_produto");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.FornecedorEntity", b =>
@@ -211,7 +211,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tbGrupoProduto");
+                    b.ToTable("tb_grupoProduto");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.InventarioEstoqueEntity", b =>
@@ -247,7 +247,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasIndex("IdProduto");
 
-                    b.ToTable("tbInventario_estoque");
+                    b.ToTable("inventario_estoque");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.LocalArmazenamentoEntity", b =>
@@ -270,7 +270,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tbLocaisArmazenamento");
+                    b.ToTable("tb_locaisArmazenamento");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.MarcaProdutoEntity", b =>
@@ -293,7 +293,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tbMarcasProdutos");
+                    b.ToTable("tb_MarcasProdutos");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.PerfilEntity", b =>
@@ -316,7 +316,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tbPerfil");
+                    b.ToTable("perfil");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.ProdutoEntity", b =>
@@ -337,24 +337,19 @@ namespace ControleEstoque.Infra.Migrations
                         .HasColumnName("codigo");
 
                     b.Property<int>("IdFornecedor")
-                        .HasColumnType("int")
-                        .HasColumnName("id_fornecedor");
+                        .HasColumnType("int");
 
                     b.Property<int>("IdGrupo")
-                        .HasColumnType("int")
-                        .HasColumnName("id_grupo");
+                        .HasColumnType("int");
 
                     b.Property<int>("IdLocalArmazenamento")
-                        .HasColumnType("int")
-                        .HasColumnName("id_local_aramazenamento");
+                        .HasColumnType("int");
 
                     b.Property<int>("IdMarca")
-                        .HasColumnType("int")
-                        .HasColumnName("id_marca");
+                        .HasColumnType("int");
 
                     b.Property<int>("IdUnidadeMedida")
-                        .HasColumnType("int")
-                        .HasColumnName("id_unidade_medida");
+                        .HasColumnType("int");
 
                     b.Property<string>("Imagem")
                         .IsRequired()
@@ -394,7 +389,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasIndex("IdUnidadeMedida");
 
-                    b.ToTable("tbProduto");
+                    b.ToTable("produto");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.SaidaProdutoEntity", b =>
@@ -427,7 +422,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasIndex("IdProduto");
 
-                    b.ToTable("tbSaida_produto");
+                    b.ToTable("saida_produto");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoContatoEntity", b =>
@@ -509,7 +504,7 @@ namespace ControleEstoque.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("tbUnidade_medida");
+                    b.ToTable("tb_unidade_medida");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.UsuarioEntity", b =>
@@ -616,31 +611,31 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.ProdutoEntity", b =>
                 {
                     b.HasOne("ControleEstoque.Domain.Entidades.FornecedorEntity", "Fornecedor")
-                        .WithMany()
+                        .WithMany("Produtos")
                         .HasForeignKey("IdFornecedor")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ControleEstoque.Domain.Entidades.GrupoProdutoEntity", "Grupo")
-                        .WithMany()
+                        .WithMany("Produtos")
                         .HasForeignKey("IdGrupo")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ControleEstoque.Domain.Entidades.LocalArmazenamentoEntity", "LocalArmazenamento")
-                        .WithMany()
+                        .WithMany("Produtos")
                         .HasForeignKey("IdLocalArmazenamento")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ControleEstoque.Domain.Entidades.MarcaProdutoEntity", "Marca")
-                        .WithMany()
+                        .WithMany("Produtos")
                         .HasForeignKey("IdMarca")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("ControleEstoque.Domain.Entidades.UnidadeMedidaEntity", "UnidadeMedida")
-                        .WithMany()
+                        .WithMany("Produtos")
                         .HasForeignKey("IdUnidadeMedida")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -687,6 +682,23 @@ namespace ControleEstoque.Infra.Migrations
                     b.Navigation("Contato");
 
                     b.Navigation("Endereco");
+
+                    b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.GrupoProdutoEntity", b =>
+                {
+                    b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.LocalArmazenamentoEntity", b =>
+                {
+                    b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.MarcaProdutoEntity", b =>
+                {
+                    b.Navigation("Produtos");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoContatoEntity", b =>
@@ -697,6 +709,11 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoPessoaEntity", b =>
                 {
                     b.Navigation("Fornecedor");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.UnidadeMedidaEntity", b =>
+                {
+                    b.Navigation("Produtos");
                 });
 #pragma warning restore 612, 618
         }

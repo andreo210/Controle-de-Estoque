@@ -52,7 +52,7 @@ namespace ControleEstoque.App.Handlers.Produto
             try
             {
                 var model = produtoRepository.GetByID(id);
-                return model is not null ? model : null; ;
+                return model is not null ? new ProdutoView(model) : null; ;
             }
             catch (Exception e)
             {
