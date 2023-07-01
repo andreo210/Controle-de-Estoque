@@ -13,7 +13,7 @@ namespace ControleEstoque.App.Handlers.Produto
 {
     class ProdutoHandlers : IProdutoHandlers
     {
-        IProdutoRepository produtoRepository;
+        private readonly IProdutoRepository produtoRepository;
 
         public ProdutoHandlers(IProdutoRepository _produtoRepository)
         {

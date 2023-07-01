@@ -14,10 +14,12 @@ namespace ControleEstoque.App.Handlers.SaidaProduto
     class SaidaProdutoHandlers : ISaidaProdutoHandlers
     {
         private readonly ISaidaProdutoRepository saidaRepository;
+        private readonly IProdutoRepository ProdutoRepository;
 
-        public SaidaProdutoHandlers(ISaidaProdutoRepository _saidaRepository)
+        public SaidaProdutoHandlers(ISaidaProdutoRepository _saidaRepository, IProdutoRepository _ProdutoRepository)
         {
             saidaRepository = _saidaRepository;
+            ProdutoRepository = _ProdutoRepository;
         }
         public void ExcluirPeloId(int id)
         {
@@ -75,9 +77,17 @@ namespace ControleEstoque.App.Handlers.SaidaProduto
         {
             try
             {
-                var model= saidaRepository.Insert(command);
-                saidaRepository.Save();
-                return new SaidaProdutoView(model);
+                var produto = SubtrairProduto(command.IdProduto, command.Quantidade);
+                if (produto is not null)
+                {
+                    var model = saidaRepository.Insert(command);
+                    saidaRepository.Save();
+                    return new SaidaProdutoView(model);
+                }
+                else
+                {
+                    return null;
+                }
             }
             catch (Exception e)
             {
@@ -111,6 +121,27 @@ namespace ControleEstoque.App.Handlers.SaidaProduto
                 throw;
             }
         }
+        private ProdutoView SubtrairProduto(int id, int quantidade)
+        {
+            try
+            {
+                var model = ProdutoRepository.GetByID(id);
 
+                if (model is not null)
+                {
+                    model.QuantEstoque = model.QuantEstoque - quantidade;
+                    ProdutoRepository.Save();
+                    return model;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 }

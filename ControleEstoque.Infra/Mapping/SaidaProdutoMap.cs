@@ -41,8 +41,8 @@ namespace ControleEstoque.Infra.Mapping
                .HasColumnName("id_produto"); //nome da coluna
 
 
-            builder.HasOne(p => p.Produto)//um produto
-                .WithMany()//tem muitas saida de produto
+            builder.HasOne(s => s.Produto)//um produto
+                .WithMany(p=>p.Saida)//tem muitas saida de produto
                 .HasForeignKey(p => p.IdProduto)//chave estrangeira
                 .OnDelete(DeleteBehavior.Cascade);//dependentes devem ser excluídos
         }

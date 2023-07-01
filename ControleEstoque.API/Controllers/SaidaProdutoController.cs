@@ -1,5 +1,8 @@
-﻿using ControleEstoque.App.Dtos;
+﻿using ControleEstoque.API.Config;
+using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Handlers.Produto;
 using ControleEstoque.App.Handlers.SaidaProduto;
+using ControleEstoque.Domain.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -11,16 +14,18 @@ namespace ControleEstoque.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class SaidaController : ControllerBase
+    public class SaidaProdutoController : ControllerBase
     {
-        ISaidaProdutoHandlers saidaHandler;
-        public SaidaController(ISaidaProdutoHandlers _saidaHandler)
+        private readonly ISaidaProdutoHandlers SaidaHandler;
+        private readonly IProdutoHandlers ProdutoHandler;
+        public SaidaProdutoController(ISaidaProdutoHandlers _saidaHandler, IProdutoHandlers _ProdutoHandler)
         {
-            this.saidaHandler = _saidaHandler;
+            this.SaidaHandler = _saidaHandler;
+            this.ProdutoHandler = _ProdutoHandler;
         }
 
         /// <summary>
-        /// Cria um nova saida de produto
+        /// Cria um nova Entrada de produto e subtrai mais estoque de determinado produto
         /// </summary>
         /// <param name="command"></param>
         /// <returns>Retona uma Saida</returns>
@@ -31,14 +36,21 @@ namespace ControleEstoque.API.Controllers
         [HttpPost]
         public IActionResult Post([FromBody] SaidaProdutoCommand command)
         {
-            var model = saidaHandler.Salvar(command);
-            if (model is not null)
-            {
-                return Created(HttpContext.Request.Path + "/" + model.Id, model);
-            }
+            var idProduto = ProdutoHandler.RecuperarPeloId(command.IdProduto);
+
+            if (idProduto is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Produto é invalido e não foi encontrado", Request));
             else
             {
-                return BadRequest();
+                var model = SaidaHandler.Salvar(command);
+                if (model is not null)
+                {
+                    return Created(HttpContext.Request.Path + "/" + model.Id, model);
+                }
+                else
+                {
+                    return BadRequest();
+                }
             }
 
         }
@@ -51,22 +63,30 @@ namespace ControleEstoque.API.Controllers
         /// <returns>Um grupo de produto foi alterado</returns>
         /// <response code="200">Quando saida de produto é alterado com sucesso</response>
         /// <response code="404">Quando saida de produto não existir</response>  
+        /// <response code="400">se o item for nulo</response>
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(SaidaProdutoView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
 
         [HttpPut("{id}")]
         public IActionResult Alterar(int id, [FromBody] SaidaProdutoCommand command)
         {
-            var model = saidaHandler.Alterar(id, command);
-            if (model is not null)
-            {
-                return Ok(model);
-            }
+            var idProduto = ProdutoHandler.RecuperarPeloId(command.IdProduto);
+
+            if (idProduto is null)
+                return BadRequest(new BadRequestProblemDetails("O Id do Produto é invalido e não foi encontrado", Request));
             else
             {
-                return NotFound();
+                var model = SaidaHandler.Alterar(id, command);
+                if (model is not null)
+                {
+                    return Ok(model);
+                }
+                else
+                {
+                    return NotFound(new ObjetoNotFoundProblemDetails($"Saida de Produto com  id = {id} não encontrado", Request));
+                }
             }
-
         }
 
         /// <summary>
@@ -80,7 +100,7 @@ namespace ControleEstoque.API.Controllers
         [HttpGet]
         public IActionResult Get()
         {
-            var model = saidaHandler.RecuperarLista();
+            var model = SaidaHandler.RecuperarLista();
             if (model is not null)
             {
                 return Ok(model);
@@ -103,7 +123,7 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var model = saidaHandler.RecuperarPeloId(id);
+            var model = SaidaHandler.RecuperarPeloId(id);
 
             if (model is not null)
             {
@@ -111,7 +131,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound();
+                return NotFound(new ObjetoNotFoundProblemDetails($"Saida de Produto com  id = {id} não encontrado", Request));
             }
 
         }
@@ -125,7 +145,7 @@ namespace ControleEstoque.API.Controllers
         [HttpGet("Cont")]
         public IActionResult GetQuantidade()
         {
-            return Ok(saidaHandler.RecuperarQuantidade());
+            return Ok(SaidaHandler.RecuperarQuantidade());
         }
 
         /// <summary>
@@ -142,16 +162,16 @@ namespace ControleEstoque.API.Controllers
         public IActionResult Delete(int id)
         {
 
-            var model = saidaHandler.RecuperarPeloId(id);
+            var model = SaidaHandler.RecuperarPeloId(id);
 
             if (model is not null)
             {
-                saidaHandler.ExcluirPeloId(id);
+                SaidaHandler.ExcluirPeloId(id);
                 return NoContent();
             }
             else
             {
-                return NotFound();
+                return NotFound(new ObjetoNotFoundProblemDetails($"Saida de Produto com  id = {id} não encontrado", Request));
             }
         }
 

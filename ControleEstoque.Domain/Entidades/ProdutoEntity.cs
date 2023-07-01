@@ -32,6 +32,7 @@ namespace ControleEstoque.Domain.Entidades
 
         public bool Ativo { get; set; }
         public string Imagem { get; set; }
+        public List<SaidaProdutoEntity> Saida { get; set; }
 
 
     }
