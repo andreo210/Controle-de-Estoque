@@ -25,7 +25,7 @@ namespace ControleEstoque.API.Controllers
         }
 
         /// <summary>
-        /// Cria um nova Entrada de produto e subtrai mais estoque de determinado produto
+        /// Cria um nova Entrada de produto e subtrai estoque de determinado produto
         /// </summary>
         /// <param name="command"></param>
         /// <returns>Retona uma Saida</returns>

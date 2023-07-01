@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Dtos
@@ -11,7 +12,8 @@ namespace ControleEstoque.App.Dtos
     {
                    
         public string Numero { get; set; }
-        public DateTime Data { get; set; }
+        [JsonIgnore]
+        public DateTime Data { get; set; } = DateTime.Now;
         public int Quantidade { get; set; }
         public int IdProduto { get; set; }
 

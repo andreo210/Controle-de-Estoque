@@ -4,14 +4,16 @@ using ControleEstoque.Infra.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace ControleEstoque.Infra.Migrations
 {
     [DbContext(typeof(ControleEstoqueContext))]
-    partial class ControleEstoqueContextModelSnapshot : ModelSnapshot
+    [Migration("20230701133500_segundod")]
+    partial class segundod
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

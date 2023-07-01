@@ -24,7 +24,8 @@ namespace ControleEstoque.Infra.Mapping
             builder.Property(p => p.Numero)
                .HasMaxLength(10)//define o tamanho da string
                .IsRequired()//obrigatorio
-               .HasColumnName("numero");
+               .HasColumnName("numero")
+               .ValueGeneratedOnAdd();
 
 
             builder.Property(p => p.Data)
