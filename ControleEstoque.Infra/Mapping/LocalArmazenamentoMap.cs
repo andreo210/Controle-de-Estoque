@@ -26,6 +26,10 @@ namespace ControleEstoque.Infra.Mapping
                .IsRequired()//obrigatorio
                .HasColumnName("nome");
 
+            builder.Property(p => p.DataCriacao)
+               .IsRequired()//obrigatorio
+               .HasColumnName("dtCriacao");
+
 
             builder.Property(p => p.Ativo)
                .HasColumnName("ativo")

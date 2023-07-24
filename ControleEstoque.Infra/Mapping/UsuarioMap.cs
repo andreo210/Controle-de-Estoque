@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Mapping
 {
-    class UsuarioMap : IEntityTypeConfiguration<UsuarioEntity>
+    class UsuarioMap : IEntityTypeConfiguration<ApplicationUserEntity>
     {
-        public void Configure(EntityTypeBuilder<UsuarioEntity> builder)
+        public void Configure(EntityTypeBuilder<ApplicationUserEntity> builder)
         {
             builder.ToTable("usuario");//nome da tabela
 

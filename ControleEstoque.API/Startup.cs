@@ -15,12 +15,16 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -29,6 +33,8 @@ using System.Net;
 using System.Net.Http;
 using System.Net.Mime;
 using System.Reflection;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.API
@@ -46,12 +52,35 @@ namespace ControleEstoque.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers(options =>
-                options.Filters.Add(new HttpResponseExceptionFilter()));
+                options.Filters.Add(new HttpResponseExceptionFilter()))
+                
+                .AddJsonOptions(options =>//ignora o loop de de circulo que fica entre uma classe e outra quando usa os AsQueryble
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                    options.JsonSerializerOptions.WriteIndented = true;
+                });
+
+            services.AddApiVersioning(options =>
+            {
+                // Retorna os headers "api-supported-versions" e "api-deprecated-versions"
+                // indicando versões suportadas pela API e o que está como deprecated
+                options.ReportApiVersions = true;
+                options.AssumeDefaultVersionWhenUnspecified = true;//assume a versão padrão
+                options.DefaultApiVersion = new ApiVersion(1,0);//defult versão
+               // options.ApiVersionReader = new HeaderApiVersionReader("api-version");//leitor da versão da api
+            });
+
+            services.AddVersionedApiExplorer(options =>
+            {
+                // Agrupar por número de versão
+                options.GroupNameFormat = "'v'VVV";
+                // Necessário para o correto funcionamento das rotas
+                options.SubstituteApiVersionInUrl = true;
+            });
+            
 
             //adiciona o serviço de problemDetais
             services.AddProblemsDetailsExtention();
-
-            services.AddControllers();
 
             //serviço que injeta o servico de conexão com o banco
             services.AddSqlServerDbContext<ControleEstoqueContext>(Configuration["ConnectionStrings:dbControleEstoque"] ?? "");
@@ -66,26 +95,30 @@ namespace ControleEstoque.API
 
             });
 
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
+
             //serviço que injeta o servico de repositorios de DBContext
             services.AddSqlServerRepositories();
 
             //services.AddControllers();
-            services.AddSwaggerGen(c =>
+            services.AddSwaggerGen(options =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ControleEstoque.API", Version = "v1" });
-
-
-                //documentaçao xml do swagger
-                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-                c.IncludeXmlComments(xmlPath);
+                options.OperationFilter<SwaggerDefaultValues>();
+                options.ResolveConflictingActions(x => x.First());//resolve conflito se encontrar o mesmo endpoint em versoes diferente
+               
+                // cria um arquivo xml com os summary
+                var xmlFilename = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                options.IncludeXmlComments(Path.Combine(AppContext.BaseDirectory, xmlFilename));
             });
+
+           
+
             services.AddMemoryCache();
             services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IApiVersionDescriptionProvider provider)
         {
             if (env.IsDevelopment())
             {
@@ -115,10 +148,18 @@ namespace ControleEstoque.API
             }
             //adiciona o serviço de problemDetais
             app.UseProblemDetails();
-
+          
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ControleEstoque.API v1"));
+            app.UseSwaggerUI(options =>
+            {
+                // Geração de um endpoint do Swagger para cada versão descoberta
+                foreach (var description in provider.ApiVersionDescriptions)
+                {
+                    options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
+                        description.GroupName.ToUpperInvariant());
+                }
+            }); 
             // app.UseHttpsRedirection();
 
             app.UseRouting();

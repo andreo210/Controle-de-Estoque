@@ -12,7 +12,7 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
     {
         public int RecuperarQuantidade();
 
-        public List<LocalArmazenamentoView> RecuperarLista();
+        public IEnumerable<LocalArmazenamentoView> RecuperarLista();
 
         public LocalArmazenamentoView RecuperarPeloId(int id);
 

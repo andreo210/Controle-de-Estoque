@@ -1,9 +1,11 @@
 ﻿using ControleEstoque.API.Config;
+using ControleEstoque.API.Helpers;
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.LocalArmazenamento;
 using ControleEstoque.App.Models.Views;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,8 +13,10 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.API.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [ApiVersion("1.0")/*,Deprecated =true)*/]
+    [ApiVersion("2.1")]
     public class LocalArmazenamentoController : ControllerBase
     { //
         ILocalArmazenamentoHandlers localArmazenamentoHadlers;
@@ -24,19 +28,27 @@ namespace ControleEstoque.API.Controllers
         /// <summary>
         /// Cria um novo Local de armazenamento
         /// </summary>
-        /// <param name="command"></param>
-        /// <returns>Retona um Local de armazenamento criado</returns>
+        /// <param name="command">entidade para salvar um local de armazenamento</param>
+        /// <returns>Retona um novo Local de armazenamento </returns>
         /// <response code="201">Returna um novo Local de armazenamento</response>
         /// <response code="400">se o item for nulo</response>
         /// <response code="401">Quando não conter um token valido</response> 
+        /// <response code="422">A Entidade Local Armazenamento não pode ser nula</response> 
         /// 
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(LocalArmazenamentoView))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status422UnprocessableEntity)]
         [HttpPost]
+        [ProducesDefaultResponseType]
         public IActionResult Post([FromBody] LocalArmazenamentoCommand command)
         {
-            var model = localArmazenamentoHadlers.Salvar(command);
+            if (command is null) return BadRequest(new BadRequestProblemDetails("A entidadde não pode ser nula", Request));
+
+            if (!ModelState.IsValid) return UnprocessableEntity(ModelState); 
+                var model = localArmazenamentoHadlers.Salvar(command);
+            
+
             if (model is not null)
             {
                 return Created(HttpContext.Request.Path + "/" + model.Id, model);
@@ -62,10 +74,17 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LocalArmazenamentoView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpGet("{id}")]
+        [HttpGet("{id}", Name = "ObterLocalArmazenamento")]
+        [MapToApiVersion("2.0")]
+        [MapToApiVersion("2.1")]
         public IActionResult GetId(int id)
         {
             var model = localArmazenamentoHadlers.RecuperarPeloId(id);
+
+            //colocando link seguindo as normas de api nivel 3, seguindo o padrão Hateous
+            model.Link.Add(new LinkView("self", Url.Link("ObterLocalArmazenamento", new { id = model.Id }), "GET"));
+            model.Link.Add(new LinkView("update", Url.Link("AtualizarLocalArmazenamento", new { id = model.Id }), "PUT"));
+            model.Link.Add(new LinkView("delete", Url.Link("DeletarLocalArmazenamento", new { id = model.Id }), "DELETE"));
 
             if (model is not null)
             {
@@ -93,11 +112,37 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(404)]
         [ProducesResponseType(401)]
         [HttpGet]
-        public IActionResult GetList()
+        public IActionResult GetList([FromQuery] int? numeroDaPagina, [FromQuery] int? registroPorPagina)
         {
             var model = localArmazenamentoHadlers.RecuperarLista();
             if (model is not null)
             {
+                var quantidade = model.Count();
+                if (registroPorPagina.HasValue)
+                {
+                    if (numeroDaPagina is null) numeroDaPagina = 1;
+                    if (registroPorPagina > quantidade) registroPorPagina = quantidade;
+                    //transforma a model em paginas
+                    model = model.Skip((numeroDaPagina.Value - 1) * registroPorPagina.Value).Take(registroPorPagina.Value);
+
+                    var paginacao = new Paginacao();
+                    paginacao.NumeroDaPaginas = numeroDaPagina.Value;
+                    paginacao.NumeroDeRegistroPorPaginas = registroPorPagina.Value;
+                    paginacao.TotalDeRegistro = quantidade;
+                    paginacao.TotalDePaginas = (int)Math.Ceiling((double)quantidade / registroPorPagina.Value);
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginacao));
+
+                    if (numeroDaPagina > paginacao.TotalDePaginas) return NotFound(new ObjetoNotFoundProblemDetails("pagina não existe", Request));
+
+
+                }
+                foreach(var modelo in model)
+                {
+                    modelo.Link.Add(new LinkView("self", Url.Link("ObterLocalArmazenamento", new { id = modelo.Id }), "GET"));
+                    modelo.Link.Add(new LinkView("update", Url.Link("AtualizarLocalArmazenamento", new { id = modelo.Id }), "PUT"));
+                    modelo.Link.Add(new LinkView("delete", Url.Link("DeletarLocalArmazenamento", new { id = modelo.Id }), "DELETE"));
+                }
+
                 return Ok(model);
             }
             else
@@ -115,6 +160,7 @@ namespace ControleEstoque.API.Controllers
         /// </remarks>
         /// <returns>a quantidade de Local de armazenamento</returns>
         /// <response code="200"></response>
+        [MapToApiVersion("2.1")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(int))]
         [HttpGet("Cont")]
         public int GetQuantidade()
@@ -138,7 +184,7 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
-        [HttpDelete("{id}")]
+        [HttpDelete("{id}" , Name = "DeletarLocalArmazenamento")]
         public IActionResult Delete(int id)
         {
             var model = localArmazenamentoHadlers.RecuperarPeloId(id);
@@ -171,7 +217,7 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(LocalArmazenamentoView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [HttpPut("{id}")]
+        [HttpPut("{id}", Name = "AtualizarLocalArmazenamento")]
         public IActionResult Alterar(int id, [FromBody] LocalArmazenamentoCommand command)
         {
             var model = localArmazenamentoHadlers.Alterar(id, command);

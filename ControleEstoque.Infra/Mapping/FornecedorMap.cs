@@ -31,6 +31,9 @@ namespace ControleEstoque.Infra.Mapping
                .HasMaxLength(100)
                .HasColumnName("Razao_social");//nome da tabela
 
+            builder.Property(p => p.DataCriacao)
+              .HasColumnName("dtCriacao");//nome da tabela
+
 
             builder.Property(p => p.NumDocumento)
                .HasMaxLength(20)

@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.API.Config;
+using ControleEstoque.API.Helpers;
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.Contato;
 using ControleEstoque.App.Handlers.Endereço;
@@ -7,6 +8,7 @@ using ControleEstoque.App.Views;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,11 +91,59 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Get( [FromQuery]int? numeroDaPagina, [FromQuery] int? registroPorPagina)
         {            
             var model = _fornecedorHandlers.RecuperarLista();
+
             if (model is not null)
-            {                
+            {
+                var quantidade = model.Count();
+                if (registroPorPagina.HasValue)
+                {
+                    if (numeroDaPagina is null) numeroDaPagina = 1;
+                    if (registroPorPagina > quantidade) registroPorPagina = quantidade;
+                    //transforma a model em paginas
+                    model = model.Skip((numeroDaPagina.Value - 1) * registroPorPagina.Value).Take(registroPorPagina.Value);
+
+                    var paginacao = new Paginacao();
+                    paginacao.NumeroDaPaginas = numeroDaPagina.Value;
+                    paginacao.NumeroDeRegistroPorPaginas = registroPorPagina.Value;
+                    paginacao.TotalDeRegistro = quantidade;
+                    paginacao.TotalDePaginas = (int)Math.Ceiling((double)quantidade / registroPorPagina.Value);
+                    Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginacao));
+
+                    if (numeroDaPagina > paginacao.TotalDePaginas) return NotFound(new ObjetoNotFoundProblemDetails("pagina não existe", Request));
+
+
+                }
+                return Ok(new { quantidade, model});
+
+            
+            }
+            else
+            {
+                return NotFound();
+            }
+        }
+
+        /// <summary>
+        /// Buscar todos os fornecedores por uma data especifica.
+        /// </summary>
+        /// <returns>Uma lista de fornecedores</returns>
+        /// <response code="200">Quando existir</response>
+        /// <response code="404">Quando o Fornecedor não existir</response>
+        /// <response code="401">Quando não conter um token valido</response>  
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FornecedorView))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [HttpGet("Fornecedor/{data}")]
+        public IActionResult GetData(DateTime? data )
+        {
+            var model = _fornecedorHandlers.RecuperarPorData(data);
+
+            var modelo = new FornecedorView();
+            
+            if (model is not null)
+            {
                 return Ok(model);
             }
             else

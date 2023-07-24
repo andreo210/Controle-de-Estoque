@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Data.Repositories
 {
-    class UsuarioRepository : GlobalRepository<UsuarioEntity>, IUsuarioRepository
+    class UsuarioRepository : GlobalRepository<ApplicationUserEntity>, IUsuarioRepository
     {
         public UsuarioRepository(ControleEstoqueContext dbContext) : base(dbContext) { }
     }

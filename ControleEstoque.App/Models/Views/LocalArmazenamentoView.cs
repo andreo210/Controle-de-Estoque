@@ -18,11 +18,15 @@ namespace ControleEstoque.App.Models.Views
             this.Id = entity.Id;
             this.Nome = entity.Nome;
             this.Ativo = entity.Ativo;
+            this.DataCriacao = entity.DataCriacao;
+            
         }
 
         public int Id { get; set; }
         public string Nome { get; set; }
         public bool Ativo { get; set; }
+        public DateTime DataCriacao { get; set; }
+        public List<LinkView>? Link { get; set; } = new List<LinkView>();
 
         public LocalArmazenamentoEntity retornoLocalArmazenamento()
         {
@@ -30,7 +34,8 @@ namespace ControleEstoque.App.Models.Views
             {
                 Id = this.Id,
                 Nome = this.Nome,
-                Ativo = this.Ativo
+                Ativo = this.Ativo,
+                DataCriacao = this.DataCriacao
 
             };
         }

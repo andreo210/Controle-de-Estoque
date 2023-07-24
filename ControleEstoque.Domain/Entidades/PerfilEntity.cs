@@ -8,11 +8,13 @@ namespace ControleEstoque.Domain.Entidades
 {
     public class PerfilEntity
     {
-        #region Atributos
+       
         public int Id { get; set; }
         public string Nome { get; set; }
         public bool Ativo { get; set; }
-        public virtual List<UsuarioEntity> Usuarios { get; set; }
-        #endregion
+
+        public int UsuarioId { get; set; }
+        public virtual ApplicationUserEntity Usuario { get; set; }
+       
     }
 }

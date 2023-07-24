@@ -16,6 +16,7 @@ namespace ControleEstoque.App.Handlers.Fornecedor
 
         public FornecedorView RecuperarPeloId(int id);
 
+        public IQueryable RecuperarPorData(DateTime? data);
         public FornecedorView Salvar(FornecedorCommand command);
 
         public void ExcluirPeloId(int id);

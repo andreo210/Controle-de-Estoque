@@ -160,6 +160,10 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit");
 
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("dtCriacao");
+
                     b.Property<string>("Email")
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)")
@@ -261,6 +265,10 @@ namespace ControleEstoque.Infra.Migrations
                     b.Property<bool>("Ativo")
                         .HasColumnType("bit")
                         .HasColumnName("ativo");
+
+                    b.Property<DateTime>("DataCriacao")
+                        .HasColumnType("datetime2")
+                        .HasColumnName("dtCriacao");
 
                     b.Property<string>("Nome")
                         .IsRequired()
@@ -654,7 +662,7 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.SaidaProdutoEntity", b =>
                 {
                     b.HasOne("ControleEstoque.Domain.Entidades.ProdutoEntity", "Produto")
-                        .WithMany()
+                        .WithMany("Saida")
                         .HasForeignKey("IdProduto")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -699,6 +707,11 @@ namespace ControleEstoque.Infra.Migrations
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.MarcaProdutoEntity", b =>
                 {
                     b.Navigation("Produtos");
+                });
+
+            modelBuilder.Entity("ControleEstoque.Domain.Entidades.ProdutoEntity", b =>
+                {
+                    b.Navigation("Saida");
                 });
 
             modelBuilder.Entity("ControleEstoque.Domain.Entidades.Tipo.TipoContatoEntity", b =>

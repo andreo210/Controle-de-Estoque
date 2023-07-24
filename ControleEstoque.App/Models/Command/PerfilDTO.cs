@@ -24,7 +24,7 @@ namespace ControleEstoque.App.Dtos
         public int Id { get; set; }
         public string Nome { get; set; }
         public bool Ativo { get; set; }
-        public virtual List<UsuarioEntity> Usuarios { get; set; }
+        public virtual List<ApplicationUserEntity> Usuarios { get; set; }
 
 
 

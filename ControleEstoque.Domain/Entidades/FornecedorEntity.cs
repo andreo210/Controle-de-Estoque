@@ -17,6 +17,7 @@ namespace ControleEstoque.Domain.Entidades
         public string  Email { get; set; }
         public int TipoFornecedorId { get; set; }
         public bool Ativo { get; set; }
+        public DateTime DataCriacao { get; set; }
         public ContatoEntity Contato { get; set; }
 
         public EnderecoEntity Endereco { get; set; }       

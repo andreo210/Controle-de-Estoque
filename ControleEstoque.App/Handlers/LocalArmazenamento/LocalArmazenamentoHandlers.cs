@@ -33,7 +33,7 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
             }
         }
 
-        public List<LocalArmazenamentoView> RecuperarLista()
+        public IEnumerable<LocalArmazenamentoView> RecuperarLista()
         {
             try
             {
@@ -79,6 +79,8 @@ namespace ControleEstoque.App.Handlers.LocalArmazenamento
         {
             try
             {
+                command.Ativo = true;
+                command.DataCriacao = DateTime.Now;
                 var model = localRepository.Insert(command.retornoLocalArmazenamento());
                 localRepository.Save();
                 return new LocalArmazenamentoView(model);

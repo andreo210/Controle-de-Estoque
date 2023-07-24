@@ -48,6 +48,24 @@ namespace ControleEstoque.App.Handlers.Fornecedor
             }
         }
 
+        public IQueryable RecuperarPorData(DateTime? data)
+        {
+            try
+            {
+                var ListaModels = fornecedorRepository.BuscarFornecedores().AsQueryable(); ;
+                if (data.HasValue)
+                {
+                    ListaModels = ListaModels.Where(x => x.DataCriacao > data.Value);
+                    return ListaModels;
+                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
         public FornecedorView RecuperarPeloId(int id)
         {
             try
@@ -79,7 +97,8 @@ namespace ControleEstoque.App.Handlers.Fornecedor
         public FornecedorView Salvar(FornecedorCommand command)       
         {  
             try
-            {                
+            {
+                command.DataCriacao = DateTime.Now;             
                 var model = fornecedorRepository.Insert(command);
                 fornecedorRepository.Save();
                 return new FornecedorView(model);      

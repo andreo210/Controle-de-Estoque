@@ -15,7 +15,7 @@ namespace ControleEstoque.App.Dtos
 
 
         //contrutor que preenche a entidade
-        public UsuarioDTO(UsuarioEntity usuarioEntity)
+        public UsuarioDTO(ApplicationUserEntity usuarioEntity)
         {
             this.Id = usuarioEntity.Id;
             this.Login = usuarioEntity.Login;
@@ -44,9 +44,9 @@ namespace ControleEstoque.App.Dtos
 
 
         //retorna os valores da entidade
-        public UsuarioEntity retornoUsuarioEntity()
+        public ApplicationUserEntity retornoUsuarioEntity()
         {
-            return new UsuarioEntity()
+            return new ApplicationUserEntity()
             {
                 Id = this.Id,
                 Nome = this.Nome,
