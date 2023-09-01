@@ -1,4 +1,5 @@
-﻿using ControleEstoque.Domain.Entidades;
+﻿using ControleEstoque.App.Views;
+using ControleEstoque.Domain.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,8 +18,10 @@ namespace ControleEstoque.App.Dtos
         {
             this.Nome = entity.Nome;
             this.Ativo = entity.Ativo;
-
+            
         }
+
+        
 
         public string Nome { get; set; }
         public bool Ativo { get; set; }
@@ -30,6 +33,26 @@ namespace ControleEstoque.App.Dtos
                 Nome = this.Nome,
                 Ativo = this.Ativo
             };
+        }
+
+        public static implicit operator GrupoProdutoView(GrupoProdutoCommand command)
+        {
+            return new GrupoProdutoView
+            {                
+                Nome= command.Nome,
+                Ativo = command.Ativo
+            };
+
+        }
+
+        public static implicit operator GrupoProdutoCommand(GrupoProdutoView command)
+        {
+            return new GrupoProdutoCommand
+            {
+                Nome = command.Nome,
+                Ativo = command.Ativo
+            };
+
         }
     }
 }

@@ -13,8 +13,7 @@ namespace ControleEstoque.Domain.Entidades
         public string Nome { get; set; }
         public bool Ativo { get; set; }
 
-        public int UsuarioId { get; set; }
-        public virtual ApplicationUserEntity Usuario { get; set; }
+        public virtual ICollection< ApplicationUserEntity> Usuarios { get; set; }
        
     }
 }

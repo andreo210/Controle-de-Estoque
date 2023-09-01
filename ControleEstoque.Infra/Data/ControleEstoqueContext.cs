@@ -1,6 +1,8 @@
 ﻿using ControleEstoque.Domain.Entidades;
 using ControleEstoque.Domain.Entidades.Tipo;
 using ControleEstoque.Infra.Mapping;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Data
 {
-    public class ControleEstoqueContext : DbContext
+    public class ControleEstoqueContext : IdentityDbContext<ApplicationUserEntity>
     {//classe que criar as tabelas no banco
 
         public ControleEstoqueContext()
@@ -56,6 +58,7 @@ namespace ControleEstoque.Infra.Data
             modelBuilder.ApplyConfiguration(new LocalArmazenamentoMap());
             modelBuilder.ApplyConfiguration(new MarcaProdutoMap());
             modelBuilder.ApplyConfiguration(new PerfilMap());
+            modelBuilder.ApplyConfiguration(new UsuarioMap());
             modelBuilder.ApplyConfiguration(new ProdutoMap());
             modelBuilder.ApplyConfiguration(new SaidaProdutoMap());
             modelBuilder.ApplyConfiguration(new UnidadeMedidaMap());
@@ -65,13 +68,15 @@ namespace ControleEstoque.Infra.Data
             modelBuilder.ApplyConfiguration(new TipoPessoaMap());
 
 
-            // tabela de relacionamento
+            //// tabela de relacionamento
             modelBuilder.Entity<PerfilEntity>()
                         .HasMany<ApplicationUserEntity>(s => s.Usuarios)//um usuario tem muitos perfis
                         .WithMany(c => c.Perfis)//um perfil tem muitos usuarios
                         .UsingEntity(j => j.ToTable("perfil_usuario"));//nome da tabela
-           
 
+            modelBuilder.Entity<IdentityUserLogin<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserRole<string>>().HasNoKey();
+            modelBuilder.Entity<IdentityUserToken<string>>().HasNoKey();
 
         }
 

@@ -13,13 +13,13 @@ namespace ControleEstoque.App.Dtos
         {
 
         }
-        public PerfilDTO(PerfilEntity entity)
-        {
-            this.Id = entity.Id;
-            this.Nome = entity.Nome;
-            this.Ativo = entity.Ativo;
-            this.Usuarios = entity.Usuarios;
-        }
+        //public PerfilDTO(PerfilEntity entity)
+        //{
+        //    this.Id = entity.Id;
+        //    this.Nome = entity.Nome;
+        //    this.Ativo = entity.Ativo;
+        //    this.Usuarios = entity.Usuarios;
+        //}
         //atributos
         public int Id { get; set; }
         public string Nome { get; set; }
@@ -28,15 +28,15 @@ namespace ControleEstoque.App.Dtos
 
 
 
-        public PerfilEntity retornoPerfil()
-        {
-            return new PerfilEntity()
-            {
-                Id = this.Id,
-                Nome = this.Nome,
-                Ativo = this.Ativo,
-                Usuarios = this.Usuarios
-            };
-        }
+        //public PerfilEntity retornoPerfil()
+        //{
+        //    return new PerfilEntity()
+        //    {
+        //        Id = this.Id,
+        //        Nome = this.Nome,
+        //        Ativo = this.Ativo,
+        //        Usuarios = this.Usuarios
+        //    };
+        //}
     }
 }

@@ -10,6 +10,10 @@ namespace ControleEstoque.Infra.Data.Repositories
 {
     public class PerfilRepository : GlobalRepository<PerfilEntity>, IPerfilRepository
     {
-        public PerfilRepository(ControleEstoqueContext dbContext) : base(dbContext) { }
+        private readonly ControleEstoqueContext _dbContext;
+        public PerfilRepository(ControleEstoqueContext dbContext) : base(dbContext) 
+        {
+            _dbContext = dbContext;
+        }       
     }
 }

@@ -2,6 +2,7 @@
 using ControleEstoque.App.Handlers.GrupoProduto;
 using ControleEstoque.App.Views;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -75,8 +76,35 @@ namespace ControleEstoque.API.Controllers
             else
             {
                 return NotFound();
-            }           
-           
+            }
+
+        }
+
+
+        [HttpPatch("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesDefaultResponseType]
+        public IActionResult AlterarParcial(int id, [FromBody] JsonPatchDocument<GrupoProdutoCommand> command)
+        {
+            if (command is null)
+            {
+                return BadRequest();
+            }
+            
+            var model = grupoHandler.RecuperarPeloId(id);
+            command.ApplyTo(model);
+            //model.Ativo = false;
+            var modelo = grupoHandler.Alterar(id, model);
+            if (modelo is not null)
+            {
+                return Ok(modelo);
+            }
+            else
+            {
+                return NotFound();
+            }
+
         }
 
         /// <summary>

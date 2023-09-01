@@ -15,32 +15,11 @@ namespace ControleEstoque.Infra.Mapping
         {
             builder.ToTable("usuario");//nome da tabela
 
-            builder.HasKey(p => p.Id);//chave primaria
+            builder.HasKey(p => p.Id);
             builder.Property(p => p.Id)
                 .HasColumnName("id")
-                .ValueGeneratedOnAdd();//auto incremento
+                .ValueGeneratedOnAdd();
 
-
-            builder.Property(p => p.Nome)
-               .HasMaxLength(50)//define o tamanho da string
-               .IsRequired()//obrigatorio
-               .HasColumnName("nome");
-
-
-            builder.Property(p => p.Login)
-               .IsRequired()//obrigatorio
-               .HasMaxLength(15)
-               .HasColumnName("login"); //nome da coluna
-
-            builder.Property(p => p.Senha)
-               .IsRequired()//obrigatorio
-               .HasMaxLength(50)
-               .HasColumnName("senha"); //nome da coluna
-
-            builder.Property(p => p.Email)
-               .IsRequired()//obrigatorio
-               .HasMaxLength(150)
-               .HasColumnName("email"); //nome da coluna
         }
 
         protected void OnModelCreating(ModelBuilder modelBuilder)

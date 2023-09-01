@@ -2,6 +2,7 @@
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.EntradaProduto;
 using ControleEstoque.App.Handlers.Produto;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,6 +14,7 @@ namespace ControleEstoque.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors] //Default Policy
     public class EntradaProdutoController : ControllerBase
     {
         private readonly IEntradaProdutoHandlers EntradaHandler;
