@@ -58,7 +58,31 @@ namespace ControleEstoque.API
                 {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                     options.JsonSerializerOptions.WriteIndented = true;
+                }).AddNewtonsoftJson();
+
+            /*
+             * Origin: 
+             *      Domínio(Sub): api.site.com.br != www.site.com.br != web.site.com.br != www.empresa.com.br
+             *      Domínio(Proto): http://www.site.com.br != https://www.site.com.br
+             *      Domínio(Porta): http://www.site.com.br:80 != http://www.site.com.br:367
+             *      
+             */
+            services.AddCors(cfg => {
+                cfg.AddDefaultPolicy(policy => {
+                    policy
+                        .WithOrigins("https://localhost:44376", "http://localhost:44376")
+                        .AllowAnyMethod()
+                        .SetIsOriginAllowedToAllowWildcardSubdomains() //Habilitar CORS para todos os Subdomínios
+                        .AllowAnyHeader();
                 });
+
+                //Habilitar todos os site, com restrição.
+                cfg.AddPolicy("AnyOrigin", policy => {
+                    policy.AllowAnyOrigin()
+                          .WithMethods("GET")
+                          .AllowAnyHeader();
+                });
+            });
 
             services.AddApiVersioning(options =>
             {
@@ -159,9 +183,9 @@ namespace ControleEstoque.API
                     options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json",
                         description.GroupName.ToUpperInvariant());
                 }
-            }); 
+            });
             // app.UseHttpsRedirection();
-
+            //app.UseCors("AnyOrigin"); //Desabilite quando for usar Attributos EnableCors/DisableCors.
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();

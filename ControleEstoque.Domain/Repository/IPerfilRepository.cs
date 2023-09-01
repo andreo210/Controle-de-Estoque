@@ -7,7 +7,5 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Domain.Repository
 {
-    public interface IPerfilRepository : IGlobalRepository<PerfilEntity>
-    {
-    }
+    public interface IPerfilRepository : IGlobalRepository<PerfilEntity> { }
 }

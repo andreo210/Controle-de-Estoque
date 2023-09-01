@@ -27,7 +27,7 @@ namespace ControleEstoque.Infra.Extension
             services.AddScoped<IPerfilRepository, PerfilRepository>();
             services.AddScoped<IProdutoRepository, ProdutoRepository>();
             services.AddScoped<ISaidaProdutoRepository, SaidaProdutoRepository>();
-            services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+            //services.AddIdentityCore<IUsuarioRepository, UsuarioRepository>();
             services.AddScoped<IUnidadeMedidaRepository, UnidadeMedidaRepository>();
             services.AddScoped<IContatoRepository, ContatoRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();

@@ -6,6 +6,7 @@ using ControleEstoque.App.Handlers.Endereço;
 using ControleEstoque.App.Handlers.Fornecedor;
 using ControleEstoque.App.Views;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -18,7 +19,7 @@ namespace ControleEstoque.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
+    [EnableCors("AnyOrigin")]
     public class FornecedorController : ControllerBase
     {
         private readonly IFornecedorHandlers _fornecedorHandlers;
@@ -89,7 +90,7 @@ namespace ControleEstoque.API.Controllers
         /// <response code="401">Quando não conter um token valido</response>  
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FornecedorView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-
+        [DisableCors()]
         [HttpGet]
         public IActionResult Get( [FromQuery]int? numeroDaPagina, [FromQuery] int? registroPorPagina)
         {            

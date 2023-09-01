@@ -10,7 +10,6 @@ namespace ControleEstoque.App.Dtos
 {
     public class ContatosCommand
     {
-        //public int Id { get; set; }
         public string Numero { get; set; }
         public string DDD { get; set; }
         public string CodigoPais { get; set; }

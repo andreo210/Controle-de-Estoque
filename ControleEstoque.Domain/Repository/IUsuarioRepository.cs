@@ -9,5 +9,7 @@ namespace ControleEstoque.Domain.Repository
 {
     public interface IUsuarioRepository : IGlobalRepository<ApplicationUserEntity>
     {
+        void Cadastrar(ApplicationUserEntity usuario, string senha);
+        ApplicationUserEntity Obter(string email, string senha);
     }
 }
