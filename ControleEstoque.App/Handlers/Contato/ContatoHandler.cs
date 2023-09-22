@@ -3,6 +3,7 @@ using ControleEstoque.App.Views;
 using ControleEstoque.Domain.Repository;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,6 +67,7 @@ namespace ControleEstoque.App.Handlers.Contato
         {
             try
             {
+                Validator.ValidateObject(command, new ValidationContext(command), true);
                 var model = _contato.Insert(command.retornoContatoEntity());
                 return new ContatoView(model);
             }
