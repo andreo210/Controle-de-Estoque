@@ -19,7 +19,7 @@ namespace ControleEstoque.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AnyOrigin")]
+    //[EnableCors("AnyOrigin")]
     public class FornecedorController : ControllerBase
     {
         private readonly IFornecedorHandlers _fornecedorHandlers;
@@ -90,7 +90,7 @@ namespace ControleEstoque.API.Controllers
         /// <response code="401">Quando não conter um token valido</response>  
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FornecedorView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        [DisableCors()]
+        //[DisableCors()]
         [HttpGet]
         public IActionResult Get( [FromQuery]int? numeroDaPagina, [FromQuery] int? registroPorPagina)
         {            

@@ -11,7 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleEstoque.App", "Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleEstoque.API", "ControleEstoque.API\ControleEstoque.API.csproj", "{64DA756F-D568-4331-B192-934676429E5F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ControleEstoque.Site", "ControleEstoque.Site\ControleEstoque.Site.csproj", "{E9680BF2-7BE2-434E-96EA-EB259FA38728}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ControleEstoque.Site", "ControleEstoque.Site\ControleEstoque.Site.csproj", "{E9680BF2-7BE2-434E-96EA-EB259FA38728}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Aplicacao", "Aplicacao", "{F831719F-7B9D-42B4-86D5-4C54A04333A1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Controle.Estoque.Test", "Controle.Estoque.Test", "{D64AD4B9-CFB3-45D3-BFC5-36D90E631004}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controle.Estoque.App.Test", "Controle.Estoque.App.Test\Controle.Estoque.App.Test.csproj", "{26BC94F4-F188-42F3-A281-13AFA436E0C6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,9 +45,21 @@ Global
 		{E9680BF2-7BE2-434E-96EA-EB259FA38728}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9680BF2-7BE2-434E-96EA-EB259FA38728}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9680BF2-7BE2-434E-96EA-EB259FA38728}.Release|Any CPU.Build.0 = Release|Any CPU
+		{26BC94F4-F188-42F3-A281-13AFA436E0C6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{26BC94F4-F188-42F3-A281-13AFA436E0C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{26BC94F4-F188-42F3-A281-13AFA436E0C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{26BC94F4-F188-42F3-A281-13AFA436E0C6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4888AD69-5AFD-4703-9DA7-0FE2CAB74F43} = {F831719F-7B9D-42B4-86D5-4C54A04333A1}
+		{12F96FE8-E11A-4288-B045-58531F503F02} = {F831719F-7B9D-42B4-86D5-4C54A04333A1}
+		{DDA36375-2D12-417D-894C-DED00AB0C0A1} = {F831719F-7B9D-42B4-86D5-4C54A04333A1}
+		{64DA756F-D568-4331-B192-934676429E5F} = {F831719F-7B9D-42B4-86D5-4C54A04333A1}
+		{E9680BF2-7BE2-434E-96EA-EB259FA38728} = {F831719F-7B9D-42B4-86D5-4C54A04333A1}
+		{26BC94F4-F188-42F3-A281-13AFA436E0C6} = {D64AD4B9-CFB3-45D3-BFC5-36D90E631004}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A82D4529-1698-429E-AA1E-6788D7AAC4B6}

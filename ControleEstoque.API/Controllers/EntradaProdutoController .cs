@@ -14,7 +14,7 @@ namespace ControleEstoque.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors] //Default Policy
+   // [EnableCors] //Default Policy
     public class EntradaProdutoController : ControllerBase
     {
         private readonly IEntradaProdutoHandlers EntradaHandler;

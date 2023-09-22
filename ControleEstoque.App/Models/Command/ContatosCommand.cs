@@ -30,13 +30,17 @@ namespace ControleEstoque.App.Dtos
             this.TipoContatoId = contatoEntity.TipoContatoId;
             this.FornecedorID = contatoEntity.IdFornecedor;
         }
-        public ContatosCommand()
+        public ContatosCommand() { }
+
+        public ContatosCommand(string numero, string dDD, string codigoPais, bool ativo, int tipoContatoId, int fornecedorID)
         {
-
+            Numero = numero;
+            DDD = dDD;
+            CodigoPais = codigoPais;
+            Ativo = ativo;
+            TipoContatoId = tipoContatoId;
+            FornecedorID = fornecedorID;
         }
-
-
-
 
         public ContatoEntity retornoContatoEntity()
         {
