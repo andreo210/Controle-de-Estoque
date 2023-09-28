@@ -1,6 +1,7 @@
 ﻿using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Views;
 using ControleEstoque.Domain.Repository;
+using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -41,7 +42,7 @@ namespace ControleEstoque.App.Handlers.Contato
         {
             try
             {
-              var ListaModel = _contato.Get().Select(model => new ContatoView(model)).ToList();
+              var ListaModel = _contato.GetAll().Select(model => new ContatoView(model)).ToList();
               return ListaModel;
 
             }catch(Exception e)
@@ -68,16 +69,16 @@ namespace ControleEstoque.App.Handlers.Contato
             try
             {
                 Validator.ValidateObject(command, new ValidationContext(command), true);
-                var model = _contato.Insert(command.retornoContatoEntity());
-                return new ContatoView(model);
+                var model = _contato.Insert(command);
+                
+                return command;
             }
             catch (Exception e)
             {
                 throw;
             }
         }
-             
-
+       
 
     }
 }

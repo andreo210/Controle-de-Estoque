@@ -10,6 +10,8 @@ using ControleEstoque.App.Handlers.MarcaProduto;
 using ControleEstoque.App.Handlers.Produto;
 using ControleEstoque.App.Handlers.SaidaProduto;
 using ControleEstoque.App.Handlers.UnidadeMedida;
+using ControleEstoque.App.Notificacoes;
+using ControleEstoque.App.Notificacoes.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ControleEstoque.App.Extentions
@@ -28,6 +30,8 @@ namespace ControleEstoque.App.Extentions
             service.AddScoped<IProdutoHandlers, ProdutoHandlers>();
             service.AddScoped<IContatoHandler, ContatoHandler>();
             service.AddScoped<IEnderecoHandler, EnderecoHandler>();
+            service.AddScoped<INotificador, Notificador>();
+            
             service.AddScoped<IEntradaProdutoHandlers, EntradaProdutoHandlers>();
 
             return service;

@@ -2,6 +2,7 @@
 using ControleEstoque.API.Extentions;
 using ControleEstoque.API.Filter;
 using ControleEstoque.App.Extentions;
+using ControleEstoque.App.Notificacoes.Interface;
 using ControleEstoque.Infra.Data;
 using ControleEstoque.Infra.Extension;
 using ElmahCore;
@@ -51,6 +52,8 @@ namespace ControleEstoque.API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddScoped<IUser, AspNetUser>();
+
             services.AddControllers(options =>
                 options.Filters.Add(new HttpResponseExceptionFilter()))
                 

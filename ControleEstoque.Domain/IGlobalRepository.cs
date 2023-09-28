@@ -15,6 +15,7 @@ namespace ControleEstoque.Domain
            Expression<Func<TEntity, bool>> filter = null,
            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
            string includeProperties = "");
+        public Task<IEnumerable<TEntity>> ObterTodosAsNoTracking(Expression<Func<TEntity, bool>> predicate);
 
         public TEntity GetByID(object id);
 
@@ -27,5 +28,6 @@ namespace ControleEstoque.Domain
         public void Update(TEntity entityToUpdate);
 
         public void Save();
+        public IEnumerable<TEntity> GetAll();
     }
 }

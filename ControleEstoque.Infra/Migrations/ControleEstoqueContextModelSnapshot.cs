@@ -395,9 +395,6 @@ namespace ControleEstoque.Infra.Migrations
                         .HasColumnType("nvarchar(30)")
                         .HasColumnName("nome");
 
-                    b.Property<int>("UsuarioId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.ToTable("perfil");

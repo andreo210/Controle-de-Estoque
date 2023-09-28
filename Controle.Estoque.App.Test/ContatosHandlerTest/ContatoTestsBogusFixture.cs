@@ -1,5 +1,8 @@
 ﻿using Bogus;
+using Bogus.DataSets;
 using ControleEstoque.App.Dtos;
+using ControleEstoque.App.Handlers.Contato;
+using Moq.AutoMock;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,11 +12,13 @@ using Xunit;
 
 namespace Controle.Estoque.App.Test.Model
 {
-    [CollectionDefinition(nameof(ClienteBogusCollection))]
-    public class ClienteBogusCollection : ICollectionFixture<ContatoTestsBogusFixture>
+    [CollectionDefinition(nameof(ContatoBogusCollection))]
+    public class ContatoBogusCollection : ICollectionFixture<ContatoTestsBogusFixtureFluent>
     { }
-    public class ContatoTestsBogusFixture : IDisposable
+    public class ContatoTestsBogusFixtureFluent : IDisposable
     {
+        public ContatoHandler contatoHandler;
+        public AutoMocker Mocker;
         public ContatosCommand GerarClienteValido()
         {
             return GerarContatos(1, true).FirstOrDefault();
@@ -39,36 +44,39 @@ namespace Controle.Estoque.App.Test.Model
 
             var clientes = new Faker<ContatosCommand>("pt_BR")
                 .CustomInstantiator(f => new ContatosCommand(
-                    Math.,
-                    f.Name.FirstName(genero),
-                    f.Name.LastName(genero),
-                    f.Date.Past(80, DateTime.Now.AddYears(-18)),
-                    "",
-                    ativo,
-                    DateTime.Now))
-                .RuleFor(c => c.Email, (f, c) =>
-                      f.Internet.Email(c.Nome.ToLower(), c.Sobrenome.ToLower()));
-
+                    f.Person.Phone,
+                    f.Phone.PhoneNumber("13"),
+                    f.Phone.PhoneNumber("55"),
+                    true,
+                    1,
+                   1));
+                
             return clientes.Generate(quantidade);
         }
 
-        public Cliente GerarClienteInvalido()
+        public ContatosCommand GerarClienteInvalido()
         {
             var genero = new Faker().PickRandom<Name.Gender>();
 
-            var cliente = new Faker<Cliente>("pt_BR")
-                .CustomInstantiator(f => new Cliente(
-                    Guid.NewGuid(),
-                    f.Name.FirstName(genero),
-                    f.Name.LastName(genero),
-                    f.Date.Past(1, DateTime.Now.AddYears(1)),
+            var cliente = new Faker<ContatosCommand>("pt_BR")
+                .CustomInstantiator(f => new ContatosCommand(
                     "",
-                    false,
-                    DateTime.Now));
+                    f.Phone.Locale,
+                    f.Phone.Locale,
+                    true,
+                    1,
+                   1));
 
             return cliente;
         }
 
+        public ContatoHandler ObterContatoHandler()
+        {
+            Mocker = new AutoMocker();
+            contatoHandler = Mocker.CreateInstance<ContatoHandler>();
+
+            return contatoHandler;
+        }
         public void Dispose()
         {
         }

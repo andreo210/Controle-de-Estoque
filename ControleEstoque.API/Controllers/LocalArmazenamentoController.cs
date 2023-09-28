@@ -3,6 +3,7 @@ using ControleEstoque.API.Helpers;
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.LocalArmazenamento;
 using ControleEstoque.App.Models.Views;
+using ControleEstoque.App.Notificacoes.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -14,13 +15,12 @@ using System.Threading.Tasks;
 namespace ControleEstoque.API.Controllers
 {
     [Route("api/v{version:apiVersion}/[controller]")]
-    [ApiController]
     [ApiVersion("1.0")/*,Deprecated =true)*/]
     [ApiVersion("2.1")]
-    public class LocalArmazenamentoController : ControllerBase
+    public class LocalArmazenamentoController : MainController
     { //
         ILocalArmazenamentoHandlers localArmazenamentoHadlers;
-        public LocalArmazenamentoController(ILocalArmazenamentoHandlers _localArmazenamentoHadlers)
+        public LocalArmazenamentoController(ILocalArmazenamentoHandlers _localArmazenamentoHadlers, INotificador notificador, IUser user) : base(notificador, user)
         {
             this.localArmazenamentoHadlers = _localArmazenamentoHadlers;
         }
@@ -43,7 +43,7 @@ namespace ControleEstoque.API.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Post([FromBody] LocalArmazenamentoCommand command)
         {
-            if (command is null) return BadRequest(new BadRequestProblemDetails("A entidadde não pode ser nula", Request));
+            if (command is null) return BadRequest(new BadRequestProblemDetails("A entidade não pode ser nula", Request));
 
             if (!ModelState.IsValid) return UnprocessableEntity(ModelState); 
                 var model = localArmazenamentoHadlers.Salvar(command);
@@ -51,11 +51,11 @@ namespace ControleEstoque.API.Controllers
 
             if (model is not null)
             {
-                return Created(HttpContext.Request.Path + "/" + model.Id, model);
+                return Resposta(model);
             }
             else
             {
-                return BadRequest();
+                return Resposta("erro",0);
             }
 
         }
@@ -75,24 +75,27 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         [HttpGet("{id}", Name = "ObterLocalArmazenamento")]
-        [MapToApiVersion("2.0")]
-        [MapToApiVersion("2.1")]
+       // [MapToApiVersion("2.0")]
+       // [MapToApiVersion("2.1")]
         public IActionResult GetId(int id)
         {
             var model = localArmazenamentoHadlers.RecuperarPeloId(id);
 
-            //colocando link seguindo as normas de api nivel 3, seguindo o padrão Hateous
-            model.Link.Add(new LinkView("self", Url.Link("ObterLocalArmazenamento", new { id = model.Id }), "GET"));
-            model.Link.Add(new LinkView("update", Url.Link("AtualizarLocalArmazenamento", new { id = model.Id }), "PUT"));
-            model.Link.Add(new LinkView("delete", Url.Link("DeletarLocalArmazenamento", new { id = model.Id }), "DELETE"));
+            
 
             if (model is not null)
             {
-                return Ok(model);
+                //colocando link seguindo as normas de api nivel 3, seguindo o padrão Hateous
+                model.Link.Add(new LinkView("self", Url.Link("ObterLocalArmazenamento", new { id = model.Id }), "GET"));
+                model.Link.Add(new LinkView("update", Url.Link("AtualizarLocalArmazenamento", new { id = model.Id }), "PUT"));
+                model.Link.Add(new LinkView("delete", Url.Link("DeletarLocalArmazenamento", new { id = model.Id }), "DELETE"));
+
+                return Resposta(model);
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Local de armazenamento com  id = {id} não encontrado", Request));
+                //NotificarErro("Os ids informados não são iguais!");
+                return Resposta("local de armazenamento", id);
             }
         }
 
@@ -143,11 +146,11 @@ namespace ControleEstoque.API.Controllers
                     modelo.Link.Add(new LinkView("delete", Url.Link("DeletarLocalArmazenamento", new { id = modelo.Id }), "DELETE"));
                 }
 
-                return Ok(model);
+                return Resposta(model);
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Lista de Local de Armazenamento não encontrada não encontrada", Request));
+                return Resposta(model);
             }
         }
 
@@ -192,11 +195,11 @@ namespace ControleEstoque.API.Controllers
             if (model is not null)
             {
                 localArmazenamentoHadlers.ExcluirPeloId(id);
-                return NoContent();
+                return Resposta(model);
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Local de armazenamento com  id = {id} não encontrado", Request));
+                return Resposta(id);
             }
         }
 
@@ -223,11 +226,11 @@ namespace ControleEstoque.API.Controllers
             var model = localArmazenamentoHadlers.Alterar(id, command);
             if (model is not null)
             {
-                return Ok(model);
+                return Resposta(model);
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Local de armazenamento com  id = {id} não encontrado", Request));
+                return Resposta(id);
             }
 
         }

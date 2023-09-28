@@ -1,4 +1,5 @@
-﻿using ControleEstoque.Domain.Entidades;
+﻿using ControleEstoque.App.Dtos;
+using ControleEstoque.Domain.Entidades;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,48 @@ namespace ControleEstoque.App.Views
         public int TipoContatoId { get; set; }
         public int FornecedorID { get; set; }
 
+        public static implicit operator ContatoView(ContatosCommand model)
+        {
+            return new ContatoView
+            {
+                Id = 0,
+                Numero = model.Numero,
+                DDD = model.DDD,
+                CodigoPais = model.CodigoPais,
+                Ativo = model.Ativo,
+                TipoContatoId = model.TipoContatoId,
+                FornecedorID = model.FornecedorID
+            };
+
+        }
+        public static implicit operator ContatoView(ContatoEntity model)
+        {
+            return new ContatoView
+            {
+                Id = 0,
+                Numero = model.Numero,
+                DDD = model.DDD,
+                CodigoPais = model.CodigoPais,
+                Ativo = model.Ativo,
+                TipoContatoId = model.TipoContatoId,
+                FornecedorID = model.IdFornecedor
+            };
+
+        }
+        public static implicit operator ContatosCommand(ContatoView model)
+        {
+            return new ContatosCommand
+            {
+                
+                Numero = model.Numero,
+                DDD = model.DDD,
+                CodigoPais = model.CodigoPais,
+                Ativo = model.Ativo,
+                TipoContatoId = model.TipoContatoId,
+                FornecedorID = model.FornecedorID
+            };
+
+        }
         public ContatoView(ContatoEntity contatoEntity)
         {
             this.Id = contatoEntity.Id;

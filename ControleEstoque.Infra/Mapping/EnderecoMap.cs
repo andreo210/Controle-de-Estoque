@@ -40,7 +40,6 @@ namespace ControleEstoque.Infra.Mapping
            .IsRequired();//obrigatorio
 
             builder.Property(p => p.Pais)
-           .HasMaxLength(60)//define o tamanho da string
            .IsRequired();//obrigatorio;
 
             builder.Property(p => p.Numero)

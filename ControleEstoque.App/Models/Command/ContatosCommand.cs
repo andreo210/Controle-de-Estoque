@@ -1,6 +1,7 @@
 ﻿using ControleEstoque.Domain.Entidades;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
@@ -10,15 +11,49 @@ namespace ControleEstoque.App.Dtos
 {
     public class ContatosCommand
     {
+        [Required]
         public string Numero { get; set; }
+        [Required]
         public string DDD { get; set; }
+        [Required]
         public string CodigoPais { get; set; }
+        [Required]
         public bool Ativo { get; set; }
-
+        [Required]
         public int TipoContatoId { get; set; }
-
+        [Required]
         [JsonIgnore]
         public int FornecedorID { get; set; }
+
+        public static implicit operator ContatosCommand(ContatoEntity model)
+        {
+            return new ContatosCommand
+            {                
+                Numero = model.Numero,
+                DDD = model.DDD,
+                CodigoPais = model.CodigoPais,
+                Ativo = model.Ativo,
+                TipoContatoId = model.TipoContatoId,
+                FornecedorID = model.IdFornecedor
+            };
+
+        }
+        public static implicit operator ContatoEntity(ContatosCommand model)
+        {
+            return new ContatoEntity
+            {
+
+                Numero = model.Numero,
+                DDD = model.DDD,
+                CodigoPais = model.CodigoPais,
+                Ativo = model.Ativo,
+                TipoContatoId = model.TipoContatoId,
+                IdFornecedor = model.FornecedorID
+            };
+
+        }
+
+
 
         public ContatosCommand(ContatoEntity contatoEntity)
         {

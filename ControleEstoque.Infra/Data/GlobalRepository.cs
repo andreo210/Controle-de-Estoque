@@ -26,10 +26,7 @@ namespace ControleEstoque.Infra.Data
         }
 
         //pega todos
-        public virtual IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "")
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -55,6 +52,17 @@ namespace ControleEstoque.Infra.Data
             
         }
 
+        public async Task<IEnumerable<TEntity>> ObterTodosAsNoTracking(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await dbSet.AsNoTracking().Where(predicate).ToListAsync();
+        }
+
+
+        public virtual IEnumerable<TEntity> GetAll()
+        {
+            return dbSet.ToList();
+
+        }
 
         //pega por Id
         public virtual TEntity GetByID(object id)
