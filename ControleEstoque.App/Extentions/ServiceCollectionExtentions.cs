@@ -10,8 +10,8 @@ using ControleEstoque.App.Handlers.MarcaProduto;
 using ControleEstoque.App.Handlers.Produto;
 using ControleEstoque.App.Handlers.SaidaProduto;
 using ControleEstoque.App.Handlers.UnidadeMedida;
+using ControleEstoque.App.Interface;
 using ControleEstoque.App.Notificacoes;
-using ControleEstoque.App.Notificacoes.Interface;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ControleEstoque.App.Extentions

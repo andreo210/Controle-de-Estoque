@@ -6,7 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace ControleEstoque.API.Config
+namespace ControleEstoque.API.ProblemDetailsModels
 {
     public class CustomProblemDetails : ProblemDetails
     {

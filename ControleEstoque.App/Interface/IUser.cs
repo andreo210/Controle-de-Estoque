@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Security.Claims;
 
-namespace ControleEstoque.App.Notificacoes.Interface
+namespace ControleEstoque.App.Interface
 {
     public interface IUser
     {

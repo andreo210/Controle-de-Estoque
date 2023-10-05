@@ -7,11 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace ControleEstoque.API.Config
+namespace ControleEstoque.API.ProblemDetailsModels
 {
-    public class BadRequestProblemDetails : ProblemDetails
+    public class CustomBadRequest : ProblemDetails
     {
-        public BadRequestProblemDetails(string detalhe, HttpRequest request)
+        public CustomBadRequest(string detalhe, HttpRequest request)
         {
             Title = "Parametro ou requisição invalida";
             Status = 400;

@@ -7,11 +7,11 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace ControleEstoque.API.Config
+namespace ControleEstoque.API.ProblemDetailsModels
 {
-    public class ObjetoNotFoundProblemDetails : ProblemDetails
+    public class CustomNotFound : ProblemDetails
     {
-        public ObjetoNotFoundProblemDetails(string detalhe, HttpRequest request)
+        public CustomNotFound(string detalhe, HttpRequest request)
         {
             Title = "Objeto não encontrado";
             Status = 404;

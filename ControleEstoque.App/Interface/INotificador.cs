@@ -1,6 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using ControleEstoque.App.Notificacoes;
+using System.Collections.Generic;
 
-namespace ControleEstoque.App.Notificacoes.Interface
+namespace ControleEstoque.App.Interface
 {
     public interface INotificador
     {

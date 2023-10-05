@@ -1,12 +1,8 @@
-﻿using ControleEstoque.API.Config;
+﻿using ControleEstoque.API.ProblemDetailsModels;
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.MarcaProduto;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ControleEstoque.API.Controllers
 {
@@ -75,7 +71,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Lista de marca de produto não encontrada", Request));
+                return NotFound(new CustomNotFound($"Lista de marca de produto não encontrada", Request));
             }
         }
 
@@ -105,7 +101,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Marca de produto com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Marca de produto com  id = {id} não encontrado", Request));
             }
         }
 
@@ -156,7 +152,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Marca de produto com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Marca de produto com  id = {id} não encontrado", Request));
             }
         }
 
@@ -186,7 +182,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Marca de produto com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Marca de produto com  id = {id} não encontrado", Request));
             }
 
         }

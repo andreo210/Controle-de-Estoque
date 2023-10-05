@@ -1,10 +1,10 @@
-﻿using System;
+﻿using ControleEstoque.App.Interface;
+using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.Security.Claims;
-using ControleEstoque.App.Notificacoes.Interface;
-using Microsoft.AspNetCore.Http;
 
-namespace ControleEstoque.API.Extentions
+namespace ControleEstoque.API.Extensions
 {
     public class AspNetUser : IUser
     {

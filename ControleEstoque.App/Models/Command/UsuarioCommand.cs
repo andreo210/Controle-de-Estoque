@@ -46,41 +46,7 @@ namespace ControleEstoque.App.Models.Command
             this.Senha = model.PasswordHash;
             this.Login = model.UserName;
 
-        }
-
-        //retorna os valores da entidade
-        //public EntradaProdutoEntity retornoEntradaProdutoEntity()
-        //{
-        //    return new EntradaProdutoEntity
-        //    {
-        //        Numero = this.Numero,
-        //        Data = this.Data,
-        //        Quantidade = this.Quantidade,
-        //        IdProduto = this.IdProduto
-        //    };
-        //}
-
-        //public static implicit operator EntradaProdutoEntity(EntradaProdutoCommand model)
-        //{
-        //    return new EntradaProdutoEntity
-        //    {
-        //        Numero = model.Numero,
-        //        Data = model.Data,
-        //        Quantidade = model.Quantidade,
-        //        IdProduto = model.IdProduto
-        //    };
-
-        //}
-        //public static implicit operator EntradaProdutoCommand(EntradaProdutoEntity model)
-        //{
-        //    return new EntradaProdutoCommand
-        //    {
-        //        Numero = model.Numero,
-        //        Data = model.Data,
-        //        Quantidade = model.Quantidade,
-        //        IdProduto = model.IdProduto
-        //    };
-        //}
+        }       
 
     }
 }

@@ -1,16 +1,15 @@
-﻿using ControleEstoque.API.Config;
+﻿using ControleEstoque.API.Controllers.Base;
 using ControleEstoque.API.Helpers;
+using ControleEstoque.API.ProblemDetailsModels;
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.LocalArmazenamento;
+using ControleEstoque.App.Interface;
 using ControleEstoque.App.Models.Views;
-using ControleEstoque.App.Notificacoes.Interface;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ControleEstoque.API.Controllers
 {
@@ -43,7 +42,7 @@ namespace ControleEstoque.API.Controllers
         [ProducesDefaultResponseType]
         public IActionResult Post([FromBody] LocalArmazenamentoCommand command)
         {
-            if (command is null) return BadRequest(new BadRequestProblemDetails("A entidade não pode ser nula", Request));
+            if (command is null) return BadRequest(new CustomBadRequest("A entidade não pode ser nula", Request));
 
             if (!ModelState.IsValid) return UnprocessableEntity(ModelState); 
                 var model = localArmazenamentoHadlers.Salvar(command);
@@ -51,11 +50,11 @@ namespace ControleEstoque.API.Controllers
 
             if (model is not null)
             {
-                return Resposta(model);
+                return Criado(model.Id, model);
             }
             else
             {
-                return Resposta("erro",0);
+                return FalhaNaRequisicao();
             }
 
         }
@@ -90,12 +89,12 @@ namespace ControleEstoque.API.Controllers
                 model.Link.Add(new LinkView("update", Url.Link("AtualizarLocalArmazenamento", new { id = model.Id }), "PUT"));
                 model.Link.Add(new LinkView("delete", Url.Link("DeletarLocalArmazenamento", new { id = model.Id }), "DELETE"));
 
-                return Resposta(model);
+                return FalhaNaRequisicao(model);
             }
             else
             {
                 //NotificarErro("Os ids informados não são iguais!");
-                return Resposta("local de armazenamento", id);
+                return NaoEncontrado(id);
             }
         }
 
@@ -135,7 +134,7 @@ namespace ControleEstoque.API.Controllers
                     paginacao.TotalDePaginas = (int)Math.Ceiling((double)quantidade / registroPorPagina.Value);
                     Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginacao));
 
-                    if (numeroDaPagina > paginacao.TotalDePaginas) return NotFound(new ObjetoNotFoundProblemDetails("pagina não existe", Request));
+                    if (numeroDaPagina > paginacao.TotalDePaginas) return NotFound(new CustomNotFound("pagina não existe", Request));
 
 
                 }
@@ -146,11 +145,11 @@ namespace ControleEstoque.API.Controllers
                     modelo.Link.Add(new LinkView("delete", Url.Link("DeletarLocalArmazenamento", new { id = modelo.Id }), "DELETE"));
                 }
 
-                return Resposta(model);
+                return FalhaNaRequisicao(model);
             }
             else
             {
-                return Resposta(model);
+                return FalhaNaRequisicao(model);
             }
         }
 
@@ -195,11 +194,11 @@ namespace ControleEstoque.API.Controllers
             if (model is not null)
             {
                 localArmazenamentoHadlers.ExcluirPeloId(id);
-                return Resposta(model);
+                return FalhaNaRequisicao(model);
             }
             else
             {
-                return Resposta(id);
+                return NaoEncontrado(id);
             }
         }
 
@@ -226,11 +225,11 @@ namespace ControleEstoque.API.Controllers
             var model = localArmazenamentoHadlers.Alterar(id, command);
             if (model is not null)
             {
-                return Resposta(model);
+                return FalhaNaRequisicao(model);
             }
             else
             {
-                return Resposta(id);
+                return NaoEncontrado(id);
             }
 
         }

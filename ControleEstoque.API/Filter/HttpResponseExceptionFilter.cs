@@ -1,4 +1,5 @@
 ﻿using ControleEstoque.API.Exceptions;
+using ControleEstoque.API.ProblemDetailsModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using System;
@@ -25,13 +26,15 @@ namespace ControleEstoque.API.Filter
                 context.ExceptionHandled = true;
             }
             if (context.Exception is Exception e)
+                
             {
-                context.Result = new ObjectResult(e.Message)
+                var lista = new List<string>();
+                context.Result = new ObjectResult(new CustomProblemDetails(System.Net.HttpStatusCode.InternalServerError,e.InnerException.ToString())
                 {
-                    StatusCode = 555
+                    Status = 500,
+                    Detail = e.Message
 
-
-            };
+                }); 
                 context.ExceptionHandled = true;
             }
             if (context.Exception is UnauthorizedAccessException ex)

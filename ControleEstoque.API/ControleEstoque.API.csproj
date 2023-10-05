@@ -22,6 +22,7 @@
     <PackageReference Include="ElmahCore.Sql" Version="2.1.2" />
     <PackageReference Include="Hellang.Middleware.ProblemDetails" Version="6.5.1" />
     <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.9" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.JsonPatch" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="5.0.17" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0" />
@@ -37,6 +38,10 @@
   <ItemGroup>
     <ProjectReference Include="..\ControleEstoque.App\ControleEstoque.App.csproj" />
     <ProjectReference Include="..\ControleEstoque.Infra\ControleEstoque.Infra.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
   </ItemGroup>
 
 </Project>

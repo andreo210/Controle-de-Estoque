@@ -1,8 +1,10 @@
 ﻿using ControleEstoque.Domain.Entidades;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace ControleEstoque.App.Dtos
@@ -20,7 +22,9 @@ namespace ControleEstoque.App.Dtos
         public int IdFornecedor { get; set; }
         public int IdLocalArmazenamento { get; set; }
         public bool Ativo { get; set; }
+        [JsonIgnore]
         public string Imagem { get; set; }
+        public string ImagemUpload { get; set; }
 
         public ProdutoCommand() { }
         public ProdutoCommand(ProdutoEntity entity)
@@ -36,7 +40,7 @@ namespace ControleEstoque.App.Dtos
             this.IdFornecedor = entity.IdFornecedor;
             this.IdLocalArmazenamento = entity.IdLocalArmazenamento;
             this.Ativo = entity.Ativo;
-            this.Imagem = entity.Imagem;
+            //this.Imagem = entity.Imagem;
         }
         public ProdutoEntity retornoProduto()
         {
@@ -52,7 +56,7 @@ namespace ControleEstoque.App.Dtos
                 IdFornecedor = this.IdFornecedor,
                 IdLocalArmazenamento = this.IdLocalArmazenamento,
                 Ativo = this.Ativo,
-                Imagem = this.Imagem              
+               // Imagem = this.Imagem              
 
             };
         }

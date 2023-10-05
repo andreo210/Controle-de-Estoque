@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace ControleEstoque.Infra.Data
 {
-    public class ControleEstoqueContext : IdentityDbContext<ApplicationUserEntity>
+    public class ControleEstoqueContext : DbContext
     {//classe que criar as tabelas no banco
 
         public ControleEstoqueContext()

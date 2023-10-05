@@ -1,12 +1,12 @@
-﻿using System;
-using System.Linq;
-using ControleEstoque.API.Config;
+﻿using ControleEstoque.API.ProblemDetailsModels;
+using ControleEstoque.App.Interface;
 using ControleEstoque.App.Notificacoes;
-using ControleEstoque.App.Notificacoes.Interface;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using System;
+using System.Linq;
 
-namespace ControleEstoque.API.Controllers
+namespace ControleEstoque.API.Controllers.Base
 {
     [ApiController]
     public abstract class MainController : ControllerBase
@@ -35,7 +35,7 @@ namespace ControleEstoque.API.Controllers
             return !_notificador.TemNotificacao();
         }
 
-        protected ActionResult Resposta(object result = null)
+        protected ActionResult FalhaNaRequisicao(object result = null)
         {
             if (OperacaoValida())
             {
@@ -47,25 +47,35 @@ namespace ControleEstoque.API.Controllers
                 errors = _notificador.ObterNotificacoes().Select(n => n.Mensagem)
             });
         }
-        protected ActionResult Resposta()
+        protected ActionResult FalhaNaRequisicao()
         {
             var errors = _notificador.ObterNotificacoes().Select(n => n.Mensagem);
             return BadRequest(new CustomProblemDetails(System.Net.HttpStatusCode.BadRequest,"erro de validacao", errors));
         }
-        protected ActionResult FalhaRequisicao(string objeto, int id)
+        
+        //falha de requisição ao adicionar objeto
+        protected ActionResult IdInvalido(string objeto, int id)
         { 
-             return BadRequest(new BadRequestProblemDetails($"O {objeto} com id: {id} é invalido e não foi encontrado", Request));
+             return BadRequest(new CustomBadRequest($"O {objeto} com id: {id} é inválido e não foi encontrado", Request));
         }
 
-        protected ActionResult NaoEncontrado(int id=0)
+        //retorna mensagem de não encontrado
+        protected ActionResult Criado(int id, Object obj)
+        {
+            return Created(Request.Path +"/"+ id,obj);
+        }
+
+
+        //retorna mensagem de não encontrado
+        protected ActionResult NaoEncontrado(int id)
         {           
-            return NotFound(new ObjetoNotFoundProblemDetails($" Registro com {id} não encontrado", Request));         
+            return NotFound(new CustomNotFound($" Registro com id : {id} não encontrado", Request));         
         }
 
         protected ActionResult Resposta(ModelStateDictionary modelState)
         {
             if(!modelState.IsValid) NotificarErroModelInvalida(modelState);
-            return Resposta();
+            return FalhaNaRequisicao();
         }
 
 

@@ -1,42 +1,31 @@
 
-using ControleEstoque.API.Extentions;
+using ControleEstoque.API.Configuration;
+using ControleEstoque.API.Extensions;
 using ControleEstoque.API.Filter;
 using ControleEstoque.App.Extentions;
-using ControleEstoque.App.Notificacoes.Interface;
+using ControleEstoque.App.Interface;
 using ControleEstoque.Infra.Data;
 using ControleEstoque.Infra.Extension;
-using ElmahCore;
 using ElmahCore.Mvc;
-using ElmahCore.Mvc.Notifiers;
 using ElmahCore.Sql;
 using Hellang.Middleware.ProblemDetails;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
-using Microsoft.AspNetCore.Mvc.Versioning;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
-using System.Net.Mime;
 using System.Reflection;
-using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace ControleEstoque.API
 {
@@ -53,6 +42,7 @@ namespace ControleEstoque.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddScoped<IUser, AspNetUser>();
+
 
             services.AddControllers(options =>
                 options.Filters.Add(new HttpResponseExceptionFilter()))
@@ -86,7 +76,7 @@ namespace ControleEstoque.API
                           .AllowAnyHeader();
                 });
             });
-
+           // services.AddIdentityConfig(Configuration);
             services.AddApiVersioning(options =>
             {
                 // Retorna os headers "api-supported-versions" e "api-deprecated-versions"

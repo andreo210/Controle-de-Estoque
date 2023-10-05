@@ -1,19 +1,15 @@
-﻿using ControleEstoque.API.Config;
-using ControleEstoque.API.Helpers;
+﻿using ControleEstoque.API.Helpers;
+using ControleEstoque.API.ProblemDetailsModels;
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.Contato;
 using ControleEstoque.App.Handlers.Endereço;
 using ControleEstoque.App.Handlers.Fornecedor;
 using ControleEstoque.App.Views;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace ControleEstoque.API.Controllers
 {
@@ -57,11 +53,11 @@ namespace ControleEstoque.API.Controllers
             var tipoContato = _fornecedorHandlers.GetTipoContato(command.Contato.TipoContatoId);
 
             if (tipoPessoa is  null)            
-                return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
+                return BadRequest(new CustomBadRequest("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
             
             
             else if (tipoContato is null)
-                return BadRequest(new BadRequestProblemDetails("O TipoContatoId deve ser 1 para Celular ou 2 Pessoa para Residencial", Request));
+                return BadRequest(new CustomBadRequest("O TipoContatoId deve ser 1 para Celular ou 2 Pessoa para Residencial", Request));
 
             else
             {
@@ -113,7 +109,7 @@ namespace ControleEstoque.API.Controllers
                     paginacao.TotalDePaginas = (int)Math.Ceiling((double)quantidade / registroPorPagina.Value);
                     Response.Headers.Add("X-Pagination", JsonConvert.SerializeObject(paginacao));
 
-                    if (numeroDaPagina > paginacao.TotalDePaginas) return NotFound(new ObjetoNotFoundProblemDetails("pagina não existe", Request));
+                    if (numeroDaPagina > paginacao.TotalDePaginas) return NotFound(new CustomNotFound("pagina não existe", Request));
 
 
                 }
@@ -206,7 +202,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Contato com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Contato com  id = {id} não encontrado", Request));
             }
 
         }
@@ -266,7 +262,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Endereço com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Endereço com  id = {id} não encontrado", Request));
             }
             
         }
@@ -299,7 +295,7 @@ namespace ControleEstoque.API.Controllers
             else
             {
 
-                return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Fornecedor com  id = {id} não encontrado", Request));
             }
         }
 
@@ -335,7 +331,7 @@ namespace ControleEstoque.API.Controllers
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(FornecedorView))]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(typeof(BadRequestProblemDetails), StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(typeof(CustomBadRequest), StatusCodes.Status400BadRequest)]
         [ProducesDefaultResponseType]
         [HttpPut("{id}")]
         
@@ -347,11 +343,11 @@ namespace ControleEstoque.API.Controllers
             var tipoContato = _fornecedorHandlers.GetTipoContato(command.Contato.TipoContatoId);
 
             if (tipoPessoa is null)
-                return BadRequest(new BadRequestProblemDetails("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
+                return BadRequest(new CustomBadRequest("O TipoPessoaId deve ser 1 para Pessoa Fisica ou 2 Pessoa para Juridica", Request));
 
 
             else if (tipoContato is null)
-                return BadRequest(new BadRequestProblemDetails("O TipoContatoId deve ser 1 para Celular ou 2 Pessoa para Residencial", Request));
+                return BadRequest(new CustomBadRequest("O TipoContatoId deve ser 1 para Celular ou 2 Pessoa para Residencial", Request));
             else {
                 var model = _fornecedorHandlers.Alterarfornecedor(id, command);
 
@@ -361,7 +357,7 @@ namespace ControleEstoque.API.Controllers
                 }
                 else
                 {
-                    return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
+                    return NotFound(new CustomNotFound($"Fornecedor com  id = {id} não encontrado", Request));
                 }
             }
         
@@ -393,7 +389,7 @@ namespace ControleEstoque.API.Controllers
                 }
                 else
                 {
-                    return NotFound(new ObjetoNotFoundProblemDetails($"Fornecedor com  id = {id} não encontrado", Request));
+                    return NotFound(new CustomNotFound($"Fornecedor com  id = {id} não encontrado", Request));
                 }          
           
         }      

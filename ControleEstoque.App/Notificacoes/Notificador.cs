@@ -1,4 +1,4 @@
-﻿using ControleEstoque.App.Notificacoes.Interface;
+﻿using ControleEstoque.App.Interface;
 using System.Collections.Generic;
 using System.Linq;
 

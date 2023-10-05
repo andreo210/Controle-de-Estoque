@@ -1,14 +1,9 @@
-﻿using ControleEstoque.API.Config;
+﻿using ControleEstoque.API.ProblemDetailsModels;
 using ControleEstoque.App.Dtos;
 using ControleEstoque.App.Handlers.Produto;
 using ControleEstoque.App.Handlers.SaidaProduto;
-using ControleEstoque.Domain.Repository;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ControleEstoque.API.Controllers
 {
@@ -39,7 +34,7 @@ namespace ControleEstoque.API.Controllers
             var idProduto = ProdutoHandler.RecuperarPeloId(command.IdProduto);
 
             if (idProduto is null)
-                return BadRequest(new BadRequestProblemDetails("O Id do Produto é invalido e não foi encontrado", Request));
+                return BadRequest(new CustomBadRequest("O Id do Produto é invalido e não foi encontrado", Request));
             else
             {
                 var model = SaidaHandler.Salvar(command);
@@ -74,7 +69,7 @@ namespace ControleEstoque.API.Controllers
             var idProduto = ProdutoHandler.RecuperarPeloId(command.IdProduto);
 
             if (idProduto is null)
-                return BadRequest(new BadRequestProblemDetails("O Id do Produto é invalido e não foi encontrado", Request));
+                return BadRequest(new CustomBadRequest("O Id do Produto é invalido e não foi encontrado", Request));
             else
             {
                 var model = SaidaHandler.Alterar(id, command);
@@ -84,7 +79,7 @@ namespace ControleEstoque.API.Controllers
                 }
                 else
                 {
-                    return NotFound(new ObjetoNotFoundProblemDetails($"Saida de Produto com  id = {id} não encontrado", Request));
+                    return NotFound(new CustomNotFound($"Saida de Produto com  id = {id} não encontrado", Request));
                 }
             }
         }
@@ -131,7 +126,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Saida de Produto com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Saida de Produto com  id = {id} não encontrado", Request));
             }
 
         }
@@ -171,7 +166,7 @@ namespace ControleEstoque.API.Controllers
             }
             else
             {
-                return NotFound(new ObjetoNotFoundProblemDetails($"Saida de Produto com  id = {id} não encontrado", Request));
+                return NotFound(new CustomNotFound($"Saida de Produto com  id = {id} não encontrado", Request));
             }
         }
 
